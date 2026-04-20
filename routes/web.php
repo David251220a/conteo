@@ -1,5 +1,13 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InicioController;
+use App\Http\Controllers\LocalController;
+use App\Http\Controllers\PadronController;
+use App\Http\Controllers\ReferenteController;
+use App\Http\Controllers\VehiculoController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +21,38 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [InicioController::class, 'index']);
+
+Route::get('/logout', [LoginController::class, 'logout']);
+Auth::routes();
+
+Route::group([
+    'middleware' => 'auth',
+], function(){
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    Route::get('/referente', [ReferenteController::class, 'index'])->name('referente.index');
+    Route::get('/referente/crear', [ReferenteController::class, 'create'])->name('referente.create');
+    Route::post('/referente/crear', [ReferenteController::class, 'store'])->name('referente.store');
+    Route::get('/referente/{referente}/crear', [ReferenteController::class, 'edit'])->name('referente.edit');
+    Route::post('/referente/{referente}/crear', [ReferenteController::class, 'update'])->name('referente.update');
+
+    Route::get('/local', [LocalController::class, 'index'])->name('local.index');
+    Route::get('/local/crear', [LocalController::class, 'create'])->name('local.create');
+    Route::post('/local/crear', [LocalController::class, 'store'])->name('local.store');
+    Route::get('/local/{local}/crear', [LocalController::class, 'edit'])->name('local.edit');
+    Route::post('/local/{local}/crear', [LocalController::class, 'update'])->name('local.update');
+
+    Route::get('/vehiculo', [VehiculoController::class, 'index'])->name('vehiculo.index');
+    Route::get('/vehiculo/crear', [VehiculoController::class, 'create'])->name('vehiculo.create');
+    Route::post('/vehiculo/crear', [VehiculoController::class, 'store'])->name('vehiculo.store');
+    Route::get('/vehiculo/{vehiculo}/crear', [VehiculoController::class, 'edit'])->name('vehiculo.edit');
+    Route::post('/vehiculo/{vehiculo}/crear', [VehiculoController::class, 'update'])->name('vehiculo.update');
+    Route::post('/vehiculo/{vehiculo}/agregar-local', [VehiculoController::class, 'agregar_local'])->name('vehiculo.agregar_local');
+    Route::post('/vehiculo/{VehiculoLocal}/eliminar-local', [VehiculoController::class, 'eliminar_local'])->name('vehiculo.eliminar_local');
+
+    Route::get('/padron', [PadronController::class, 'index'])->name('padron.index');
+
 });
+
+
