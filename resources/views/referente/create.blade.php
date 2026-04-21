@@ -44,6 +44,15 @@
                                     <input name="celular" id="celular" type="text" class="form-control" value="{{old('celular')}}">
                                 </div>
 
+                                <div class="form-group col-md-3">
+                                    <label for="local_id">Local</label>
+                                    <select name="local_id" id="local_id" class="form-control">
+                                        @foreach ($locales as $item)
+                                            <option value="{{$item->id}}">{{$item->descripcion}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                             </div>
 
                             <div class="form-row">

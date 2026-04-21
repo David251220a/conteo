@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('nombre')->nullable();
             $table->string('chapa')->nullable();
             $table->foreignId('referente_id')->constrained();
+            $table->decimal('monto', 12, 0)->default(0);
+            $table->tinyInteger('pagado')->default(0);
             $table->integer('anio');
             $table->integer('tipo_votacion');
             $table->foreignId('estado_id')->constrained();

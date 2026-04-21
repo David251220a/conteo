@@ -64,6 +64,11 @@
                                 </div>
 
                                 <div class="form-group col-md-3">
+                                    <label for="monto">Monto</label>
+                                    <input name="monto" id="monto" type="text" class="form-control text-right" value="{{old('monto', number_format($data->monto, 0, ".", "."))}}" onkeyup="punto_decimal(this)">
+                                </div>
+
+                                <div class="form-group col-md-3">
                                     <label for="estado_id">Estado</label>
                                     <select name="estado_id" id="estado_id" class="form-control basic">
                                         <option {{ (old('estado_id', $data->estado_id) == 1 ? 'selected' : '') }}  value="1">ACTIVO</option>

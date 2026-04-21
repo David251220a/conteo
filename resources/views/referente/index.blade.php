@@ -60,6 +60,7 @@
                                         <th class="">Documento</th>
                                         <th class="">Referente</th>
                                         <th>Celular</th>
+                                        <th>Local</th>
                                         <th>Estado</th>
                                         <th class="text-center">Accion</th>
                                     </tr>
@@ -74,6 +75,7 @@
                                                 {{$item->referente}}
                                             </td>
                                             <td>{{$item->celular}}</td>
+                                            <td>{{$item->local->descripcion}}</td>
                                             <td>{{$item->estado->descripcion}}</td>
                                             <td class="text-center">
                                                 {{-- @can('referente.edit') --}}

@@ -63,6 +63,11 @@
                                     </select>
                                 </div>
 
+                                <div class="form-group col-md-3">
+                                    <label for="monto">Monto</label>
+                                    <input name="monto" id="monto" type="text" class="form-control" value="{{old('monto')}}" onkeyup="punto_decimal(this)" required>
+                                </div>
+
                             </div>
 
                             <div class="form-row">

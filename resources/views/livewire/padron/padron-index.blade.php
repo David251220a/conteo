@@ -54,38 +54,82 @@
                                         <td>Mesa: <b>{{$data->mesa}}</b> | Orden:<b>{{$data->orden}}</b></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <b>{{ \Carbon\Carbon::parse($data->padronConsulta()->latest()->first()->created_at)->format('d/m/Y H:i') }}
-                                            | Cantidad: {{$data->padronConsulta()->count()}}</b>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Referente</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            @if ($data->referente_id <> 0)
-                                                <b>{{$data->refe->referente}}</b>
-                                            @else
-                                                <b>SIN ASIGNAR</b>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Vehiculo</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            @if ($data->vehiculo_id <> 0)
-                                                <b>{{$data->vehiculo->nombre}}</b>
-                                            @else
-                                                <b>SIN ASIGNAR</b>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td>Consultado fecha</td>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            <b>{{ \Carbon\Carbon::parse($data->padronConsulta()->latest()->first()->created_at)->format('d/m/Y H:i') }}
+                                                | Cantidad: {{$data->padronConsulta()->count()}}
+                                            </b>
+                                            <button type="button" wire:click="toggleVerMas" class="btn btn-sm btn-primary ml-2">
+                                                {{ $verMas ? '-' : '+' }}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @if ($verMas)
+                                        @if ($general->voto == 1)
+                                            <tr>
+                                                <td>Voto?</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" wire:click="padron_voto" {{ ($data->voto == 1 ? 'checked' : '') }}>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        <tr>
+                                            <td>
+                                                Referente <button type="button" class="btn btn-sm btn-info mr-3" data-toggle="modal" data-target="#referente_modal"><i class="fas fa-user-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @if ($data->referente_id <> 0)
+                                                    <b>{{$data->refe->referente}}</b>
+                                                @else
+                                                    <b>SIN ASIGNAR</b>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Vehiculo <button type="button" class="btn btn-sm btn-info mr-3" data-toggle="modal" data-target="#vehiculo_modal"><i class="fas fa-car-side"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @if ($data->vehiculo_id <> 0)
+                                                    <b>{{$data->vehiculo->nombre}}</b>
+                                                @else
+                                                    <b>SIN ASIGNAR</b>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mapa @if ($data->latitude && $data->longitude)
+                                                        <a href="https://www.google.com/maps?q={{ $data->latitude }},{{ $data->longitude }}"
+                                                        target="_blank"
+                                                        class="btn btn-sm btn-success ml-2">
+                                                            <i class="fas fa-map-marker-alt"></i> Ir
+                                                        </a>
+                                                        <a href="https://wa.me/?text={{ urlencode('Ubicación de ' . $data->nombre . ' ' . $data->apellido . ': https://www.google.com/maps?q=' . $data->latitude . ',' . $data->longitude) }}"
+                                                            target="_blank"
+                                                            class="btn btn-sm btn-success ml-2">
+                                                            <i class="fas fa-phone"></i>
+                                                        </a>
+                                                    @endif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" id="latitude" value="{{ $data->latitude ?? '' }}">
+                                                <input type="hidden" id="longitude" value="{{ $data->longitude ?? '' }}">
+                                                <div id="map" data-lat="{{ $data->latitude ?? '' }}" data-lng="{{ $data->longitude ?? '' }}"></div>
+                                                <button type="button" class="btn btn-sm btn-success mt-2" onclick="guardarPosicion({{ $data->id ?? 0 }})">Guardar Posicion</button>
+                                            </td>
+                                        </tr>
+                                    @endif
+
                                 @else
                                     <tr>
                                         <td class="text-center">No existe persona con este numero de documento.</td>
@@ -104,6 +148,8 @@
 
         </div>
     </div>
+    @include('padron.modal_referente')
+    @include('padron.modal_vehiculo')
 </div>
 
 

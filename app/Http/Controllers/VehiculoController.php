@@ -57,6 +57,7 @@ class VehiculoController extends Controller
     public function store(Request $request)
     {
         $documento = str_replace(['.', ' '], '', $request->documento);
+        $monto = str_replace(['.', ' '], '', $request->monto);
         $nombre = mb_strtoupper($request->nombre, 'UTF-8');
         $request->merge([
             'documento' => $documento,
@@ -87,6 +88,7 @@ class VehiculoController extends Controller
                 'documento' => $documento,
                 'nombre' => $nombre,
                 'chapa' => $request->chapa,
+                'monto' => $monto,
                 'referente_id' => $request->referente_id,
                 'estado_id' => 1,
                 'user_id' => auth()->id(),
@@ -134,6 +136,7 @@ class VehiculoController extends Controller
     {
 
         $documento = str_replace(['.', ' '], '', $request->documento);
+        $monto = str_replace(['.', ' '], '', $request->monto);
         $nombre = mb_strtoupper($request->nombre, 'UTF-8');
         $request->merge([
             'documento' => $documento,
@@ -165,6 +168,7 @@ class VehiculoController extends Controller
                 'documento' => $documento,
                 'nombre' => $nombre,
                 'chapa' => $request->chapa,
+                'monto' => $monto,
                 'referente_id' => $request->referente_id,
                 'estado_id' => $request->estado_id,
                 'user_id' => auth()->id(),
@@ -217,5 +221,15 @@ class VehiculoController extends Controller
         ]);
 
         return redirect()->route('vehiculo.edit', $VehiculoLocal->vehiculo_id)->with('message', 'Local elimnado con exito.');
+    }
+
+    public function pagar(Vehiculo $vehiculo)
+    {
+        $vehiculo->update([
+            'pagado' => 1,
+            'user_id' => auth()->id()
+        ]);
+
+        return redirect()->route('vehiculo.index')->with('message', 'La persona ' . $vehiculo->nombre . ' ya le fue abonado su pago');
     }
 }

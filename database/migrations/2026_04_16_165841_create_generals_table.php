@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('anio');
             $table->integer('tipo_votacion');
+            $table->tinyInteger('voto')->default(0);
             $table->timestamps();
         });
     }

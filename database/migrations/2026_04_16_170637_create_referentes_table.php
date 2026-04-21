@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('documento');
             $table->string('referente', 250);
             $table->string('celular', 20);
+            $table->unsignedBigInteger('local_id')->default(0);
             $table->integer('anio');
             $table->integer('tipo_votacion');
             $table->foreignId('estado_id')->constrained();

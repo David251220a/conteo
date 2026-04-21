@@ -15,4 +15,12 @@ class Referente extends Model
     {
         return $this->belongsTo(Estado::class);
     }
+
+    public function local()
+    {
+        return $this->belongsTo(Local::class)->withDefault([
+            'id' => 0,
+            'descripcion' => 'Sin especificar'
+        ]);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\General;
+use App\Models\Local;
 use App\Models\Referente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -39,7 +40,15 @@ class ReferenteController extends Controller
 
     public function create()
     {
-        return view('referente.create');
+        $locales = Local::where('estado_id', 1)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->select('id', 'descripcion')->get();
+        $locales->prepend((object)[
+            'id' => 0,
+            'descripcion' => 'Sin especificar'
+        ]);
+        return view('referente.create', compact('locales'));
     }
 
     public function store(Request $request)
@@ -71,6 +80,7 @@ class ReferenteController extends Controller
             'documento' => $documento,
             'referente' => $nombre,
             'celular' => $request->celular,
+            'local_id' => $request->local_id,
             'estado_id' => 1,
             'user_id' => auth()->id(),
             'anio' => $this->general->anio,
@@ -84,7 +94,15 @@ class ReferenteController extends Controller
     public function edit(Referente $referente)
     {
         $data = $referente;
-        return view('referente.edit', compact('data'));
+        $locales = Local::where('estado_id', 1)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->select('id', 'descripcion')->get();
+        $locales->prepend((object)[
+            'id' => 0,
+            'descripcion' => 'Sin especificar'
+        ]);
+        return view('referente.edit', compact('data','locales'));
     }
 
     public function update(Referente $referente, Request $request)
@@ -117,6 +135,7 @@ class ReferenteController extends Controller
             'documento' => $documento,
             'referente' => $nombre,
             'celular' => $request->celular,
+            'local_id' => $request->local_id,
             'estado_id' => 1,
             'user_id' => auth()->id(),
             'anio' => $this->general->anio,

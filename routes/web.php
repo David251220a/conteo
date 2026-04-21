@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\LocalController;
@@ -50,8 +51,12 @@ Route::group([
     Route::post('/vehiculo/{vehiculo}/crear', [VehiculoController::class, 'update'])->name('vehiculo.update');
     Route::post('/vehiculo/{vehiculo}/agregar-local', [VehiculoController::class, 'agregar_local'])->name('vehiculo.agregar_local');
     Route::post('/vehiculo/{VehiculoLocal}/eliminar-local', [VehiculoController::class, 'eliminar_local'])->name('vehiculo.eliminar_local');
+    Route::post('/vehiculo/{vehiculo}/pagar', [VehiculoController::class, 'pagar'])->name('vehiculo.pagar');
 
     Route::get('/padron', [PadronController::class, 'index'])->name('padron.index');
+
+    Route::get('/consulta', [ConsultaController::class, 'referente'])->name('consulta.referente');
+    Route::get('/consulta/referentes-por-local/{localId}', [ConsultaController::class, 'referentesPorLocal'])->name('consulta.referentes.local');
 
 });
 

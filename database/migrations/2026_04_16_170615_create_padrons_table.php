@@ -24,6 +24,9 @@ return new class extends Migration
             $table->foreignId('local_id');
             $table->unsignedBigInteger('referente_id')->default(0);
             $table->unsignedBigInteger('vehiculo_id')->default(0);
+            $table->decimal('latitude', 12, 7)->nullable();
+            $table->decimal('longitude', 12, 7)->nullable();
+            $table->tinyInteger('voto')->default(0);
             $table->integer('anio');
             $table->integer('tipo_votacion');
             $table->foreignId('estado_id')->constrained();

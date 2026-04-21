@@ -60,6 +60,8 @@
                                         <th class="">Documento</th>
                                         <th class="">Nombre</th>
                                         <th>Chapa</th>
+                                        <th>Monto</th>
+                                        <th>Pagado</th>
                                         <th>Referente Asociado</th>
                                         <th>Locales</th>
                                         <th>Estado</th>
@@ -76,6 +78,18 @@
                                                 {{$item->nombre}}
                                             </td>
                                             <td>{{$item->chapa}}</td>
+                                            <td class="text-right">{{number_format($item->monto, 0, ".", ".")}}</td>
+                                            <td>
+                                                @if ($item->pagado == 1)
+                                                    <button type="button" class="btn btn-sm btn-success">SI</button>
+                                                @else
+                                                    <form action="{{route('vehiculo.pagar', $item)}}" method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-danger">NO</button>
+                                                    </form>
+
+                                                @endif
+                                            </td>
                                             <td>
                                                 {{$item->refe->referente}}
                                             </td>
