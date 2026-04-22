@@ -13,11 +13,11 @@
             <div class="widget-content widget-content-area">
                 <div class="row align-items-center mb-3">
                     <div class="col-md-6">
-                        <h3 class="mb-0">Editar Local</h3>
+                        <h3 class="mb-0">Crear Lista</h3>
                     </div>
                 </div>
                 @include('varios.mensaje')
-                <form id="form_general" action="{{route('local.update', $data)}}" method="post"
+                <form id="form_general" action="{{route('lista.store')}}" method="post"
                     onsubmit="
                     if (this.dataset.enviando === '1') return false;
                     this.dataset.enviando = '1';
@@ -29,26 +29,36 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="form-row mb-2">
-                                <div class="form-group col-md-6">
-                                    <label for="descripcion">Local</label>
-                                    <input name="descripcion" id="descripcion" type="text" class="form-control" value="{{old('descripcion', $data->descripcion)}}" required>
+                                <div class="form-group col-md-3">
+                                    <label for="lista">Lista</label>
+                                    <input name="lista" id="lista" type="text" class="form-control" value="{{old('lista', "LISTA ")}}" required>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="opcion">Opcion</label>
+                                    <input name="opcion" id="opcion" type="text" class="form-control" value="{{old('opcion')}}" onkeyup="punto_decimal(this)" required>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="orden">Orden</label>
-                                    <input name="orden" id="orden" type="text" class="form-control" value="{{old('orden', $data->orden)}}" required>
+                                    <input name="orden" id="orden" type="text" class="form-control" value="{{old('orden')}}" onkeyup="punto_decimal(this)" required>
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label for="total_mesas">Total Mesas</label>
-                                    <input name="total_mesas" id="total_mesas" type="text" class="form-control" value="{{old('total_mesas', $data->total_mesas)}}" required>
+                                    <label for="movimiento_id">Movimiento</label>
+                                    <select name="movimiento_id" id="movimiento_id" class="form-control">
+                                        @foreach ($movimientos as $item)
+                                            <option {{ ( old('movimiento_id') == $item->id ? 'selected' : '') }} value="{{$item->id}}">{{$item->descripcion}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label for="estado_id">Estado</label>
-                                    <select name="estado_id" id="estado_id" class="form-control">
-                                        <option {{ ( old('estado_id', $data->estado_id) == 1 ? 'selected' : '' ) }} value="1">ACTIVO</option>
-                                        <option {{ ( old('estado_id', $data->estado_id) == 2 ? 'selected' : '' ) }} value="2">INACTIVO</option>
+                                    <label for="tipo_candidato_id">Tipo Candidato</label>
+                                    <select name="tipo_candidato_id" id="tipo_candidato_id" class="form-control">
+                                        @foreach ($tipoCandidato as $item)
+                                            <option {{ ( old('tipo_candidato_id') == $item->id ? 'selected' : '') }} value="{{$item->id}}">{{$item->descripcion}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 

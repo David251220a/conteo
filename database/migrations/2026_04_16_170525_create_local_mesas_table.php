@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('local_mesas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('local_id')->constrained();
+            $table->foreignId('tipo_cantidato_id')->constrained();
             $table->integer('mesa');
             $table->tinyInteger('cargado')->default(0);
             $table->integer('anio');

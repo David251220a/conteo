@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CandidatoController;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\ListaController;
 use App\Http\Controllers\LocalController;
 use App\Http\Controllers\PadronController;
 use App\Http\Controllers\ReferenteController;
@@ -57,6 +59,18 @@ Route::group([
 
     Route::get('/consulta', [ConsultaController::class, 'referente'])->name('consulta.referente');
     Route::get('/consulta/referentes-por-local/{localId}', [ConsultaController::class, 'referentesPorLocal'])->name('consulta.referentes.local');
+
+    Route::get('/lista', [ListaController::class, 'index'])->name('lista.index');
+    Route::get('/lista/crear', [ListaController::class, 'create'])->name('lista.create');
+    Route::post('/lista/crear', [ListaController::class, 'store'])->name('lista.store');
+    Route::get('/lista/{lista}/editar', [ListaController::class, 'edit'])->name('lista.edit');
+    Route::post('/lista/{lista}/editar', [ListaController::class, 'update'])->name('lista.update');
+
+    Route::get('/candidato', [CandidatoController::class, 'index'])->name('candidato.index');
+    Route::get('/candidato/crear', [CandidatoController::class, 'create'])->name('candidato.create');
+    Route::post('/candidato/crear', [CandidatoController::class, 'store'])->name('candidato.store');
+    Route::get('/candidato/{candidato}/editar', [CandidatoController::class, 'edit'])->name('candidato.edit');
+    Route::post('/candidato/{candidato}/editar', [CandidatoController::class, 'update'])->name('candidato.update');
 
 });
 

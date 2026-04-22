@@ -39,6 +39,11 @@
                                     <input name="orden" id="orden" type="text" class="form-control" value="{{old('orden')}}" required>
                                 </div>
 
+                                <div class="form-group col-md-3">
+                                    <label for="total_mesas">Total Mesas</label>
+                                    <input name="total_mesas" id="total_mesas" type="text" class="form-control" value="{{old('total_mesas')}}" required>
+                                </div>
+
                             </div>
 
                             <div class="form-row">

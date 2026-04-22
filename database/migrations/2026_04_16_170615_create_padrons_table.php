@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('nombre')->nullable();
             $table->string('apellido')->nullable();
             $table->date('fecha_nacimiento')->nullable();
+            $table->text('direccion')->nullable();
+            $table->text('referencia_direccion')->nullable();
             $table->integer('mesa');
             $table->integer('orden');
             $table->foreignId('local_id');

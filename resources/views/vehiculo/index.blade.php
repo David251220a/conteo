@@ -28,26 +28,46 @@
 
                 @include('varios.mensaje')
 
-                <form action="{{route('vehiculo.index')}}" method="GET">
-                    <div class="col-lg-4 col-md-6 col-xs-12">
-                        <div class="form-group">
-                            <label for="search">Búsqueda</label>
+                <form action="{{ route('vehiculo.index') }}" method="GET">
+                    <div class="row align-items-center">
 
-                            <div class="input-group">
+                        <!-- LOCAL -->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="local_id">Local</label>
+                                <select name="local_id" id="local_id" class="form-control">
+                                    <option value="">-- Todos --</option>
+                                    @foreach ($locales as $item)
+                                        <option value="{{ $item->id }}" {{ request('local_id') == $item->id ? 'selected' : '' }}>
+                                            {{ $item->descripcion }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- BUSQUEDA -->
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="search">Búsqueda</label>
                                 <input type="text"
                                     name="search"
                                     id="search"
                                     class="form-control"
                                     placeholder="Nombre, apellido o documento..."
                                     value="{{ $search }}">
-
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-info">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
                             </div>
                         </div>
+
+                        <!-- BOTON -->
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-info w-10">
+                                    <i class="fa fa-search"></i> Buscar
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </form>
 
@@ -115,9 +135,23 @@
                                     @endforeach
                                 </tbody>
                                 <tfoot>
-                                    <th>
-                                        <td colspan="7"></td>
-                                    </th>
+                                    <tr>
+                                        <th colspan="8">
+                                            Cantidad Vehiculos
+                                        </th>
+                                        <th class="text-right">
+                                            {{number_format($cantidadTotal, 0, ".", ".")}}
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="8">
+                                            Total Monto
+                                        </th>
+                                        <th class="text-right">
+                                            {{number_format($montoTotal, 0, ".", ".")}}
+                                        </th>
+                                    </tr>
+
                                 </tfoot>
                             </table>
                         </div>

@@ -35,10 +35,12 @@ class LocalController extends Controller
         $request->validate([
             'descripcion' => 'required',
             'orden' => 'required',
+            'total_mesas' => 'required'
         ]);
 
         Local::create([
             'descripcion' => mb_strtoupper($request->descripcion, 'UTF-8'),
+            'total_mesas' => $request->total_mesas,
             'orden' => $request->orden,
             'anio' => $this->general->anio,
             'tipo_votacion' => $this->general->tipo_votacion,
@@ -61,10 +63,12 @@ class LocalController extends Controller
         $request->validate([
             'descripcion' => 'required',
             'orden' => 'required',
+            'total_mesas' => 'required'
         ]);
 
         $local->update([
             'descripcion' => mb_strtoupper($request->descripcion, 'UTF-8'),
+            'total_mesas' => $request->total_mesas,
             'orden' => $request->orden,
             'anio' => $this->general->anio,
             'tipo_votacion' => $this->general->tipo_votacion,

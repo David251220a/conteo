@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('locals', function (Blueprint $table) {
+        Schema::create('tipo_cantidatos', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion', 250);
-            $table->integer('total_mesas')->default(0);
-            $table->integer('orden');
-            $table->integer('anio');
-            $table->integer('tipo_votacion');
-            $table->foreignId('estado_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->string('descripcion');
+            $table->tinyInteger('interna_intendente')->default(0);
+            $table->tinyInteger('general_intendente')->default(0);
+            $table->tinyInteger('interna_presidente')->default(0);
+            $table->tinyInteger('general_presidente')->default(0);
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('locals');
+        Schema::dropIfExists('tipo_cantidatos');
     }
 };

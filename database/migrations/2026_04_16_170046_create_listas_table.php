@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('listas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('movimiento_id')->constrained();
+            $table->foreignId('tipo_cantidato_id')->constrained();
             $table->string('descripcion');
+            $table->integer('opcion')->default(0);
             $table->integer('orden');
             $table->integer('anio');
             $table->integer('tipo_votacion');

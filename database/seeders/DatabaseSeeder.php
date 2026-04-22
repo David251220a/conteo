@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             GeneralSeeder::class,
             MovimientoSeeder::class,
+            TipoCantidatoSeeder::class,
         ]);
     }
 }

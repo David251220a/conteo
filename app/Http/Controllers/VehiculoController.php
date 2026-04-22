@@ -23,20 +23,33 @@ class VehiculoController extends Controller
     public function index(Request $request)
     {
         $search = $request->search;
+
+        $query = Vehiculo::where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion);
+
         if ($request->search) {
-            $data = Vehiculo::where('anio', $this->general->anio)
-            ->where('tipo_votacion', $this->general->tipo_votacion)
-            ->where(function ($query) use ($request) {
-                $query->where('documento', $request->search)
-                    ->orWhere('nombre', 'LIKE', '%' . $request->search . '%');
-            })
-            ->paginate(50);
-        } else {
-            $data = Vehiculo::where('anio', $this->general->anio)
-            ->where('tipo_votacion', $this->general->tipo_votacion)
-            ->paginate(50);
+            $query->where(function ($q) use ($request) {
+                $q->where('documento', $request->search)
+                ->orWhere('nombre', 'LIKE', '%' . $request->search . '%');
+            });
         }
-        return view('vehiculo.index', compact('data', 'search'));
+
+        if ($request->filled('local_id')) {
+            $query->whereHas('vehiculo_local', function ($q) use ($request) {
+                $q->where('local_id', $request->local_id);
+            });
+        }
+
+        $cantidadTotal = (clone $query)->count();
+        $montoTotal = (clone $query)->sum('monto');
+        $data = $query->paginate(50)->appends($request->query());
+
+        $locales = Local::where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->get();
+
+        return view('vehiculo.index', compact('data', 'search', 'cantidadTotal', 'montoTotal', 'locales'));
     }
 
     public function create()
