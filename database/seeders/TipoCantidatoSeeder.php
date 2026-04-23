@@ -15,12 +15,28 @@ class TipoCantidatoSeeder extends Seeder
      */
     public function run()
     {
-        $data = ['NULOS', 'A COMPUTAR', 'BLANCOS', 'INTENDENTE', 'CONSEJAL', 'PRESIDENCIA', 'SENADOR', 'JUNTA', 'GOBERNADOR'];
+        $data = ['INTENDENTE', 'CONSEJAL', 'PRESIDENCIA', 'SENADOR', 'JUNTA', 'GOBERNADOR'];
 
-        foreach ($data as $item) {
-            TipoCantidato::firstOrCreate([
-                'descripcion' => $item
-            ]);
+        TipoCantidato::firstOrCreate([
+            'descripcion' => 'NULOS',
+            'orden' => 97
+        ]);
+
+        TipoCantidato::firstOrCreate([
+            'descripcion' => 'A COMPUTAR',
+            'orden' => 98
+        ]);
+
+        TipoCantidato::firstOrCreate([
+            'descripcion' => 'BLANCOS',
+            'orden' => 97
+        ]);
+
+        foreach ($data as $index => $item) {
+            TipoCantidato::updateOrCreate(
+                ['descripcion' => $item],
+                ['orden' => $index + 1]
+            );
         }
     }
 }

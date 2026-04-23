@@ -51,5 +51,6 @@ class DatabaseSeeder extends Seeder
             MovimientoSeeder::class,
             TipoCantidatoSeeder::class,
         ]);
+
     }
 }

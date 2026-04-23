@@ -82,30 +82,38 @@
                                         <th class="">Lista</th>
                                         <th class="">Movimiento</th>
                                         <th>Orden</th>
+                                        <th>Imagen</th>
                                         <th class="text-center">Accion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($data as $item)
+                                    @foreach ($data as $item)
                                         <tr>
                                             <td>
-                                                {{$item->descripcion}}
+                                                {{$item->nombre}}
                                             </td>
-                                            <td>{{$item->movimiento->descripcion}}</td>
-                                            <td>{{$item->opcion}}</td>
+                                            <td>{{$item->lista->descripcion}}</td>
+                                            <td>{{$item->Movimiento->descripcion}}</td>
                                             <td>{{$item->orden}}</td>
+                                            <td>
+                                                @if ($item->imagen)
+                                                    <a href="{{ Storage::url($item->imagen)}}" class="btn btn-sm btn-success" target="__blank">SI</a>
+                                                @else
+                                                    <button type="button" class="btn btn-sm btn-danger">NO</button>
+                                                @endif
+                                            </td>
                                             <td class="text-center">
-                                                @can('candidato.edit')
+                                                {{-- @can('candidato.edit') --}}
                                                    <a href="{{route('candidato.edit', $item)}}" class="ml-3">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                                             class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                                         </svg>
                                                     </a>
-                                                @endcan
+                                                {{-- @endcan --}}
                                             </td>
                                         </tr>
-                                    @endforeach --}}
+                                    @endforeach
                                 </tbody>
                                 <tfoot>
                                     <th>

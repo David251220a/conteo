@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('votos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('local_id')->constrained();
             $table->foreignId('local_mesa_id')->constrained();
             $table->foreignId('tipo_cantidato_id')->constrained();
             $table->foreignId('lista_id')->constrained();

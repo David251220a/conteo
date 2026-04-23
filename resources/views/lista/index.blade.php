@@ -31,20 +31,6 @@
                 <form action="{{ route('lista.index') }}" method="GET">
                     <div class="row align-items-end">
 
-                        <!-- TIPO CANDIDATO -->
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="tipo_candidato_id">Tipo Candidato</label>
-                                <select name="tipo_candidato_id" id="tipo_candidato_id" class="form-control">
-                                    @foreach ($tipoCandidato as $item)
-                                        <option {{ $tipo_candidato_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">
-                                            {{ $item->descripcion }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
                         <!-- MOVIMIENTOS -->
                         <div class="col-md-4">
                             <div class="form-group">

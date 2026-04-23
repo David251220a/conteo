@@ -54,15 +54,6 @@
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label for="tipo_candidato_id">Tipo Candidato</label>
-                                    <select name="tipo_candidato_id" id="tipo_candidato_id" class="form-control">
-                                        @foreach ($tipoCandidato as $item)
-                                            <option {{ ( old('tipo_candidato_id', $data->tipo_cantidato_id) == $item->id ? 'selected' : '') }} value="{{$item->id}}">{{$item->descripcion}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-md-3">
                                     <label for="estado_id">Estado</label>
                                     <select name="estado_id" id="estado_id" class="form-control">
                                         <option {{ ( old('estado_id', $data->estado_id) == 1 ? 'selected' : '') }} value="1">ACTIVO</option>

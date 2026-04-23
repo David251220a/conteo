@@ -10,6 +10,7 @@ use App\Http\Controllers\LocalController;
 use App\Http\Controllers\PadronController;
 use App\Http\Controllers\ReferenteController;
 use App\Http\Controllers\VehiculoController;
+use App\Http\Controllers\VotoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,7 @@ Route::group([
     Route::post('/local/crear', [LocalController::class, 'store'])->name('local.store');
     Route::get('/local/{local}/crear', [LocalController::class, 'edit'])->name('local.edit');
     Route::post('/local/{local}/crear', [LocalController::class, 'update'])->name('local.update');
+    Route::post('/local/{local}/generar-mesas', [LocalController::class, 'generar_mesas'])->name('local.generar_mesas');
 
     Route::get('/vehiculo', [VehiculoController::class, 'index'])->name('vehiculo.index');
     Route::get('/vehiculo/crear', [VehiculoController::class, 'create'])->name('vehiculo.create');
@@ -71,6 +73,8 @@ Route::group([
     Route::post('/candidato/crear', [CandidatoController::class, 'store'])->name('candidato.store');
     Route::get('/candidato/{candidato}/editar', [CandidatoController::class, 'edit'])->name('candidato.edit');
     Route::post('/candidato/{candidato}/editar', [CandidatoController::class, 'update'])->name('candidato.update');
+
+    Route::get('/voto-manual/intendente', [VotoController::class, 'intendente_manual'])->name('voto.intendente_manual');
 
 });
 

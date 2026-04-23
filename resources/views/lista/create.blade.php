@@ -53,15 +53,6 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-3">
-                                    <label for="tipo_candidato_id">Tipo Candidato</label>
-                                    <select name="tipo_candidato_id" id="tipo_candidato_id" class="form-control">
-                                        @foreach ($tipoCandidato as $item)
-                                            <option {{ ( old('tipo_candidato_id') == $item->id ? 'selected' : '') }} value="{{$item->id}}">{{$item->descripcion}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
                             </div>
 
                             <div class="form-row">

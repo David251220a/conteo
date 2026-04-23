@@ -37,6 +37,7 @@
                                         <th class="">Local</th>
                                         <th class="">Total Mesas</th>
                                         <th class="">Orden</th>
+                                        <th>Generado Mesas</th>
                                         <th class="text-center">Accion</th>
                                     </tr>
                                 </thead>
@@ -50,6 +51,17 @@
                                                 {{$item->total_mesas}}
                                             </td>
                                             <td>{{$item->orden}}</td>
+                                            <td>
+
+                                                <form action="{{route('local.generar_mesas', $item)}}" method="POST">
+                                                    @csrf
+                                                    @if ($item->mesasActivas->count() > 0)
+                                                        <button type="submit" class="btn btn-sm btn-success">SI</button>
+                                                    @else
+                                                        <button type="submit" class="btn btn-sm btn-danger">NO</button>
+                                                    @endif
+                                                </form>
+                                            </td>
                                             <td class="text-center">
                                                 {{-- @can('local.edit') --}}
                                                    <a href="{{route('local.edit', $item)}}" class="ml-3">

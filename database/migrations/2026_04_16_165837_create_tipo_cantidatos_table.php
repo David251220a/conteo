@@ -20,6 +20,7 @@ return new class extends Migration
             $table->tinyInteger('general_intendente')->default(0);
             $table->tinyInteger('interna_presidente')->default(0);
             $table->tinyInteger('general_presidente')->default(0);
+            $table->tinyInteger('orden')->default(0);
             $table->timestamps();
         });
     }

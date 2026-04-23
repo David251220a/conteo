@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 @include('varios.mensaje')
-                <form id="form_general" action="{{route('candidato.store')}}" method="post"
+                <form id="form_general" action="{{route('candidato.store')}}" method="post" enctype="multipart/form-data"
                     onsubmit="
                     if (this.dataset.enviando === '1') return false;
                     this.dataset.enviando = '1';
@@ -30,12 +30,23 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="form-row mb-2">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <label for="lista_id">Lista</label>
                                     <select name="lista_id" id="lista_id" class="form-control basic" required>
                                         @foreach ($listas as $item)
                                             <option value="{{$item->id}}">
-                                                {{$item->descripcion}} - {{$item->tipo_candidato->descripcion}} - Opcion: {{$item->opcion}}
+                                                {{$item->descripcion}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="tipo_candidato_id">Tipo Candidato</label>
+                                    <select name="tipo_candidato_id" id="tipo_candidato_id" class="form-control basic" required>
+                                        @foreach ($tipoCandidato as $item)
+                                            <option value="{{$item->id}}">
+                                                {{$item->descripcion}}
                                             </option>
                                         @endforeach
                                     </select>
@@ -48,7 +59,12 @@
 
                                 <div class="form-group col-md-3">
                                     <label for="orden">Orden</label>
-                                    <input name="orden" id="orden" type="text" class="form-control" value="{{old('orden')}}" required>
+                                    <input name="orden" id="orden" type="text" class="form-control" value="{{old('orden')}}" onkeyup="punto_decimal(this)" required>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="imagen">Imagen</label>
+                                    <input name="imagen" id="imagen" type="file" class="form-control" value="{{old('imagen')}}" accept=".jpg,.jpeg,image/jpeg">
                                 </div>
 
                             </div>

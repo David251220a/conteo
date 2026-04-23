@@ -15,7 +15,7 @@ class MovimientoSeeder extends Seeder
      */
     public function run()
     {
-        $data = ['ANR', 'PLRA'];
+        $data = ['SIN', 'ANR', 'PLRA'];
 
         foreach ($data as $item) {
             Movimiento::firstOrCreate([
