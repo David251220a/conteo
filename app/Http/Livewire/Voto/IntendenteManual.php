@@ -49,6 +49,7 @@ class IntendenteManual extends Component
 
         $this->local_id = $this->locales->first()->id ?? 0;
     }
+
     private function cargarMesas()
     {
         $this->mesas = LocalMesa::where('estado_id', 1)
