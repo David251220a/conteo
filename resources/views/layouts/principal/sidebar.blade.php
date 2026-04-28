@@ -156,6 +156,23 @@
                 </a>
             </li>
         {{-- @endcan --}}
+
+        {{-- @can('voto.consejal_import') --}}
+            <li class="menu">
+                <a href="{{route('voto.consejal_import')}}" aria-expanded="false" class="dropdown-toggle"
+                    @if(Str::startsWith(Route::currentRouteName(), 'voto.consejal_import')) data-active="true" @endif
+                >
+                    <div class="">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-map-pin"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span>Consejal Import</span>
+                    </div>
+                </a>
+            </li>
+        {{-- @endcan --}}
+
         {{-- @can('voto.consulta_votos_carga') --}}
             <li class="menu">
                 <a href="{{route('voto.consulta_votos_carga')}}" aria-expanded="false" class="dropdown-toggle"
@@ -183,6 +200,22 @@
                             stroke-linejoin="round" class="feather feather-map-pin"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>
                         </svg>
                         <span>Consulta Voto</span>
+                    </div>
+                </a>
+            </li>
+        {{-- @endcan --}}
+
+        {{-- @can('voto.dhondt') --}}
+            <li class="menu">
+                <a href="{{route('voto.dhondt')}}" aria-expanded="false" class="dropdown-toggle"
+                    @if(Str::startsWith(Route::currentRouteName(), 'voto.dhondt')) data-active="true" @endif
+                >
+                    <div class="">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-map-pin"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span>D’HONDT - RESULTADO</span>
                     </div>
                 </a>
             </li>

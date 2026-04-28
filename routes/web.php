@@ -76,9 +76,12 @@ Route::group([
 
     Route::get('/voto-manual/intendente', [VotoController::class, 'intendente_manual'])->name('voto.intendente_manual');
     Route::get('/voto-manual/consejal-cargar', [VotoController::class, 'consejal_manual'])->name('voto.consejal_manual');
+    Route::get('/voto-importar/consejal-cargar', [VotoController::class, 'consejal_import'])->name('voto.consejal_import');
     Route::get('/voto/consulta-votos', [VotoController::class, 'consulta_votos_carga'])->name('voto.consulta_votos_carga');
     Route::get('/voto/consulta-lista', [VotoController::class, 'consulta_lista'])->name('voto.consulta_lista');
     Route::get('/voto/reporte', [VotoController::class, 'reporte'])->name('voto.reporte');
+    Route::get('/voto/dhondt', [VotoController::class, 'dhondt'])->name('voto.dhondt');
+    Route::get('/voto/dhondt/reporte', [VotoController::class, 'reporte_dhondt_concejales'])->name('voto.reporte_dhondt_concejales');
     Route::get('/voto/{localMesa}/consulta-votos/pdf', [VotoController::class, 'consulta_pdf'])->name('voto.consulta_pdf');
 
 });

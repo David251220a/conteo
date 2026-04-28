@@ -29,8 +29,8 @@
                         <div class="form-group col-md-3">
                             <label for="normal">Forma Carga</label>
                             <select wire:model='normal' class="form-control">
-                                <option value="1">LISTA/OPCION</option>
-                                <option value="2">OPCION/LISTA</option>
+                                <option value="1">OPCION/LISTA</option>
+                                <option value="2">LISTA/OPCION</option>
                             </select>
                         </div>
                     </div>
