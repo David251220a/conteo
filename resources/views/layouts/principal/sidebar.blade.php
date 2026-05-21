@@ -221,7 +221,7 @@
             </li>
         {{-- @endcan --}}
 
-        {{--
+
         @can('usuario.index')
             <li class="menu">
                 <a href="{{route('user.index')}}" aria-expanded="false" class="dropdown-toggle"
@@ -253,7 +253,7 @@
                     </div>
                 </a>
             </li>
-        @endcan --}}
+        @endcan
 
     </ul>
 

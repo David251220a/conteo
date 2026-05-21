@@ -15,6 +15,8 @@ class ConsultaController extends Controller
     public function __construct()
     {
         $this->general = General::find(1);
+        $this->middleware('permission:consulta.referente')->only('referente');
+        $this->middleware('permission:consulta.referentesPorLocal')->only('referentesPorLocal');
     }
 
     public function referente(Request $request)

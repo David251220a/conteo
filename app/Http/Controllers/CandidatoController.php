@@ -18,6 +18,11 @@ class CandidatoController extends Controller
     public function __construct()
     {
         $this->general = General::find(1);
+        $this->middleware('permission:candidato.index')->only('index');
+        $this->middleware('permission:candidato.create')->only('create');
+        $this->middleware('permission:candidato.create')->only('store');
+        $this->middleware('permission:candidato.edit')->only('edit');
+        $this->middleware('permission:candidato.edit')->only('update');
     }
 
     public function index(Request $request)

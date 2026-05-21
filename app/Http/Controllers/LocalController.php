@@ -17,6 +17,11 @@ class LocalController extends Controller
     public function __construct()
     {
         $this->general = General::find(1);
+        $this->middleware('permission:local.index')->only('index');
+        $this->middleware('permission:local.create')->only('create');
+        $this->middleware('permission:local.create')->only('store');
+        $this->middleware('permission:local.edit')->only('edit');
+        $this->middleware('permission:local.edit')->only('update');
     }
 
     public function index()

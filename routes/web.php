@@ -3,12 +3,14 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CandidatoController;
 use App\Http\Controllers\ConsultaController;
+use App\Http\Controllers\GrupoUsuarioController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ListaController;
 use App\Http\Controllers\LocalController;
 use App\Http\Controllers\PadronController;
 use App\Http\Controllers\ReferenteController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\VotoController;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [InicioController::class, 'index']);
+Route::get('/', [InicioController::class, 'index'])->name('inicio');
 
 Route::get('/logout', [LoginController::class, 'logout']);
 Auth::routes();
@@ -34,6 +36,8 @@ Route::group([
     'middleware' => 'auth',
 ], function(){
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::resource('/users', UsuarioController::class)->names('user');
+    Route::resource('/roles', GrupoUsuarioController::class)->names('role');
 
     Route::get('/referente', [ReferenteController::class, 'index'])->name('referente.index');
     Route::get('/referente/crear', [ReferenteController::class, 'create'])->name('referente.create');

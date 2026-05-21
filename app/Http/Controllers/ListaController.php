@@ -15,6 +15,11 @@ class ListaController extends Controller
     public function __construct()
     {
         $this->general = General::find(1);
+        $this->middleware('permission:lista.index')->only('index');
+        $this->middleware('permission:lista.create')->only('create');
+        $this->middleware('permission:lista.create')->only('store');
+        $this->middleware('permission:lista.edit')->only('edit');
+        $this->middleware('permission:lista.edit')->only('update');
     }
 
     public function index(Request $request)

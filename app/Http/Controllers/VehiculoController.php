@@ -18,6 +18,15 @@ class VehiculoController extends Controller
     public function __construct()
     {
         $this->general = General::find(1);
+        $this->middleware('permission:vehiculo.index')->only('index');
+        $this->middleware('permission:vehiculo.create')->only('create');
+        $this->middleware('permission:vehiculo.create')->only('store');
+        $this->middleware('permission:vehiculo.edit')->only('edit');
+        $this->middleware('permission:vehiculo.edit')->only('update');
+
+        $this->middleware('permission:vehiculo.agregar_local')->only('agregar_local');
+        $this->middleware('permission:vehiculo.eliminar_local')->only('eliminar_local');
+        $this->middleware('permission:vehiculo.pagar')->only('pagar');
     }
 
     public function index(Request $request)

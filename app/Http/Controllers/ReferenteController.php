@@ -16,6 +16,11 @@ class ReferenteController extends Controller
     public function __construct()
     {
         $this->general = General::find(1);
+        $this->middleware('permission:referente.index')->only('index');
+        $this->middleware('permission:referente.create')->only('create');
+        $this->middleware('permission:referente.create')->only('store');
+        $this->middleware('permission:referente.edit')->only('edit');
+        $this->middleware('permission:referente.edit')->only('update');
     }
 
     public function index(Request $request)

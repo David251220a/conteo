@@ -19,6 +19,12 @@ class VotoController extends Controller
     public function __construct()
     {
         $this->general = General::find(1);
+        $this->middleware('permission:voto.intendente_manual')->only('intendente_manual');
+        $this->middleware('permission:voto.consejal_manual')->only('consejal_manual');
+        $this->middleware('permission:voto.consejal_import')->only('consejal_import');
+        $this->middleware('permission:voto.consulta_votos_carga')->only('consulta_votos_carga');
+        $this->middleware('permission:voto.consulta_lista')->only('consulta_lista');
+        $this->middleware('permission:voto.dhondt')->only('dhondt');
     }
 
     public function intendente_manual()
