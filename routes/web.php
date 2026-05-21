@@ -6,6 +6,7 @@ use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\GrupoUsuarioController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\LimpiarController;
 use App\Http\Controllers\ListaController;
 use App\Http\Controllers\LocalController;
 use App\Http\Controllers\PadronController;
@@ -28,6 +29,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [InicioController::class, 'index'])->name('inicio');
+Route::get('/cesar-mendez', [InicioController::class, 'cesar'])->name('cesar');
+Route::get('/dani-vezquez', [InicioController::class, 'dani'])->name('dani');
+Route::get('/lic-giselle-paredes', [InicioController::class, 'giselle'])->name('giselle');
+Route::get('/roberto-martinez', [InicioController::class, 'roberto'])->name('roberto');
+Route::get('/esmilse-bobadilla', [InicioController::class, 'esmilse'])->name('esmilse');
+Route::get('/diosnel-fernoli', [InicioController::class, 'diosnel'])->name('diosnel');
+Route::get('/liza-ruiz-diaz', [InicioController::class, 'liza'])->name('liza');
+Route::get('/carlos-acosta', [InicioController::class, 'carlos'])->name('carlos');
+Route::get('/julio-diaz', [InicioController::class, 'julio'])->name('julio');
+Route::get('/joel-gomez', [InicioController::class, 'joel'])->name('joel');
+Route::get('/oliver-rivas', [InicioController::class, 'oliver'])->name('oliver');
+Route::get('/adolfo-paredes', [InicioController::class, 'adolfo'])->name('adolfo');
+Route::get('/limpiar', [LimpiarController::class, 'limpiar'])->name('limpiar');
 
 Route::get('/logout', [LoginController::class, 'logout']);
 Auth::routes();
