@@ -43,6 +43,8 @@ Route::get('/oliver-rivas', [InicioController::class, 'oliver'])->name('oliver')
 Route::get('/adolfo-paredes', [InicioController::class, 'adolfo'])->name('adolfo');
 Route::get('/limpiar', [LimpiarController::class, 'limpiar'])->name('limpiar');
 
+Route::get('/simulacion', [InicioController::class, 'simulacion'])->name('simulacion');
+
 Route::get('/logout', [LoginController::class, 'logout']);
 Auth::routes();
 

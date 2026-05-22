@@ -169,4 +169,9 @@ class InicioController extends Controller
         return view('padron.general', compact('data','inte','con'));
     }
 
+    public function simulacion()
+    {
+        return view('padron.simulacion');
+    }
+
 }
