@@ -13,7 +13,7 @@
             </a>
         </li>
 
-        {{-- @can('referente.index') --}}
+        @can('referente.index')
             <li class="menu">
                 <a href="{{route('referente.index')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'referente.index')) data-active="true" @endif
@@ -27,9 +27,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('local.index') --}}
+        @can('local.index')
             <li class="menu">
                 <a href="{{route('local.index')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'local.index')) data-active="true" @endif
@@ -43,9 +43,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('referente.index') --}}
+        @can('vehiculo.index')
             <li class="menu">
                 <a href="{{route('vehiculo.index')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'vehiculo.index')) data-active="true" @endif
@@ -59,9 +59,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('padron.index') --}}
+        @can('padron.index')
             <li class="menu">
                 <a href="{{route('padron.index')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'padron.index')) data-active="true" @endif
@@ -75,9 +75,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('consulta.index') --}}
+        @can('consulta.referente')
             <li class="menu">
                 <a href="{{route('consulta.referente')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'consulta.referente')) data-active="true" @endif
@@ -91,9 +91,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('lista.index') --}}
+        @can('lista.index')
             <li class="menu">
                 <a href="{{route('lista.index')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'lista.index')) data-active="true" @endif
@@ -107,9 +107,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('candidato.index') --}}
+        @can('candidato.index')
             <li class="menu">
                 <a href="{{route('candidato.index')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'candidato.index')) data-active="true" @endif
@@ -123,9 +123,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('voto.intendente_manual') --}}
+        @can('voto.intendente_manual')
             <li class="menu">
                 <a href="{{route('voto.intendente_manual')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.intendente_manual')) data-active="true" @endif
@@ -139,9 +139,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('voto.consejal_manual') --}}
+        @can('voto.consejal_manual')
             <li class="menu">
                 <a href="{{route('voto.consejal_manual')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.consejal_manual')) data-active="true" @endif
@@ -155,9 +155,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('voto.consejal_import') --}}
+        @can('voto.consejal_import')
             <li class="menu">
                 <a href="{{route('voto.consejal_import')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.consejal_import')) data-active="true" @endif
@@ -171,9 +171,24 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('voto.consulta_votos_carga') --}}
+        @can('consulta.simulacion')
+            <li class="menu">
+                <a href="{{route('consulta.simulacion')}}" aria-expanded="false" class="dropdown-toggle"
+                    @if(Str::startsWith(Route::currentRouteName(), 'consulta.simulacion')) data-active="true" @endif
+                >
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                        <span>Consulta Simulacion</span>
+                    </div>
+                </a>
+            </li>
+        @endcan
+
+        @can('voto.consulta_votos_carga')
             <li class="menu">
                 <a href="{{route('voto.consulta_votos_carga')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.consulta_votos_carga')) data-active="true" @endif
@@ -187,9 +202,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('voto.consulta_lista') --}}
+        @can('voto.consulta_lista')
             <li class="menu">
                 <a href="{{route('voto.consulta_lista')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.consulta_lista')) data-active="true" @endif
@@ -203,9 +218,9 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
-        {{-- @can('voto.dhondt') --}}
+        @can('voto.dhondt')
             <li class="menu">
                 <a href="{{route('voto.dhondt')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.dhondt')) data-active="true" @endif
@@ -219,7 +234,7 @@
                     </div>
                 </a>
             </li>
-        {{-- @endcan --}}
+        @endcan
 
 
         @can('usuario.index')

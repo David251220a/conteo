@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Simulacion;
 use App\Models\Candidato;
 use App\Models\General;
 use App\Models\Lista;
+use App\Models\Simulacion;
 use Livewire\Component;
 
 class SimulacionGeneral extends Component
@@ -70,7 +71,7 @@ class SimulacionGeneral extends Component
             ->where('tipo_votacion', $this->general->tipo_votacion)
             ->whereNotIn('orden', [97,99])
             ->get();
-            $this->titulo = 'Listas participantes al cargo de CONSEJAL';
+            $this->titulo = 'Listas participantes al cargo de CONCEJAL';
             $this->paso = 2;
         } else {
             $this->titulo = 'OPCIONES SELECCIONADAS';
@@ -98,7 +99,7 @@ class SimulacionGeneral extends Component
             ->select('candidatos.*')
             ->get();
             $this->paso = 3;
-            $this->titulo = 'Candidatos al cargo de CONSEJAL';
+            $this->titulo = 'Candidatos al cargo de CONCEJAL';
         } else {
             $this->consejal_id = Candidato::where('anio', $this->general->anio)
             ->where('tipo_votacion', $this->general->tipo_votacion)
@@ -136,7 +137,7 @@ class SimulacionGeneral extends Component
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->whereNotIn('orden', [97,99])
         ->get();
-        $this->titulo = 'Listas participantes al cargo de CONSEJAL';
+        $this->titulo = 'Listas participantes al cargo de CONCEJAL';
         $this->paso = 2;
     }
 
@@ -144,6 +145,29 @@ class SimulacionGeneral extends Component
     {
         $this->paso = 5;
         $this->titulo = '';
+
+        Simulacion::create([
+            'fecha' => now(),
+            'candidato_id' => $this->intendenteSeleccionado->id,
+            'tipo_cantidato_id' => $this->intendenteSeleccionado->tipo_cantidato_id,
+            'lista_id' => $this->intendenteSeleccionado->lista_id,
+            'movimiento_id' => $this->intendenteSeleccionado->movimiento_id,
+            'voto' => 1,
+            'anio'=> $this->general->anio,
+            'tipo_votacion' => $this->general->tipo_votacion,
+        ]);
+
+        Simulacion::create([
+            'fecha' => now(),
+            'candidato_id' => $this->concejalSeleccionado->id,
+            'tipo_cantidato_id' => $this->concejalSeleccionado->tipo_cantidato_id,
+            'lista_id' => $this->concejalSeleccionado->lista_id,
+            'movimiento_id' => $this->concejalSeleccionado->movimiento_id,
+            'voto' => 1,
+            'anio'=> $this->general->anio,
+            'tipo_votacion' => $this->general->tipo_votacion,
+        ]);
+
     }
 
 }

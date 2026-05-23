@@ -5,11 +5,11 @@
     </div>
 
     @if ($paso == 1)
-        <div class="row g-2">
+        <div class="row g-1">
 
             @foreach($intendente as $item)
 
-                <div class="col-lg-4 col-md-6 col-12">
+                <div class="col-lg-4 col-md-4 col-4">
 
                     <div class="card-voto voto-blanco" wire:click="seleccionarIntendente({{ $item->id }}, {{ $modo }})">
 
@@ -56,11 +56,11 @@
 
 
     @if ($paso == 2)
-        <div class="row g-2">
+        <div class="row g-1">
 
             @foreach($listas as $item)
 
-                <div class="col-lg-4 col-md-6 col-12">
+                <div class="col-lg-4 col-md-4 col-4">
 
                     <div class="card-voto voto-blanco" wire:click="seleccionarLista({{ $item->id }}, {{ $item->orden }})">
 
@@ -70,19 +70,17 @@
                             @endif
                         </div>
 
-                        <div class="d-flex align-items-center justify-content-around">
-                            <div class="text-center">
-                                <div class="lista-texto">
-                                    {{ $item->orden < 90 ? '' : 'VOTO' }}
-                                </div>
+                        <div class="text-center">
+                            <div class="lista-texto">
+                                {{ $item->orden < 90 ? '' : 'VOTO' }}
+                            </div>
 
-                                <div class="lista-numero">
-                                    {{ $item->descripcion }}
-                                </div>
+                            <div class="lista-numero">
+                                {{ $item->descripcion }}
+                            </div>
 
-                                <div class="lista-sigla">
-                                    {{ $item->sigla }}
-                                </div>
+                            <div class="lista-sigla">
+                                {{ $item->sigla }}
                             </div>
                         </div>
 
@@ -95,12 +93,13 @@
         </div>
     @endif
 
+
     @if ($paso == 3)
-        <div class="row g-2">
+        <div class="row g-1">
 
             @foreach($consejales as $item)
 
-                <div class="col-lg-3 col-md-4 col-6">
+                <div class="col-lg-3 col-md-3 col-3">
 
                     <div class="card-voto card-concejal" wire:click="seleccionarConsejal({{ $item->id }})">
 
@@ -145,11 +144,12 @@
         </div>
     @endif
 
+
     @if ($paso == 4)
 
-        <div class="row g-2">
+        <div class="row g-1 align-items-stretch">
 
-            <div class="col-lg-5 col-md-6 col-12">
+            <div class="col-lg-5 col-md-6 col-6">
                 <div class="card-seleccionado">
 
                     <div class="cargo-seleccionado">
@@ -162,15 +162,14 @@
                         @endif
 
                         <h3>{{ ($intendenteSeleccionado->orden < 90 ? '' : 'VOTO EN ') . $intendenteSeleccionado->lista->descripcion }}</h3>
+
                         @if ($intendenteSeleccionado->orden < 90)
                             <img src="{{ Storage::url($intendenteSeleccionado->imagen) }}" class="foto-seleccionado" alt="">
-                        @endif
-                        @if ($intendenteSeleccionado->orden < 90)
-                            <h4>{{ $intendenteSeleccionado->nombre }}</h4>
+                            <h4>{{ $intendenteSeleccionado->nombre }} {{ $intendenteSeleccionado->apellido }}</h4>
                         @endif
                     </div>
 
-                    <button type="button" class="btn btn-secondary btn-lg btn-modificar"
+                    <button type="button" class="btn btn-secondary btn-sm btn-modificar"
                         wire:click="volverIntendente">
                         Modificar
                     </button>
@@ -178,7 +177,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-5 col-md-6 col-12">
+            <div class="col-lg-5 col-md-6 col-6">
                 <div class="card-seleccionado">
 
                     <div class="cargo-seleccionado">
@@ -191,14 +190,15 @@
                         @endif
 
                         <h3>{{ ($concejalSeleccionado->orden < 90 ? '' : 'VOTO EN ') .  $concejalSeleccionado->lista->descripcion }}</h3>
+
                         @if ($concejalSeleccionado->orden < 90)
                             <img src="{{ Storage::url($concejalSeleccionado->imagen) }}" class="foto-seleccionado" alt="">
-                            <h4>{{ $concejalSeleccionado->nombre }}</h4>
-                            <p>Opción {{ $concejalSeleccionado->orden }}</p>
+                            <h4>{{ $concejalSeleccionado->nombre }} {{ $concejalSeleccionado->apellido }}</h4>
+                            <p style="font-weight: bold">Opción {{ $concejalSeleccionado->orden }}</p>
                         @endif
                     </div>
 
-                    <button type="button" class="btn btn-secondary btn-lg btn-modificar"
+                    <button type="button" class="btn btn-secondary btn-sm btn-modificar"
                         wire:click="volverConcejal">
                         Modificar
                     </button>
@@ -227,6 +227,7 @@
         </div>
 
     @endif
+
 
     @if ($paso == 5)
 
@@ -271,23 +272,21 @@
                 </div>
 
                 <div class="row g-2 mt-2">
-
-                    <div class="col-6">
+                    <div class="col-12">
                         <button type="button" wire:click="restablecer" class="btn-final btn-imagen">
-                            Reiniciar Simulacion
+                            Reiniciar Simulación
                         </button>
                     </div>
                 </div>
 
                 <div class="final-footer">
-                    Simulador proveído por Equipo Tecnico Manuel Aguilar
+                    Simulador proveído por Equipo Técnico Manuel Aguilar
                 </div>
 
             </div>
 
         </div>
 
-        @endif
-
+    @endif
 
 </div>

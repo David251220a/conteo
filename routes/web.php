@@ -11,6 +11,7 @@ use App\Http\Controllers\ListaController;
 use App\Http\Controllers\LocalController;
 use App\Http\Controllers\PadronController;
 use App\Http\Controllers\ReferenteController;
+use App\Http\Controllers\SimuladorController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\VotoController;
@@ -81,6 +82,8 @@ Route::group([
 
     Route::get('/consulta', [ConsultaController::class, 'referente'])->name('consulta.referente');
     Route::get('/consulta/referentes-por-local/{localId}', [ConsultaController::class, 'referentesPorLocal'])->name('consulta.referentes.local');
+    Route::get('/consulta/simulacion', [SimuladorController::class, 'simulacion'])->name('consulta.simulacion');
+    Route::get('/consulta/simulacion/{fecha}/ver', [SimuladorController::class, 'simulacion_ver'])->name('consulta.simulacion_ver');
 
     Route::get('/lista', [ListaController::class, 'index'])->name('lista.index');
     Route::get('/lista/crear', [ListaController::class, 'create'])->name('lista.create');

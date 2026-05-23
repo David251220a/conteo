@@ -12,7 +12,7 @@
 
 <style>
     body {
-        background: #f8dada;
+        background: #7d8181;
         font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -22,7 +22,7 @@
     }
 
     .titulo-voto {
-        background: #e73535;
+        background: #181818;
         color: white;
         text-align: center;
         font-size: 30px;
@@ -382,7 +382,7 @@
         }
 
         .lista-numero {
-            font-size: 23px;
+            font-size: 18px;
         }
 
         .lista-sigla {
@@ -390,7 +390,7 @@
         }
 
         .nombre-voto {
-            font-size: 12px;
+            font-size: 8px;
             margin-top: 7px;
             line-height: 1.1;
         }
@@ -415,7 +415,7 @@
         }
 
         .card-concejal .lista-numero {
-            font-size: 15px;
+            font-size: 7px;
         }
 
         .card-concejal .lista-sigla {
@@ -423,7 +423,7 @@
         }
 
         .card-concejal .nombre-voto {
-            font-size: 9px;
+            font-size: 7px;
             margin-top: 4px;
             line-height: 1.05;
         }
@@ -553,6 +553,141 @@
             word-break: break-word;
         }
     }
+
+    .header-voto {
+        background: #000;
+        display: grid;
+        grid-template-columns: 140px 1fr 140px;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 10px;
+        margin-bottom: 8px;
+        border-bottom: 3px solid #fff;
+    }
+
+    .logo-voto {
+        width: 100%;
+        height: 58px;
+        object-fit: contain;
+        display: block;
+
+        background: rgba(255,255,255,.08);
+
+        border: 2px solid rgba(255,255,255,.85);
+        border-radius: 8px;
+
+        padding: 3px;
+
+        box-shadow:
+            0 0 8px rgba(255,255,255,.35),
+            inset 0 0 6px rgba(255,255,255,.15);
+    }
+
+    .logo-left {
+        justify-self: start;
+    }
+
+    .logo-right {
+        justify-self: end;
+    }
+
+    .header-voto .titulo-voto {
+        background: transparent;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        font-size: 34px;
+        text-shadow:
+            2px 2px 0 #777,
+            0 0 6px rgba(255,255,255,.4);
+    }
+
+    /* =========================
+    TAMAÑOS NORMALES
+    ========================= */
+
+    .card-voto {
+        min-height: 250px;
+    }
+
+    .card-concejal {
+        min-height: 165px !important;
+    }
+
+    /* =========================
+    CELULAR
+    ========================= */
+
+    @media (max-width: 575px) {
+
+        .header-voto {
+            grid-template-columns: 60px 1fr 60px;
+            min-height: 40px;
+            padding: 3px 5px;
+            gap: 4px;
+        }
+
+        .logo-voto {
+            height: 28px;
+        }
+
+        .header-voto .titulo-voto {
+            font-size: 13px;
+            line-height: 1.1;
+        }
+
+        .card-voto {
+            min-height: 160px;
+            padding: 5px 3px;
+        }
+
+        .movimiento-voto {
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        .foto-voto {
+            width: 45px;
+            height: 45px;
+        }
+
+        .lista-numero {
+            font-size: 16px;
+        }
+
+        .lista-texto,
+        .lista-sigla {
+            font-size: 9px;
+        }
+
+        .nombre-voto {
+            font-size: 8px;
+            margin-top: 4px;
+        }
+
+        .card-concejal {
+            min-height: 125px !important;
+            padding: 3px !important;
+        }
+
+        .card-concejal .foto-voto {
+            width: 34px;
+            height: 34px;
+        }
+
+        .card-concejal .movimiento-voto {
+            font-size: 8px;
+        }
+
+        .card-concejal .lista-numero {
+            font-size: 7px;
+        }
+
+        .card-concejal .nombre-voto {
+            font-size: 6.5px;
+        }
+    }
+
 </style>
 
     @livewireStyles

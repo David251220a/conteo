@@ -1,7 +1,11 @@
 <div class="container-fluid py-2">
 
-    <div class="titulo-voto">
-        {{ $titulo }}
+    <div class="header-voto">
+        <img src="{{ Storage::url('imagenes/logo_eleccion.png') }}" class="logo-voto logo-left" alt="" style="background: white">
+        <div class="titulo-voto">
+            {{ $titulo }}
+        </div>
+        <img src="{{ Storage::url('imagenes/header.png') }}" class="logo-voto logo-right" alt="" style="background: white">
     </div>
 
     @if ($paso == 1)
@@ -9,7 +13,7 @@
 
             @foreach($intendente as $item)
 
-                <div class="col-lg-4 col-md-6 col-6">
+                <div class="col-lg-4 col-md-4 col-4">
 
                     <div class="card-voto voto-blanco" wire:click="seleccionarIntendente({{ $item->id }}, {{ $modo }})">
 
@@ -60,7 +64,7 @@
 
             @foreach($listas as $item)
 
-                <div class="col-lg-4 col-md-6 col-6">
+                <div class="col-lg-4 col-md-4 col-4">
 
                     <div class="card-voto voto-blanco" wire:click="seleccionarLista({{ $item->id }}, {{ $item->orden }})">
 
@@ -99,7 +103,7 @@
 
             @foreach($consejales as $item)
 
-                <div class="col-lg-3 col-md-4 col-4">
+                <div class="col-lg-3 col-md-3 col-3">
 
                     <div class="card-voto card-concejal" wire:click="seleccionarConsejal({{ $item->id }})">
 
@@ -268,24 +272,6 @@
                             <small>INTENDENTE MUNICIPAL</small>
                         </div>
                     </div>
-
-                    {{-- @if(isset($concejalSeleccionado) && $concejalSeleccionado)
-                        <div class="resumen-item">
-                            <span class="badge-lista">{{ $concejalSeleccionado->lista->descripcion }}</span>
-
-                            @if($concejalSeleccionado->orden < 90)
-                                <span class="badge-lista">OP {{ $concejalSeleccionado->orden }}</span>
-                                <img src="{{ Storage::url($concejalSeleccionado->imagen) }}" class="resumen-img" alt="">
-                            @endif
-
-                            <div>
-                                <strong>
-                                    {{ $concejalSeleccionado->orden < 90 ? $concejalSeleccionado->nombre.' '.$concejalSeleccionado->apellido : $concejalSeleccionado->lista->descripcion }}
-                                </strong>
-                                <small>JUNTA MUNICIPAL</small>
-                            </div>
-                        </div>
-                    @endif --}}
 
                 </div>
 
