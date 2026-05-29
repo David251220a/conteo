@@ -131,5 +131,18 @@ class PadronIndex extends Component
         $this->dispatchBrowserEvent('mostrar-mapa');
     }
 
+    public function confirmar_voto()
+    {
+        $voto = !$this->data->voto;
+        $padron = Padron::find($this->data->id);
+
+        $padron->update([
+            'voto' => $voto
+        ]);
+
+        $this->data = $padron;
+        $this->dispatchBrowserEvent('mostrar-mapa');
+    }
+
 
 }

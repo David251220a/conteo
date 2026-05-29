@@ -69,13 +69,20 @@
                                     @if ($verMas)
                                         @if ($general->voto == 1)
                                             <tr>
-                                                <td>Voto?</td>
+                                                <td>
+                                                    @if ($data->voto == 1)
+                                                        <button type="button" class="btn btn-success btn-sm">Voto Confirmado</button>
+                                                    @else
+                                                        <button type="button" wire:click="confirmar_voto" class="btn btn-danger btn-sm">Confirmar Voto</button>
+                                                    @endif
+
+                                                </td>
                                             </tr>
-                                            <tr>
+                                            {{-- <tr>
                                                 <td>
                                                     <input type="checkbox" wire:click="padron_voto" {{ ($data->voto == 1 ? 'checked' : '') }}>
                                                 </td>
-                                            </tr>
+                                            </tr> --}}
                                         @endif
                                         <tr>
                                             <td>

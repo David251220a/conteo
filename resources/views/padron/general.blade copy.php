@@ -280,7 +280,7 @@
 
             padding: 16px 18px;
 
-            font-size: 15px;
+            font-size: 18px;
             font-weight: 800;
 
             color: #111;
@@ -353,63 +353,6 @@
         .btn-whatsapp:hover {
             background: #157347;
             color: white;
-        }
-
-        .botones-acciones{
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .botones-acciones .btn{
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            height: 58px;
-            font-size: 18px;
-            font-weight: 800;
-            border-radius: 18px;
-        }
-
-        .btn-padron{
-            background: #0d6efd;
-            color: white;
-        }
-
-        .btn-padron:hover{
-            background: #0b5ed7;
-            color: white;
-        }
-
-        .btn-simulador{
-            background: #d61414;
-            color: white;
-            margin-right: 3px;
-        }
-
-        .btn-simulador:hover{
-            background: #000;
-            color: white;
-        }
-
-        @media (max-width: 576px){
-
-            .botones-acciones{
-                gap: 6px;
-            }
-
-            .botones-acciones .btn{
-                height: 46px;
-                font-size: 12px;
-                padding: 6px;
-                border-radius: 12px;
-            }
-
-            .botones-acciones .btn i{
-                font-size: 14px;
-            }
         }
 
         @media (max-width: 576px) {
@@ -505,7 +448,7 @@
             }
 
             .dato-value {
-                font-size: 12px;
+                font-size: 14px;
                 padding: 8px 10px;
                 border-radius: 12px;
             }
@@ -626,36 +569,44 @@
 
             </div>
 
-
-            <div class="botones-acciones">
-
-                <a href="{{ route('simulacion', ['padron_id' => 0,'back' => Route::currentRouteName()]) }}" class="btn btn-simulador">
-
-                    <i class="bi bi-play-circle"></i>
-                    Iniciar simulador sin consultar datos
-
-                </a>
-
-            </div>
-
         @else
 
             <!-- RESULTADO -->
             <div class="resultado-card">
+
+                <div class="resultado-header">
+
+                    <i class="bi bi-person-vcard-fill"></i>
+                    Datos del votante
+
+                </div>
 
                 <div class="card-body p-4">
 
                     <div class="row g-4">
 
                         <!-- DOCUMENTO -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
 
                             <div class="dato-label">
                                 Documento
                             </div>
 
                             <div class="dato-value">
-                                {{ number_format($data->documento, 0, ',', '.') }} - {{ $data->nombre }} {{ $data->apellido }}
+                                {{ number_format($data->documento, 0, ',', '.') }}
+                            </div>
+
+                        </div>
+
+                        <!-- NOMBRE -->
+                        <div class="col-md-8">
+
+                            <div class="dato-label">
+                                Nombre y Apellido
+                            </div>
+
+                            <div class="dato-value">
+                                {{ $data->nombre }} {{ $data->apellido }}
                             </div>
 
                         </div>
@@ -720,21 +671,14 @@
 
                     @endphp
 
-                    <div class="botones-acciones">
+                    <div class="mt-1 d-grid">
 
                         <a href="{{ $whatsapp }}"
-                            target="_blank"
-                            class="btn btn-whatsapp">
+                        target="_blank"
+                        class="btn btn-whatsapp">
 
                             <i class="bi bi-whatsapp"></i>
                             Compartir datos
-
-                        </a>
-
-                        <a href="{{ route('simulacion', ['padron_id' => $data->id,'back' => Route::currentRouteName()]) }}" class="btn btn-simulador">
-
-                            <i class="bi bi-play-circle"></i>
-                            Iniciar simulador
 
                         </a>
 

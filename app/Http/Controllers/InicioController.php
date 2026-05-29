@@ -169,9 +169,21 @@ class InicioController extends Controller
         return view('padron.general', compact('data','inte','con'));
     }
 
-    public function simulacion()
+    public function simulacion(Request  $request)
     {
-        return view('padron.simulacion');
+        $padron_id = 0;
+        $back = 'cesar';
+        if($request->padron_id){
+            $padron_id = $request->padron_id;
+        }
+
+
+        if($request->back){
+            $back = $request->back;
+        }
+
+
+        return view('padron.simulacion', compact('padron_id', 'back'));
     }
 
 }

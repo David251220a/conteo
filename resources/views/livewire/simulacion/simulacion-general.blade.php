@@ -271,15 +271,35 @@
                             <strong>{{ $dato->nombre }}</strong>
                             <small>INTENDENTE MUNICIPAL</small>
                         </div>
+
+                    </div>
+
+                    <div class="resumen-item">
+                        <span class="badge-lista">{{ $consejal_nuestra->lista->descripcion }}</span>
+                        <span class="badge-lista">Opcion {{ $consejal_nuestra->orden }}</span>
+
+                        <img src="{{ Storage::url($consejal_nuestra->imagen) }}" class="resumen-img" alt="">
+
+                        <div>
+                            <strong>{{ $consejal_nuestra->nombre }}</strong>
+                            <small>INTENDENTE MUNICIPAL</small>
+                        </div>
+
                     </div>
 
                 </div>
 
                 <div class="row g-2 mt-2">
-                    <div class="col-12">
+                    <div class="col-6">
                         <button type="button" wire:click="restablecer" class="btn-final btn-imagen">
                             Reiniciar Simulación
                         </button>
+                    </div>
+                    <div class="col-6">
+                        <a href="{{ route($back) }}" class="btn-final btn-padron-final">
+                            <i class="bi bi-arrow-left-circle"></i>
+                            Volver al padrón
+                        </a>
                     </div>
                 </div>
 

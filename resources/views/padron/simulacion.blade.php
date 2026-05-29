@@ -688,6 +688,22 @@
         }
     }
 
+    .btn-padron-final {
+        background: #e73535;
+        color: #fff;
+        border: 2px solid #e73535;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .btn-padron-final:hover {
+        background: #c91f1f;
+        color: #fff;
+    }
+
 </style>
 
     @livewireStyles
@@ -696,7 +712,7 @@
 
 <body>
 
-    @livewire('simulacion.simulacion-general')
+    @livewire('simulacion.simulacion-general', ['padron_id' => $padron_id, 'back' => $back])
 
     @livewireScripts
 

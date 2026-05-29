@@ -76,9 +76,10 @@ class RoleSeeder extends Seeder
 
         // $permission = Permission::create(['name' => 'voto.show', 'descripcion' => 'Voto'])->syncRoles($admin);
 
-        $permission = Permission::create(['name' => 'consulta.simulacion', 'descripcion' => 'Consulta Simulacion']);
-        $permission = Permission::create(['name' => 'consulta.simulacion_ver', 'descripcion' => 'Consulta Simulacion Ver']);
+        // $permission = Permission::create(['name' => 'consulta.simulacion', 'descripcion' => 'Consulta Simulacion']);
+        // $permission = Permission::create(['name' => 'consulta.simulacion_ver', 'descripcion' => 'Consulta Simulacion Ver']);
 
+        $permission = Permission::create(['name' => 'padron.index', 'descripcion' => 'Padron Vista Principal']);
         // $permission = Permission::create(['name' => 'habilitacion.estado_alumno', 'descripcion' => 'Habilitacion de Curso: Estado Alumno']);
 
     }
