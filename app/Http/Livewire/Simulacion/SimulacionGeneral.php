@@ -231,6 +231,66 @@ class SimulacionGeneral extends Component
         if ($this->back == 'adolfo'){
             $this->consejal_nuestra = Candidato::find(19);
         }
+
+
+        if ($this->back == 'benito'){
+            $this->consejal_nuestra = Candidato::find(32);
+        }
+
+
+        if ($this->back == 'humberto'){
+            $this->consejal_nuestra = Candidato::find(33);
+        }
+
+
+        if ($this->back == 'juan'){
+            $this->consejal_nuestra = Candidato::find(34);
+        }
+
+
+        if ($this->back == 'gabriela'){
+            $this->consejal_nuestra = Candidato::find(35);
+        }
+
+
+        if ($this->back == 'diego'){
+            $this->consejal_nuestra = Candidato::find(36);
+        }
+
+
+        if ($this->back == 'miguel'){
+            $this->consejal_nuestra = Candidato::find(37);
+        }
+
+
+        if ($this->back == 'espinola'){
+            $this->consejal_nuestra = Candidato::find(38);
+        }
+
+
+        if ($this->back == 'ofelia'){
+            $this->consejal_nuestra = Candidato::find(39);
+        }
+
+
+        if ($this->back == 'gilberto'){
+            $this->consejal_nuestra = Candidato::find(40);
+        }
+
+
+        if ($this->back == 'ernesto'){
+            $this->consejal_nuestra = Candidato::find(41);
+        }
+
+
+        if ($this->back == 'maria'){
+            $this->consejal_nuestra = Candidato::find(42);
+        }
+
+
+        if ($this->back == 'cuevas'){
+            $this->consejal_nuestra = Candidato::find(43);
+        }
     }
 
 }

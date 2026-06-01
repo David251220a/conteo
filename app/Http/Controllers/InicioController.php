@@ -186,4 +186,151 @@ class InicioController extends Controller
         return view('padron.simulacion', compact('padron_id', 'back'));
     }
 
+    public function benito(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(32);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+
+    public function humberto(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(33);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+    public function juan(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(34);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+    public function gabriela(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(35);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+    public function diego(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(36);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+    public function miguel(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(37);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+    public function espinola(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(38);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+    public function ofelia(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(39);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+    public function gilberto(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(40);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+    public function ernesto(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(41);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+    public function maria(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(42);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+    public function cuevas(Request $request)
+    {
+        $data = Padron::where('documento', $request->documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+
+        $inte = Candidato::find(1);
+        $con = Candidato::find(43);
+        return view('padron.general', compact('data','inte','con'));
+    }
+
+
+
 }

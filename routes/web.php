@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [InicioController::class, 'index'])->name('inicio');
+// Route::get('/', [InicioController::class, 'index'])->name('inicio');
 Route::get('/cesar-mendez', [InicioController::class, 'cesar'])->name('cesar');
 Route::get('/dani-vezquez', [InicioController::class, 'dani'])->name('dani');
 Route::get('/lic-giselle-paredes', [InicioController::class, 'giselle'])->name('giselle');
@@ -43,6 +43,21 @@ Route::get('/joel-gomez', [InicioController::class, 'joel'])->name('joel');
 Route::get('/oliver-rivas', [InicioController::class, 'oliver'])->name('oliver');
 Route::get('/adolfo-paredes', [InicioController::class, 'adolfo'])->name('adolfo');
 Route::get('/limpiar', [LimpiarController::class, 'limpiar'])->name('limpiar');
+
+
+Route::get('/carlos-britez', [InicioController::class, 'benito'])->name('benito');
+Route::get('/humberto-zorrilla', [InicioController::class, 'humberto'])->name('humberto');
+Route::get('/juan-duarte', [InicioController::class, 'juan'])->name('juan');
+Route::get('/gabriela-godoy', [InicioController::class, 'gabriela'])->name('gabriela');
+Route::get('/diego-britez', [InicioController::class, 'diego'])->name('diego');
+Route::get('/miguel-pando', [InicioController::class, 'miguel'])->name('miguel');
+Route::get('/carlos-espinola', [InicioController::class, 'espinola'])->name('espinola');
+Route::get('/ofelia-diaz', [InicioController::class, 'ofelia'])->name('ofelia');
+Route::get('/gilberto-zarate', [InicioController::class, 'gilberto'])->name('gilberto');
+Route::get('/ernesto-pereira', [InicioController::class, 'ernesto'])->name('ernesto');
+Route::get('/maria-gimenez', [InicioController::class, 'maria'])->name('maria');
+Route::get('/juan-cuevas', [InicioController::class, 'humberto'])->name('cuevas');
+
 
 Route::get('/simulacion', [InicioController::class, 'simulacion'])->name('simulacion');
 

@@ -78,6 +78,7 @@
                             <table class="table table-bordered table-hover table-striped table-checkable table-highlight-head mb-4">
                                 <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Nombre</th>
                                         <th class="">Lista</th>
                                         <th class="">Movimiento</th>
@@ -89,6 +90,7 @@
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
+                                            <td>{{ $item->id }}</td>
                                             <td>
                                                 {{$item->nombre}}
                                             </td>
