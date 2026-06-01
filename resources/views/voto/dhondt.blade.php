@@ -57,8 +57,8 @@
                     <tr>
                         <th>#</th>
                         <th>Lista</th>
-                        <th class="text-center">Orden</th>
                         <th>Candidato</th>
+                        <th class="text-center">Votos</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,8 +69,8 @@
                         <tr>
                             <td>{{$i}}</td>
                             <td>{{ $item->lista->descripcion ?? '' }}</td>
-                            <td class="text-center">{{ $item->orden }}</td>
-                            <td>{{ $item->nombre }}</td>
+                            <td class="">{{ $item->nombre }} - Opcion{{ $item->orden }}</td>
+                            <td class="text-right">{{ number_format($item->total_votos, 0, ',', '.') }}</td>
                         </tr>
                         @php
                             $i++;

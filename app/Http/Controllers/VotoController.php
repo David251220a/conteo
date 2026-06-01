@@ -304,26 +304,28 @@ class VotoController extends Controller
     public function dhondt(Request $request)
     {
         $tipo_candidato_id = 5; // CONCEJAL
-        $cantidad_escanos = 12; // ajustar cantidad de bancas
+        $cantidad_escanos = 12;
 
+        // 1) Total de votos por lista
         $listas = Voto::query()
-        ->join('candidatos', 'candidatos.id', '=', 'votos.candidato_id')
-        ->join('listas', 'listas.id', '=', 'candidatos.lista_id')
-        ->where('votos.estado_id', 1)
-        ->where('votos.anio', $this->general->anio)
-        ->where('votos.tipo_votacion', $this->general->tipo_votacion)
-        ->where('votos.tipo_cantidato_id', $tipo_candidato_id)
-        ->whereNotIn('candidatos.orden', [97, 98, 99])
-        ->select(
-            'listas.id as lista_id',
-            'listas.descripcion as lista',
-            'listas.orden',
-            DB::raw('SUM(votos.votos) as total_votos')
-        )
-        ->groupBy('listas.id', 'listas.descripcion', 'listas.opcion')
-        ->orderByDesc('total_votos')
-        ->get();
+            ->join('candidatos', 'candidatos.id', '=', 'votos.candidato_id')
+            ->join('listas', 'listas.id', '=', 'votos.lista_id')
+            ->where('votos.estado_id', 1)
+            ->where('votos.anio', $this->general->anio)
+            ->where('votos.tipo_votacion', $this->general->tipo_votacion)
+            ->where('votos.tipo_cantidato_id', $tipo_candidato_id)
+            ->whereNotIn('candidatos.orden', [97, 98, 99])
+            ->select(
+                'listas.id as lista_id',
+                'listas.descripcion as lista',
+                'listas.orden',
+                DB::raw('SUM(votos.votos) as total_votos')
+            )
+            ->groupBy('listas.id', 'listas.descripcion', 'listas.orden')
+            ->orderByDesc('total_votos')
+            ->get();
 
+        // 2) Tabla D'Hondt
         $tablaDhondt = [];
 
         foreach ($listas as $lista) {
@@ -338,42 +340,88 @@ class VotoController extends Controller
                 ];
             }
         }
-        usort($tablaDhondt, fn($a, $b) => $b['resultado'] <=> $a['resultado']);
 
+        usort($tablaDhondt, function ($a, $b) {
+            return $b['resultado'] <=> $a['resultado'];
+        });
+
+        // 3) Ganadores D'Hondt
         $ganadoresDhondt = array_slice($tablaDhondt, 0, $cantidad_escanos);
 
+        // 4) Escaños por lista
         $escanosPorLista = collect($ganadoresDhondt)
-        ->groupBy('lista_id')
-        ->map(fn($items) => $items->count());
+            ->groupBy('lista_id')
+            ->map(function ($items) {
+                return $items->count();
+            });
 
+        // 5) Resumen de escaños
+        $resumenEscanos = collect($ganadoresDhondt)
+            ->groupBy('lista_id')
+            ->map(function ($items) {
+                $primero = $items->first();
+
+                return [
+                    'lista_id' => $primero['lista_id'],
+                    'lista' => $primero['lista'],
+                    'escanos' => $items->count(),
+                ];
+            })
+            ->values();
+
+        // 6) Candidatos electos por voto preferencial
         $electos = collect();
 
-        $resumenEscanos = collect($ganadoresDhondt)
-        ->groupBy('lista_id')
-        ->map(function ($items) {
-            $primero = $items->first();
-            return [
-                'lista_id' => $primero['lista_id'],
-                'lista' => $primero['lista'],
-                'escanos' => $items->count(),
-            ];
-        })
-        ->values();
-
         foreach ($escanosPorLista as $listaId => $cantidad) {
-            $candidatos = Candidato::with('lista')
-            ->where('lista_id', $listaId)
-            ->where('tipo_cantidato_id', $tipo_candidato_id)
-            ->where('estado_id', 1)
-            ->whereNotIn('orden', [97, 98, 99])
-            ->orderBy('orden')
-            ->take($cantidad)
-            ->get();
+            $candidatos = Voto::query()
+                ->join('candidatos', 'candidatos.id', '=', 'votos.candidato_id')
+                ->join('listas', 'listas.id', '=', 'votos.lista_id')
+                ->where('votos.estado_id', 1)
+                ->where('votos.anio', $this->general->anio)
+                ->where('votos.tipo_votacion', $this->general->tipo_votacion)
+                ->where('votos.tipo_cantidato_id', $tipo_candidato_id)
+                ->where('votos.lista_id', $listaId)
+                ->whereNotIn('candidatos.orden', [97, 98, 99])
+                ->select(
+                    'candidatos.id',
+                    'candidatos.nombre',
+                    'candidatos.orden',
+                    'candidatos.lista_id',
+                    'listas.descripcion as lista_descripcion',
+                    DB::raw('SUM(votos.votos) as total_votos')
+                )
+                ->groupBy(
+                    'candidatos.id',
+                    'candidatos.nombre',
+                    'candidatos.orden',
+                    'candidatos.lista_id',
+                    'listas.descripcion'
+                )
+                ->orderByDesc('total_votos')
+                ->orderBy('candidatos.orden')
+                ->take($cantidad)
+                ->get();
 
             foreach ($candidatos as $candidato) {
                 $electos->push($candidato);
             }
         }
+
+        // 7) Orden final de electos por lista y votos
+        $ordenListas = $resumenEscanos
+        ->pluck('lista_id')
+        ->values()
+        ->flip();
+
+        $electos = $electos
+        ->sortBy(function ($item) use ($ordenListas) {
+            return [
+                $ordenListas[$item->lista_id] ?? 999,
+                -$item->total_votos,
+                $item->orden,
+            ];
+        })
+        ->values();
 
         return view('voto.dhondt', compact(
             'listas',
@@ -385,6 +433,91 @@ class VotoController extends Controller
             'resumenEscanos'
         ));
     }
+
+    // public function dhondt(Request $request)
+    // {
+    //     $tipo_candidato_id = 5; // CONCEJAL
+    //     $cantidad_escanos = 12; // ajustar cantidad de bancas
+
+    //     $listas = Voto::query()
+    //     ->join('candidatos', 'candidatos.id', '=', 'votos.candidato_id')
+    //     ->join('listas', 'listas.id', '=', 'candidatos.lista_id')
+    //     ->where('votos.estado_id', 1)
+    //     ->where('votos.anio', $this->general->anio)
+    //     ->where('votos.tipo_votacion', $this->general->tipo_votacion)
+    //     ->where('votos.tipo_cantidato_id', $tipo_candidato_id)
+    //     ->whereNotIn('candidatos.orden', [97, 98, 99])
+    //     ->select(
+    //         'listas.id as lista_id',
+    //         'listas.descripcion as lista',
+    //         'listas.orden',
+    //         DB::raw('SUM(votos.votos) as total_votos')
+    //     )
+    //     ->groupBy('listas.id', 'listas.descripcion', 'listas.opcion')
+    //     ->orderByDesc('total_votos')
+    //     ->get();
+
+    //     $tablaDhondt = [];
+
+    //     foreach ($listas as $lista) {
+    //         for ($i = 1; $i <= $cantidad_escanos; $i++) {
+    //             $tablaDhondt[] = [
+    //                 'lista_id' => $lista->lista_id,
+    //                 'lista' => $lista->lista,
+    //                 'opcion' => $lista->orden,
+    //                 'votos' => $lista->total_votos,
+    //                 'divisor' => $i,
+    //                 'resultado' => $lista->total_votos / $i,
+    //             ];
+    //         }
+    //     }
+    //     usort($tablaDhondt, fn($a, $b) => $b['resultado'] <=> $a['resultado']);
+
+    //     $ganadoresDhondt = array_slice($tablaDhondt, 0, $cantidad_escanos);
+
+    //     $escanosPorLista = collect($ganadoresDhondt)
+    //     ->groupBy('lista_id')
+    //     ->map(fn($items) => $items->count());
+
+    //     $electos = collect();
+
+    //     $resumenEscanos = collect($ganadoresDhondt)
+    //     ->groupBy('lista_id')
+    //     ->map(function ($items) {
+    //         $primero = $items->first();
+    //         return [
+    //             'lista_id' => $primero['lista_id'],
+    //             'lista' => $primero['lista'],
+    //             'escanos' => $items->count(),
+    //         ];
+    //     })
+    //     ->values();
+
+    //     foreach ($escanosPorLista as $listaId => $cantidad) {
+    //         $candidatos = Candidato::with('lista')
+    //         ->where('lista_id', $listaId)
+    //         ->where('tipo_cantidato_id', $tipo_candidato_id)
+    //         ->where('estado_id', 1)
+    //         ->whereNotIn('orden', [97, 98, 99])
+    //         ->orderBy('orden')
+    //         ->take($cantidad)
+    //         ->get();
+
+    //         foreach ($candidatos as $candidato) {
+    //             $electos->push($candidato);
+    //         }
+    //     }
+
+    //     return view('voto.dhondt', compact(
+    //         'listas',
+    //         'tablaDhondt',
+    //         'ganadoresDhondt',
+    //         'escanosPorLista',
+    //         'electos',
+    //         'cantidad_escanos',
+    //         'resumenEscanos'
+    //     ));
+    // }
 
     public function reporte_dhondt_concejales()
     {
