@@ -49,6 +49,7 @@ class ConsejalImport extends Component
     public function updatedLocalId()
     {
         $this->resetearVerificacion();
+        $this->cargarMesas();
     }
 
     public function updatedMesaId()

@@ -121,6 +121,8 @@ Route::group([
     Route::get('/voto/dhondt', [VotoController::class, 'dhondt'])->name('voto.dhondt');
     Route::get('/voto/dhondt/reporte', [VotoController::class, 'reporte_dhondt_concejales'])->name('voto.reporte_dhondt_concejales');
     Route::get('/voto/{localMesa}/consulta-votos/pdf', [VotoController::class, 'consulta_pdf'])->name('voto.consulta_pdf');
+    Route::get('/voto/{local_mesa}/anular', [VotoController::class, 'anular_carga_voto'])->name('voto.anular_carga_voto');
+    Route::get('/voto/{local_mesa_id}/{tipo_candidato_id}/impresion-votos', [VotoController::class, 'impresion_acta'])->name('voto.impresion_acta');
 
 });
 

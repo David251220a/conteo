@@ -71,6 +71,7 @@ class VotoController extends Controller
         ->paginate(50)
         ->appends($request->query());
 
+
         $totalGeneral = Voto::where('estado_id', 1)
         ->where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
@@ -79,7 +80,6 @@ class VotoController extends Controller
             $q->where('local_id', $request->local_id);
         })
         ->sum('votos');
-
         return view('voto.consulta_votos_carga', compact('tipoCandidato','tipo_candidato_id','locales','data','totalGeneral'));
     }
 
@@ -187,7 +187,6 @@ class VotoController extends Controller
                 ->get();
         }
 
-        $totalGeneral = 0;
         return view('voto.consulta_lista', compact('tipo_candidato_id', 'tipoCandidato', 'locales','data'));
     }
 
@@ -555,6 +554,104 @@ class VotoController extends Controller
     public function consejal_import()
     {
         return view('voto.consejal_import');
+    }
+
+    public function anular_carga_voto(LocalMesa $local_mesa)
+    {
+
+        $data = Voto::where('local_mesa_id', $local_mesa->id)
+        ->where('tipo_cantidato_id', $local_mesa->tipo_cantidato_id)
+        ->where('estado_id', 1)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->update([
+            'estado_id' => 2
+        ]);
+
+        $local_mesa->cargado = 0;
+        $local_mesa->update();
+
+        return redirect()->route('voto.consulta_votos_carga')->with('message', 'Anulado con exito.');
+    }
+
+    public function impresion_acta($local_mesa_id, $tipo_candidato_id)
+    {
+        $query = Voto::with(['lista', 'candidato'])
+        ->join('listas', 'votos.lista_id', '=', 'listas.id')
+        ->join('candidatos', 'votos.candidato_id', '=', 'candidatos.id')
+        ->where('votos.anio', $this->general->anio)
+        ->where('votos.tipo_votacion', $this->general->tipo_votacion)
+        ->where('votos.estado_id', 1)
+        ->where('votos.tipo_cantidato_id', $tipo_candidato_id)
+        ->where('votos.local_mesa_id', $local_mesa_id)
+        ->select('votos.*');
+
+        if ($tipo_candidato_id == 4) {
+            $query->orderBy('candidatos.orden')
+            ->orderBy('listas.orden');
+        } else {
+            $query->orderBy('listas.orden')
+            ->orderBy('candidatos.orden');
+        }
+
+        $data = $query->get();
+
+        $tipo = TipoCantidato::find($tipo_candidato_id);
+        $mesa = LocalMesa::find($local_mesa_id);
+
+
+        $listas = $data
+        ->filter(function ($item) {
+            return $item->candidato->orden < 97;
+        })
+        ->pluck('lista')
+        ->unique('id')
+        ->sortBy('orden')
+        ->values();
+
+        $ordenesNormales = $data
+            ->filter(function ($item) {
+                return $item->candidato->orden < 97;
+            })
+            ->pluck('candidato.orden')
+            ->unique()
+            ->sort()
+            ->values();
+
+        $candidatosEspeciales = $data
+            ->filter(function ($item) {
+                return in_array($item->candidato->orden, [97, 98, 99]);
+            })
+            ->sortBy('candidato.orden')
+            ->values();
+
+        $matriz = [];
+
+        foreach ($ordenesNormales as $orden) {
+            foreach ($listas as $lista) {
+                $voto = $data
+                    ->filter(function ($item) use ($orden, $lista) {
+                        return $item->candidato->orden == $orden
+                            && $item->lista_id == $lista->id;
+                    })
+                    ->first();
+
+                $matriz[$orden][$lista->id] = $voto ? $voto->votos : 0;
+            }
+        }
+
+        $pdf = PDF::loadView('voto.impresion_acta', compact(
+            'data',
+            'mesa',
+            'tipo',
+            'tipo_candidato_id',
+            'listas',
+            'ordenesNormales',
+            'candidatosEspeciales',
+            'matriz'
+        ))->setPaper('legal', 'portrait');
+
+        return $pdf->stream('acta.pdf');
     }
 
 }

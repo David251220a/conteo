@@ -16,4 +16,19 @@ class Voto extends Model
         return $this->belongsTo(LocalMesa::class, 'local_mesa_id');
     }
 
+    public function lista()
+    {
+        return $this->belongsTo(Lista::class);
+    }
+
+    public function candidato()
+    {
+        return $this->belongsTo(Candidato::class);
+    }
+
+    public function tipo()
+    {
+        return $this->belongsTo(TipoCantidato::class,'tipo_cantidato_id');
+    }
+
 }

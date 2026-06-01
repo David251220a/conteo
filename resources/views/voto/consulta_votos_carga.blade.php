@@ -70,7 +70,7 @@
                                         <th class="">Local</th>
                                         <th class="">Mesa</th>
                                         <th class="text-center" width="10%">Total Voto</th>
-                                        <th class="text-center">Accion</th>
+                                        <th width="15%" class="text-center">Accion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,7 +79,22 @@
                                             <td>{{$item->local->descripcion}}</td>
                                             <td>{{$item->mesa}}</td>
                                             <td class="text-right">{{ number_format($item->total_votos, 0, ',', '.') }}</td>
-                                            <td></td>
+                                            <td>
+                                                <a href="{{ route('voto.anular_carga_voto', $item) }}" class="btn btn-danger btn-sm">
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle"><circle cx="12" cy="12" r="10"></circle>
+                                                        <line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
+                                                    </svg>
+                                                </a>
+
+                                                <a href="{{ route('voto.impresion_acta', [$item->id, $item->tipo_cantidato_id]) }}" target="__blank" class="btn btn-info btn-sm">
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>
+                                                    </svg>
+                                                </a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
