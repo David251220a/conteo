@@ -80,6 +80,9 @@ class RoleSeeder extends Seeder
         // $permission = Permission::create(['name' => 'consulta.simulacion_ver', 'descripcion' => 'Consulta Simulacion Ver']);
 
         $permission = Permission::create(['name' => 'padron.index', 'descripcion' => 'Padron Vista Principal']);
+        $permission = Permission::create(['name' => 'role.permiso_crear', 'descripcion' => 'Rol: Crear Permiso']);
+        $permission = Permission::create(['name' => 'sondeo.index', 'descripcion' => 'Sondeo: Carga']);
+        $permission = Permission::create(['name' => 'sondeo.show', 'descripcion' => 'Sondeo: Consulta']);
         // $permission = Permission::create(['name' => 'habilitacion.estado_alumno', 'descripcion' => 'Habilitacion de Curso: Estado Alumno']);
 
     }

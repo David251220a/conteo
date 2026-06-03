@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\General;
+use App\Models\Local;
 use App\Models\Persona;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,6 +13,8 @@ use Illuminate\Validation\Rule;
 class UsuarioController extends Controller
 {
 
+    public $general;
+
     public function __construct()
     {
         $this->middleware('permission:usuario.index')->only('index');
@@ -18,6 +22,7 @@ class UsuarioController extends Controller
         $this->middleware('permission:usuario.store')->only('store');
         $this->middleware('permission:usuario.edit')->only('edit');
         $this->middleware('permission:usuario.update')->only('update');
+        $this->general = General::find(1);
     }
 
     public function index(Request $request)
@@ -40,13 +45,22 @@ class UsuarioController extends Controller
     public function create()
     {
         $role = Role::get();
-        return view('usuario.create', compact('role'));
+        $locales = Local::where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('anio', $this->general->anio)
+        ->where('estado_id', 1)
+        ->get();
+
+        return view('usuario.create', compact('role','locales'));
     }
 
     public function edit(User $user)
     {
         $role = Role::get();
-        return view('usuario.edit', compact('user', 'role'));
+        $locales = Local::where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('anio', $this->general->anio)
+        ->where('estado_id', 1)
+        ->get();
+        return view('usuario.edit', compact('user', 'role','locales'));
     }
 
     public function store(Request $request)
@@ -78,6 +92,7 @@ class UsuarioController extends Controller
             'name' =>  mb_strtoupper($request->name, 'UTF-8'),
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'local_id' => $request->local_id,
         ]);
 
         $user->syncRoles($request->rol);
@@ -108,6 +123,7 @@ class UsuarioController extends Controller
         $user->username = $request->username;
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->local_id = $request->local_id;
 
         if($request->password){
             if (preg_match('/[a-zA-Z]+.*[0-9]+|[0-9]+.*[a-zA-Z]+/', $request->password)) {

@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'local_id',
     ];
 
     /**
@@ -43,4 +44,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function local()
+    {
+        return $this->belongsTo(Local::class);
+    }
 }

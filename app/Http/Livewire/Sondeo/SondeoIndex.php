@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Livewire\Simulacion;
+namespace App\Http\Livewire\Sondeo;
 
-use App\Http\Livewire\Voto\Consejal;
 use App\Models\Candidato;
 use App\Models\General;
 use App\Models\Lista;
-use App\Models\Simulacion;
+use App\Models\Urna;
+use App\Models\User;
 use Livewire\Component;
 
-class SimulacionGeneral extends Component
+class SondeoIndex extends Component
 {
-
     public $general;
     public $intendente;
     public $consejales;
@@ -23,12 +22,8 @@ class SimulacionGeneral extends Component
     public $intendenteSeleccionado;
     public $concejalSeleccionado;
     public $modo = 1;
-    public $dato;
-    public $padron_id;
-    public $back;
-    public $consejal_nuestra;
 
-    public function mount($padron_id, $back)
+    public function mount()
     {
         $this->general = General::find(1);
 
@@ -44,20 +39,14 @@ class SimulacionGeneral extends Component
         ->select('candidatos.*')
         ->get();
 
-        $this->padron_id = $padron_id;
-        $this->back = $back;
-
-        $this->dato = Candidato::find(1);
         $this->modo = 1;
-
-        $this->muestra();
 
         $this->restablecer();
     }
 
     public function render()
     {
-        return view('livewire.simulacion.simulacion-general');
+        return view('livewire.sondeo.sondeo-index');
     }
 
     public function restablecer()
@@ -113,8 +102,8 @@ class SimulacionGeneral extends Component
             $this->consejal_id = Candidato::where('anio', $this->general->anio)
             ->where('tipo_votacion', $this->general->tipo_votacion)
             ->where('estado_id', 1)
-            ->where('tipo_cantidato_id', 5)
             ->where('orden', $orden)
+            ->where('tipo_cantidato_id', 5)
             ->first()->id;
             $this->titulo = 'OPCIONES SELECCIONADAS';
             $this->paso = 4;
@@ -155,8 +144,7 @@ class SimulacionGeneral extends Component
     {
         $this->paso = 5;
         $this->titulo = '';
-
-        Simulacion::create([
+        Urna::create([
             'fecha' => now(),
             'candidato_id' => $this->intendenteSeleccionado->id,
             'tipo_cantidato_id' => $this->intendenteSeleccionado->tipo_cantidato_id,
@@ -165,11 +153,11 @@ class SimulacionGeneral extends Component
             'voto' => 1,
             'anio'=> $this->general->anio,
             'tipo_votacion' => $this->general->tipo_votacion,
-            'padron_id' => $this->padron_id,
-            'local_id' => 0,
+            'local_id' => auth()->user()->local_id,
+            'user_id' => auth()->id(),
         ]);
 
-        Simulacion::create([
+        Urna::create([
             'fecha' => now(),
             'candidato_id' => $this->concejalSeleccionado->id,
             'tipo_cantidato_id' => $this->concejalSeleccionado->tipo_cantidato_id,
@@ -178,120 +166,10 @@ class SimulacionGeneral extends Component
             'voto' => 1,
             'anio'=> $this->general->anio,
             'tipo_votacion' => $this->general->tipo_votacion,
-            'padron_id' => $this->padron_id,
-            'local_id' => 0,
+            'local_id' => auth()->user()->local_id,
+            'user_id' => auth()->id(),
         ]);
 
-    }
-
-    public function muestra(){
-        if ($this->back == 'cesar'){
-            $this->consejal_nuestra = Candidato::find(8);
-        }
-
-        if ($this->back == 'dani'){
-            $this->consejal_nuestra = Candidato::find(9);
-        }
-
-        if ($this->back == 'giselle'){
-            $this->consejal_nuestra = Candidato::find(10);
-        }
-
-        if ($this->back == 'roberto'){
-            $this->consejal_nuestra = Candidato::find(11);
-        }
-
-        if ($this->back == 'esmilse'){
-            $this->consejal_nuestra = Candidato::find(12);
-        }
-
-        if ($this->back == 'diosnel'){
-            $this->consejal_nuestra = Candidato::find(13);
-        }
-
-        if ($this->back == 'liza'){
-            $this->consejal_nuestra = Candidato::find(14);
-        }
-
-        if ($this->back == 'carlos'){
-            $this->consejal_nuestra = Candidato::find(15);
-        }
-
-        if ($this->back == 'julio'){
-            $this->consejal_nuestra = Candidato::find(16);
-        }
-
-        if ($this->back == 'joel'){
-            $this->consejal_nuestra = Candidato::find(17);
-        }
-
-        if ($this->back == 'oliver'){
-            $this->consejal_nuestra = Candidato::find(18);
-        }
-
-        if ($this->back == 'adolfo'){
-            $this->consejal_nuestra = Candidato::find(19);
-        }
-
-
-        if ($this->back == 'benito'){
-            $this->consejal_nuestra = Candidato::find(32);
-        }
-
-
-        if ($this->back == 'humberto'){
-            $this->consejal_nuestra = Candidato::find(33);
-        }
-
-
-        if ($this->back == 'juan'){
-            $this->consejal_nuestra = Candidato::find(34);
-        }
-
-
-        if ($this->back == 'gabriela'){
-            $this->consejal_nuestra = Candidato::find(35);
-        }
-
-
-        if ($this->back == 'diego'){
-            $this->consejal_nuestra = Candidato::find(36);
-        }
-
-
-        if ($this->back == 'miguel'){
-            $this->consejal_nuestra = Candidato::find(37);
-        }
-
-
-        if ($this->back == 'espinola'){
-            $this->consejal_nuestra = Candidato::find(38);
-        }
-
-
-        if ($this->back == 'ofelia'){
-            $this->consejal_nuestra = Candidato::find(39);
-        }
-
-
-        if ($this->back == 'gilberto'){
-            $this->consejal_nuestra = Candidato::find(40);
-        }
-
-
-        if ($this->back == 'ernesto'){
-            $this->consejal_nuestra = Candidato::find(41);
-        }
-
-
-        if ($this->back == 'maria'){
-            $this->consejal_nuestra = Candidato::find(42);
-        }
-
-
-        if ($this->back == 'cuevas'){
-            $this->consejal_nuestra = Candidato::find(43);
-        }
     }
 
 }

@@ -49,6 +49,15 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group col-md-3">
+                                <label for="">Local</label>
+                                <select name="local_id" id="local_id" class="form-control">
+                                    <option value=""></option>
+                                    @foreach ($locales as $item)
+                                        <option value="{{ $item->id }}" {{ old('local_id', $user->local_id) ? 'selected' : '' }}>{{ $item->descripcion }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

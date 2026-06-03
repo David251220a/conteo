@@ -12,6 +12,7 @@ use App\Http\Controllers\LocalController;
 use App\Http\Controllers\PadronController;
 use App\Http\Controllers\ReferenteController;
 use App\Http\Controllers\SimuladorController;
+use App\Http\Controllers\UrnaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\VotoController;
@@ -70,6 +71,8 @@ Route::group([
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('/users', UsuarioController::class)->names('user');
     Route::resource('/roles', GrupoUsuarioController::class)->names('role');
+    Route::get('/permiso-crear', [GrupoUsuarioController::class, 'permiso_crear'])->name('role.permiso_crear');
+    Route::post('/permiso-crear', [GrupoUsuarioController::class, 'permiso_crear_post'])->name('role.permiso_crear_post');
 
     Route::get('/referente', [ReferenteController::class, 'index'])->name('referente.index');
     Route::get('/referente/crear', [ReferenteController::class, 'create'])->name('referente.create');
@@ -123,6 +126,10 @@ Route::group([
     Route::get('/voto/{localMesa}/consulta-votos/pdf', [VotoController::class, 'consulta_pdf'])->name('voto.consulta_pdf');
     Route::get('/voto/{local_mesa}/anular', [VotoController::class, 'anular_carga_voto'])->name('voto.anular_carga_voto');
     Route::get('/voto/{local_mesa_id}/{tipo_candidato_id}/impresion-votos', [VotoController::class, 'impresion_acta'])->name('voto.impresion_acta');
+
+    Route::get('/sondeo', [UrnaController::class, 'index'])->name('sondeo.index');
+    Route::get('/sondeo/show', [UrnaController::class, 'show'])->name('sondeo.show');
+
 
 });
 

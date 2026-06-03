@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -57,5 +58,26 @@ class GrupoUsuarioController extends Controller
         $role->name = $request->name;
         $role->save();
         return redirect()->route('role.index')->with(['message' => 'Registro exitoso!']);
+    }
+
+    public function permiso_crear()
+    {
+        return view('roles.permiso');
+    }
+
+    public function permiso_crear_post(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'descripcion' => 'required'
+        ]);
+
+        Permission::create([
+            'name' => $request->name,
+            'guard_name' => 'web',
+            'descripcion' => $request->descripcion
+        ]);
+
+        return redirect()->route('role.index')->with('message', 'Permiso creado con exito.');
     }
 }

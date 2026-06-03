@@ -59,6 +59,7 @@
                                         <th class="">Usuario</th>
                                         <th class="">Nombre</th>
                                         <th>Email</th>
+                                        <th>Local</th>
                                         <th class="text-center">Accion</th>
                                     </tr>
                                 </thead>
@@ -72,6 +73,13 @@
                                                 {{$item->name}} {{$item->lastname}}
                                             </td>
                                             <td>{{$item->email}}</td>
+                                            <td>
+                                                @if ($item->local_id == 0)
+                                                    SIN ESPECIFICAR
+                                                @else
+                                                    {{ $item->local->descripcion }}
+                                                @endif
+                                            </td>
                                             <td class="text-center">
                                                 @can('usuario.edit')
                                                     <a href="{{route('user.edit', $item)}}" class="ml-3">
