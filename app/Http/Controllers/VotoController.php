@@ -118,12 +118,14 @@ class VotoController extends Controller
                 'candidatos.id',
                 'candidatos.nombre',
                 'listas.descripcion as lista',
+                'candidatos.orden',
                 DB::raw('SUM(votos.votos) as total_votos')
             )
             ->groupBy(
                 'candidatos.id',
                 'candidatos.nombre',
-                'listas.descripcion'
+                'listas.descripcion',
+                'candidatos.orden'
             )
             ->orderByDesc('total_votos', 'DESC')
             ->get();
@@ -135,6 +137,7 @@ class VotoController extends Controller
                 'locals.descripcion as local',
                 'candidatos.id',
                 'candidatos.nombre',
+                'candidatos.orden',
                 'listas.descripcion as lista',
                 DB::raw('SUM(votos.votos) as total_votos')
             )
@@ -142,6 +145,7 @@ class VotoController extends Controller
                 'locals.descripcion',
                 'candidatos.id',
                 'candidatos.nombre',
+                'candidatos.orden',
                 'listas.descripcion'
             )
             ->orderBy('locals.descripcion')
@@ -156,6 +160,7 @@ class VotoController extends Controller
                     'votos.mesa',
                     'candidatos.id',
                     'candidatos.nombre',
+                    'candidatos.orden',
                     'listas.descripcion as lista',
                     DB::raw('SUM(votos.votos) as total_votos')
                 )
@@ -164,6 +169,7 @@ class VotoController extends Controller
                     'votos.mesa',
                     'candidatos.id',
                     'candidatos.nombre',
+                    'candidatos.orden',
                     'listas.descripcion'
                 )
                 ->orderBy('locals.descripcion')

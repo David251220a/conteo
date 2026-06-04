@@ -60,6 +60,8 @@ Route::get('/maria-gimenez', [InicioController::class, 'maria'])->name('maria');
 Route::get('/juan-cuevas', [InicioController::class, 'humberto'])->name('cuevas');
 
 
+Route::get('/general', [InicioController::class, 'general'])->name('general');
+
 Route::get('/simulacion', [InicioController::class, 'simulacion'])->name('simulacion');
 
 Route::get('/logout', [LoginController::class, 'logout']);

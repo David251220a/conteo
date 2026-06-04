@@ -41,7 +41,7 @@ class ConsejalImport extends Component
     public function mount()
     {
         $this->general = General::find(1);
-        $this->normal = 3;
+        $this->normal = 1;
         $this->cargarLocales();
         $this->cargarMesas();
     }
@@ -319,71 +319,32 @@ class ConsejalImport extends Component
             });
 
             // 4. Recorrer Excel
-            $especialesVienenEnArchivo = false;
-
             foreach ($datosExcel as $item) {
 
                 $listaNombre = strtolower(trim($item['lista']));
                 $orden = (int) $item['orden'];
                 $votos = (int) $item['votos'];
-                $listaNormalizada = str_replace(
-                    ['á', 'é', 'í', 'ó', 'ú'],
-                    ['a', 'e', 'i', 'o', 'u'],
-                    $listaNombre
-                );
 
-                $esNulo = str_contains($listaNormalizada, 'nulo');
-                $esBlanco = str_contains($listaNormalizada, 'blanco');
-                $esAComputar = str_contains($listaNormalizada, 'computar');
+                // if ($votos == 0) continue;
 
-                if ($this->normal == 3 && ($esNulo || $esBlanco || $esAComputar)) {
+                if (!isset($listas[$listaNombre])) {
+                    DB::rollBack();
+                    $this->emit('mensaje_error', "Lista no encontrada: {$listaNombre}");
+                    return;
+                }
 
-                    $especialesVienenEnArchivo = true;
+                $lista = $listas[$listaNombre];
 
-                    if ($esNulo) {
-                        $ordenEspecial = 97;
-                    } elseif ($esBlanco) {
-                        $ordenEspecial = 98;
-                    } else {
-                        $ordenEspecial = 99;
-                    }
+                $candidato = Candidato::where('lista_id', $lista->id)
+                ->where('tipo_cantidato_id', $tipo_candidato_id)
+                ->where('orden', $orden)
+                ->where('estado_id', 1)
+                ->first();
 
-                    $candidato = Candidato::where('orden', $ordenEspecial)
-                    ->where('tipo_cantidato_id', $tipo_candidato_id)
-                    ->where('estado_id', 1)
-                    ->where('anio', $this->general->anio)
-                    ->where('tipo_votacion', $this->general->tipo_votacion)
-                    ->first();
-
-                    if (!$candidato) {
-                        DB::rollBack();
-                        $this->emit('mensaje_error', "Candidato especial no encontrado: {$listaNombre}");
-                        return;
-                    }
-
-                } else {
-
-                    if (!isset($listas[$listaNombre])) {
-                        DB::rollBack();
-                        $this->emit('mensaje_error', "Lista no encontrada: {$listaNombre}");
-                        return;
-                    }
-
-                    $lista = $listas[$listaNombre];
-
-                    $candidato = Candidato::where('lista_id', $lista->id)
-                    ->where('tipo_cantidato_id', $tipo_candidato_id)
-                    ->where('orden', $orden)
-                    ->where('estado_id', 1)
-                    ->where('anio', $this->general->anio)
-                    ->where('tipo_votacion', $this->general->tipo_votacion)
-                    ->first();
-
-                    if (!$candidato) {
-                        DB::rollBack();
-                        $this->emit('mensaje_error', "Candidato no encontrado (opción {$orden} - {$listaNombre})");
-                        return;
-                    }
+                if (!$candidato) {
+                    DB::rollBack();
+                    $this->emit('mensaje_error', "Candidato no encontrado (orden {$orden} - {$listaNombre})");
+                    return;
                 }
 
                 Voto::create([
@@ -404,39 +365,35 @@ class ConsejalImport extends Component
 
             // 5. Guardar NULOS, BLANCOS, A COMPUTAR
 
-            if ($this->normal != 3) {
+            $especiales = [
+                97 => $this->nulos,
+                98 => $this->blancos,
+                99 => $this->a_computar,
+            ];
 
-                $especiales = [
-                    97 => $this->nulos,
-                    98 => $this->blancos,
-                    99 => $this->a_computar,
-                ];
+            foreach ($especiales as $orden => $votos) {
 
-                foreach ($especiales as $orden => $votos) {
+                // if ($votos <= 0) continue;
 
-                    $candidato = Candidato::where('orden', $orden)
-                    ->where('tipo_cantidato_id', $tipo_candidato_id)
-                    ->where('estado_id', 1)
-                    ->where('anio', $this->general->anio)
-                    ->where('tipo_votacion', $this->general->tipo_votacion)
-                    ->first();
+                $candidato = Candidato::where('orden', $orden)
+                ->where('tipo_cantidato_id', $tipo_candidato_id)
+                ->first();
 
-                    if ($candidato) {
-                        Voto::create([
-                            'local_id' => $this->local_id,
-                            'local_mesa_id' => $this->mesa_id,
-                            'candidato_id' => $candidato->id,
-                            'tipo_cantidato_id' => $tipo_candidato_id,
-                            'lista_id' => $candidato->lista_id,
-                            'movimiento_id' => $candidato->movimiento_id,
-                            'mesa' => $mesa->mesa,
-                            'votos' => $votos,
-                            'estado_id' => 1,
-                            'user_id' => auth()->id(),
-                            'anio' => $this->general->anio,
-                            'tipo_votacion' => $this->general->tipo_votacion,
-                        ]);
-                    }
+                if ($candidato) {
+                    Voto::create([
+                        'local_id' => $this->local_id,
+                        'local_mesa_id' => $this->mesa_id,
+                        'candidato_id' => $candidato->id,
+                        'tipo_cantidato_id' => $tipo_candidato_id,
+                        'lista_id' => $candidato->lista_id,
+                        'movimiento_id' => $candidato->movimiento_id,
+                        'mesa' => $mesa->mesa,
+                        'votos' => $votos,
+                        'estado_id' => 1,
+                        'user_id' => auth()->id(),
+                        'anio' => $this->general->anio,
+                        'tipo_votacion' => $this->general->tipo_votacion,
+                    ]);
                 }
             }
 

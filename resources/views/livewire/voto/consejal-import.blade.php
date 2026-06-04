@@ -32,6 +32,7 @@
                             <select wire:model='normal' class="form-control">
                                 <option value="1">OPCION/LISTA</option>
                                 <option value="2">LISTA/OPCION</option>
+                                <option value="3">LISTA / OPCION / VOTO</option>
                             </select>
                         </div>
 
@@ -47,22 +48,24 @@
                             <input type="file" wire:model="archivo" wire:key="archivo-{{ $normal }}-{{ $local_id }}-{{ $mesa_id }}" class="form-control" accept=".xlsx,.xls,.csv">
                         </div>
 
-                        <div class="form-group col-md-2">
-                            <label>Nulos</label>
-                            <input type="number" wire:model.defer="nulos" class="form-control" min="0">
-                        </div>
+                        @if ($normal != 3)
+                            <div class="form-group col-md-2">
+                                <label>Nulos</label>
+                                <input type="number" wire:model.defer="nulos" class="form-control" min="0">
+                            </div>
 
-                        <div class="form-group col-md-2">
-                            <label>Blancos</label>
-                            <input type="number" wire:model.defer="blancos" class="form-control" min="0">
-                        </div>
+                            <div class="form-group col-md-2">
+                                <label>Blancos</label>
+                                <input type="number" wire:model.defer="blancos" class="form-control" min="0">
+                            </div>
 
-                        <div class="form-group col-md-2">
-                            <label>A computar</label>
-                            <input type="number" wire:model.defer="a_computar" class="form-control" min="0">
-                        </div>
+                            <div class="form-group col-md-2">
+                                <label>A computar</label>
+                                <input type="number" wire:model.defer="a_computar" class="form-control" min="0">
+                            </div>
+                        @endif
 
-                        <div class="form-group col-md-2">
+                        <div class="form-group {{ $normal == 3 ? 'col-md-2' : 'col-md-2' }}">
                             <label>&nbsp;</label>
                             <button type="button" wire:click="verificarExcel" class="btn btn-info btn-block">
                                 Verificar

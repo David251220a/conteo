@@ -49,15 +49,15 @@ class PadronIndex extends Component
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        if($this->data){
-            PadronConsulta::create([
-                'padron_id' => $this->data->id,
-                'anio' => $this->general->anio,
-                'tipo_votacion' => $this->general->tipo_votacion,
-                'estado_id' => 1,
-                'user_id' => auth()->id()
-            ]);
-        }
+        // if($this->data){
+        //     PadronConsulta::create([
+        //         'padron_id' => $this->data->id,
+        //         'anio' => $this->general->anio,
+        //         'tipo_votacion' => $this->general->tipo_votacion,
+        //         'estado_id' => 1,
+        //         'user_id' => auth()->id()
+        //     ]);
+        // }
         if ($this->data) {
             $this->dispatchBrowserEvent('mostrar-mapa');
         }

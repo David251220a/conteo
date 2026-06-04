@@ -106,7 +106,7 @@
                                             @endif
                                             <td>{{$item->lista}}</td>
                                             @if (request('tipo_reporte') <> 'lista')
-                                                <td>{{$item->nombre}}</td>
+                                                <td>{{$item->nombre}} {{ $tipo_candidato_id == 5 ? '- OPCION ' . $item->orden : '' }}</td>
                                             @endif
                                             <td class="text-right">{{ number_format($item->total_votos, 0, ',', '.') }}</td>
                                         </tr>

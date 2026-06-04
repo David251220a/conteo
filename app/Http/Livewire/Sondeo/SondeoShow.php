@@ -43,13 +43,22 @@ class SondeoShow extends Component
         ->where('urnas.tipo_votacion', $this->general->tipo_votacion)
         ->where('urnas.tipo_cantidato_id', $this->tipo_candidato_id);
 
-        if ($this->local_id != 0) {
-            $query->where('urnas.local_id', $this->local_id);
+        if($this->tipo == 2){
+            if ($this->local_id != 0) {
+                $query->where('urnas.local_id', $this->local_id);
+            }
         }
 
-        if ($this->lista_id != 0) {
-            $query->where('urnas.lista_id', $this->lista_id);
+        if($this->tipo == 3){
+            if ($this->lista_id != 0) {
+                $query->where('urnas.lista_id', $this->lista_id);
+            }
         }
+
+
+
+
+
 
         if ($this->tipo == 1) {
             // GENERAL POR CANDIDATO

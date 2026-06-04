@@ -61,6 +61,10 @@ class PlantillaConcejalesExport implements FromArray, WithHeadings
             return $headers;
         }
 
+        if ($this->forma == 3) {
+            return ['lista', 'opcion', 'voto'];
+        }
+
         $headers = ['lista'];
 
         foreach ($ordenes as $orden) {
@@ -78,6 +82,24 @@ class PlantillaConcejalesExport implements FromArray, WithHeadings
 
         $rows = [];
 
+        if ($this->forma == 3) {
+
+            foreach ($listas as $lista) {
+                foreach ($ordenes as $orden) {
+                    $rows[] = [
+                        $lista->descripcion,
+                        $orden,
+                        0,
+                    ];
+                }
+            }
+
+            $rows[] = ['NULOS', 97, 0];
+            $rows[] = ['BLANCOS', 98, 0];
+            $rows[] = ['A COMPUTAR', 99, 0];
+
+            return $rows;
+        }
         // OPCION / LISTA
         // orden | Lista 2A | Lista 3
         if ($this->forma == 1) {
