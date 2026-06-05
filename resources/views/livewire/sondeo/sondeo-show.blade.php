@@ -90,7 +90,7 @@
                                         @if ($tipo == 2)
                                             <td>{{ $item->local }}</td>
                                         @endif
-                                        <td class="text-right" style="font-weight: bold; font-size: 20px">
+                                        <td class="text-left" style="font-weight: bold; font-size: 20px">
                                             {{ number_format($item->total_votos, 0, ',', '.') }}
                                         </td>
                                     </tr>
