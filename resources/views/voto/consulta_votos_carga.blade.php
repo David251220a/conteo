@@ -80,13 +80,20 @@
                                             <td>{{$item->mesa}}</td>
                                             <td class="text-right">{{ number_format($item->total_votos, 0, ',', '.') }}</td>
                                             <td>
-                                                <a href="{{ route('voto.anular_carga_voto', $item) }}" class="btn btn-danger btn-sm">
+                                                {{-- <a href="{{ route('voto.anular_carga_voto', $item) }}" class="btn btn-danger btn-sm">
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle"><circle cx="12" cy="12" r="10"></circle>
                                                         <line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
                                                     </svg>
-                                                </a>
+                                                </a> --}}
+                                                <button type="button" class="btn btn-sm btn-danger mr-3" data-toggle="modal" data-target="#carga_{{ $item->id }}">
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle"><circle cx="12" cy="12" r="10"></circle>
+                                                        <line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
+                                                    </svg>
+                                                </button>
 
                                                 <a href="{{ route('voto.impresion_acta', [$item->id, $item->tipo_cantidato_id]) }}" target="__blank" class="btn btn-info btn-sm">
                                                     <svg
@@ -94,6 +101,7 @@
                                                         stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>
                                                     </svg>
                                                 </a>
+                                                @include('voto.modal_anulacion')
                                             </td>
                                         </tr>
                                     @endforeach
