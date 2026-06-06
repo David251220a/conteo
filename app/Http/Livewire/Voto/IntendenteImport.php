@@ -2,20 +2,20 @@
 
 namespace App\Http\Livewire\Voto;
 
-use App\Exports\PlantillaConcejalesExport;
+use App\Exports\PlantillaIntendenteExport;
 use App\Models\Candidato;
 use App\Models\General;
 use App\Models\Lista;
 use App\Models\Local;
 use App\Models\LocalMesa;
 use App\Models\Voto;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
+use Livewire\WithFileUploads;
 
-class ConsejalImport extends Component
+class IntendenteImport extends Component
 {
     use WithFileUploads;
 
@@ -38,10 +38,12 @@ class ConsejalImport extends Component
     public $mesa_id;
     public $normal;
 
+
     public function mount()
     {
         $this->general = General::find(1);
         $this->normal = 3;
+
         $this->cargarLocales();
         $this->cargarMesas();
     }
@@ -64,7 +66,15 @@ class ConsejalImport extends Component
 
     public function render()
     {
-        return view('livewire.voto.consejal-import');
+        return view('livewire.voto.intendente-import');
+    }
+
+    public function descargarPlantilla()
+    {
+        return Excel::download(
+            new PlantillaIntendenteExport(),
+            'plantilla_intendente.xlsx'
+        );
     }
 
     private function cargarLocales()
@@ -80,22 +90,14 @@ class ConsejalImport extends Component
     private function cargarMesas()
     {
         $this->mesas = LocalMesa::where('estado_id', 1)
-        ->where('anio', $this->general->anio)
-        ->where('tipo_votacion', $this->general->tipo_votacion)
-        ->where('tipo_cantidato_id', 5)
-        ->where('cargado', 0)
-        ->where('local_id', $this->local_id)
-        ->get();
+            ->where('anio', $this->general->anio)
+            ->where('tipo_votacion', $this->general->tipo_votacion)
+            ->where('tipo_cantidato_id', 4)
+            ->where('cargado', 0)
+            ->where('local_id', $this->local_id)
+            ->get();
 
         $this->mesa_id = $this->mesas->first()->id ?? 0;
-    }
-
-    public function descargarPlantilla()
-    {
-        return Excel::download(
-            new PlantillaConcejalesExport($this->normal),
-            'plantilla_concejales.xlsx'
-        );
     }
 
     public function verificarExcel()
@@ -131,123 +133,46 @@ class ConsejalImport extends Component
         $datosExcel = [];
         $totalExcel = 0;
 
-        if ($this->normal == 1) {
-            $colOrden = array_search('orden', $headers);
+        $colLista = array_search('lista', $headers);
+        // $colOpcion = array_search('opcion', $headers);
+        $colVoto = array_search('voto', $headers);
 
-            if ($colOrden === false) {
-                $this->emit('mensaje_error', 'El archivo debe tener la columna orden.');
+        if ($colLista === false || $colVoto === false) {
+            $this->emit('mensaje_error', 'El archivo debe tener las columnas: lista, voto.');
+            return;
+        }
+
+        foreach (array_slice($rows, 1) as $row) {
+
+            if (
+                !isset($row[$colLista]) || trim($row[$colLista]) === ''
+            ) {
+                continue;
+            }
+
+            $lista = strtolower(trim($row[$colLista]));
+            // $orden = (int) $row[$colOpcion];
+            $votos = isset($row[$colVoto]) ? (int) $row[$colVoto] : 0;
+
+            if ($votos < 0) {
+                $this->emit('mensaje_error', 'No se permiten votos negativos.');
                 return;
             }
 
-            foreach (array_slice($rows, 1) as $row) {
-                if (!isset($row[$colOrden]) || $row[$colOrden] === null || $row[$colOrden] === '') {
-                    continue;
-                }
+            $datosExcel[] = [
+                // 'orden' => $orden,
+                'lista' => $lista,
+                'votos' => $votos,
+            ];
 
-                $orden = (int) $row[$colOrden];
-
-                foreach ($headers as $index => $header) {
-                    if ($index == $colOrden) {
-                        continue;
-                    }
-
-                    $votos = isset($row[$index]) ? (int) $row[$index] : 0;
-
-                    if ($votos < 0) {
-                        $this->emit('mensaje_error', 'No se permiten votos negativos.');
-                        return;
-                    }
-
-                    $datosExcel[] = [
-                        'orden' => $orden,
-                        'lista' => $header,
-                        'votos' => $votos,
-                    ];
-
-                    $totalExcel += $votos;
-                }
-            }
+            $totalExcel += $votos;
         }
 
-        if ($this->normal == 2) {
-            $colLista = array_search('lista', $headers);
-
-            if ($colLista === false) {
-                $this->emit('mensaje_error', 'El archivo debe tener la columna lista.');
-                return;
-            }
-
-            foreach (array_slice($rows, 1) as $row) {
-                if (!isset($row[$colLista]) || $row[$colLista] === null || $row[$colLista] === '') {
-                    continue;
-                }
-
-                $lista = strtolower(trim($row[$colLista]));
-
-                foreach ($headers as $index => $header) {
-                    if ($index == $colLista) {
-                        continue;
-                    }
-
-                    $orden = (int) $header;
-                    $votos = isset($row[$index]) ? (int) $row[$index] : 0;
-
-                    if ($votos < 0) {
-                        $this->emit('mensaje_error', 'No se permiten votos negativos.');
-                        return;
-                    }
-
-                    $datosExcel[] = [
-                        'orden' => $orden,
-                        'lista' => $lista,
-                        'votos' => $votos,
-                    ];
-
-                    $totalExcel += $votos;
-                }
-            }
+        if (empty($datosExcel)) {
+            $this->emit('mensaje_error', 'No se encontraron votos válidos en el Excel.');
+            return;
         }
-
-        if ($this->normal == 3) {
-
-            $colLista = array_search('lista', $headers);
-            $colOpcion = array_search('opcion', $headers);
-            $colVoto = array_search('voto', $headers);
-
-            if ($colLista === false || $colOpcion === false || $colVoto === false) {
-                $this->emit('mensaje_error', 'El archivo debe tener las columnas: lista, opcion, voto.');
-                return;
-            }
-
-            foreach (array_slice($rows, 1) as $row) {
-
-                if (
-                    !isset($row[$colLista]) || trim($row[$colLista]) === '' ||
-                    !isset($row[$colOpcion]) || trim($row[$colOpcion]) === ''
-                ) {
-                    continue;
-                }
-
-                $lista = strtolower(trim($row[$colLista]));
-                $orden = (int) $row[$colOpcion];
-                $votos = isset($row[$colVoto]) ? (int) $row[$colVoto] : 0;
-
-                if ($votos < 0) {
-                    $this->emit('mensaje_error', 'No se permiten votos negativos.');
-                    return;
-                }
-
-                $datosExcel[] = [
-                    'orden' => $orden,
-                    'lista' => $lista,
-                    'votos' => $votos,
-                ];
-
-                $totalExcel += $votos;
-            }
-        }
-
-        session()->put('datos_excel_concejales', $datosExcel);
+        session()->put('datos_excel_intendente', $datosExcel);
 
         $this->total_excel = $totalExcel;
         $this->total_extras = (int) $this->nulos + (int) $this->blancos + (int) $this->a_computar;
@@ -270,13 +195,13 @@ class ConsejalImport extends Component
 
         $this->verificado = false;
 
-        session()->forget('datos_excel_concejales');
+        session()->forget('datos_excel_intendente');
     }
 
     public function guardarVotos()
     {
         // 1. Obtener datos del Excel desde sesión
-        $datosExcel = session()->get('datos_excel_concejales', []);
+        $datosExcel = session()->get('datos_excel_intendente', []);
 
         if (empty($datosExcel)) {
             $this->emit('mensaje_error', 'Primero debe verificar el Excel.');
@@ -287,7 +212,7 @@ class ConsejalImport extends Component
 
         try {
 
-            $tipo_candidato_id = 5;
+            $tipo_candidato_id = 4;
 
             // 2. Evitar doble carga de la misma mesa
             $existe = Voto::where('local_id', $this->local_id)
@@ -298,16 +223,16 @@ class ConsejalImport extends Component
             ->where('estado_id', 1)
             ->exists();
 
-            $mesa = LocalMesa::find($this->mesa_id);
-            $mesa->update([
-                'cargado' => 1,
-            ]);
-
             if ($existe) {
                 DB::rollBack();
                 $this->emit('mensaje_error', 'Esta mesa ya fue cargada.');
                 return;
             }
+
+            $mesa = LocalMesa::find($this->mesa_id);
+            $mesa->update([
+                'cargado' => 1,
+            ]);
 
             // 3. Mapear listas (para evitar consultas repetidas)
             $listas = Lista::where('estado_id', 1)
@@ -318,13 +243,10 @@ class ConsejalImport extends Component
                 return strtolower($item->descripcion);
             });
 
-            // 4. Recorrer Excel
-            $especialesVienenEnArchivo = false;
-
             foreach ($datosExcel as $item) {
 
                 $listaNombre = strtolower(trim($item['lista']));
-                $orden = (int) $item['orden'];
+                // $orden = (int) $item['orden'];
                 $votos = (int) $item['votos'];
                 $listaNormalizada = str_replace(
                     ['á', 'é', 'í', 'ó', 'ú'],
@@ -336,9 +258,7 @@ class ConsejalImport extends Component
                 $esBlanco = str_contains($listaNormalizada, 'blanco');
                 $esAComputar = str_contains($listaNormalizada, 'computar');
 
-                if ($this->normal == 3 && ($esNulo || $esBlanco || $esAComputar)) {
-
-                    $especialesVienenEnArchivo = true;
+                if ($esNulo || $esBlanco || $esAComputar) {
 
                     if ($esNulo) {
                         $ordenEspecial = 97;
@@ -373,7 +293,6 @@ class ConsejalImport extends Component
 
                     $candidato = Candidato::where('lista_id', $lista->id)
                     ->where('tipo_cantidato_id', $tipo_candidato_id)
-                    ->where('orden', $orden)
                     ->where('estado_id', 1)
                     ->where('anio', $this->general->anio)
                     ->where('tipo_votacion', $this->general->tipo_votacion)
@@ -381,7 +300,7 @@ class ConsejalImport extends Component
 
                     if (!$candidato) {
                         DB::rollBack();
-                        $this->emit('mensaje_error', "Candidato no encontrado (opción {$orden} - {$listaNombre})");
+                        $this->emit('mensaje_error', "Candidato no encontrado ({$listaNombre})");
                         return;
                     }
                 }
@@ -402,49 +321,11 @@ class ConsejalImport extends Component
                 ]);
             }
 
-            // 5. Guardar NULOS, BLANCOS, A COMPUTAR
-
-            if ($this->normal != 3) {
-
-                $especiales = [
-                    97 => $this->nulos,
-                    98 => $this->blancos,
-                    99 => $this->a_computar,
-                ];
-
-                foreach ($especiales as $orden => $votos) {
-
-                    $candidato = Candidato::where('orden', $orden)
-                    ->where('tipo_cantidato_id', $tipo_candidato_id)
-                    ->where('estado_id', 1)
-                    ->where('anio', $this->general->anio)
-                    ->where('tipo_votacion', $this->general->tipo_votacion)
-                    ->first();
-
-                    if ($candidato) {
-                        Voto::create([
-                            'local_id' => $this->local_id,
-                            'local_mesa_id' => $this->mesa_id,
-                            'candidato_id' => $candidato->id,
-                            'tipo_cantidato_id' => $tipo_candidato_id,
-                            'lista_id' => $candidato->lista_id,
-                            'movimiento_id' => $candidato->movimiento_id,
-                            'mesa' => $mesa->mesa,
-                            'votos' => $votos,
-                            'estado_id' => 1,
-                            'user_id' => auth()->id(),
-                            'anio' => $this->general->anio,
-                            'tipo_votacion' => $this->general->tipo_votacion,
-                        ]);
-                    }
-                }
-            }
-
             DB::commit();
 
             // 6. Limpiar todo
-            session()->forget('datos_excel_concejales');
-            $this->cargarMesas();
+            session()->forget('datos_excel_intendente');
+
             $this->reset([
                 'archivo',
                 'verificado',
@@ -456,6 +337,7 @@ class ConsejalImport extends Component
                 'a_computar'
             ]);
 
+            $this->cargarMesas();
             $this->emit('mensaje_exitoso', 'Votos cargados correctamente.');
 
         } catch (\Throwable $e) {
@@ -465,5 +347,6 @@ class ConsejalImport extends Component
             $this->emit('mensaje_error', 'Error al guardar: ' . $e->getMessage());
         }
     }
+
 
 }

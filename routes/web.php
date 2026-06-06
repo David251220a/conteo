@@ -129,6 +129,9 @@ Route::group([
     Route::get('/voto/{local_mesa}/anular', [VotoController::class, 'anular_carga_voto'])->name('voto.anular_carga_voto');
     Route::get('/voto/{local_mesa_id}/{tipo_candidato_id}/impresion-votos', [VotoController::class, 'impresion_acta'])->name('voto.impresion_acta');
 
+
+    Route::get('/voto-importar/intendente-cargar', [VotoController::class, 'intendente_import'])->name('voto.intendente_import');
+
     Route::get('/sondeo', [UrnaController::class, 'index'])->name('sondeo.index');
     Route::get('/sondeo/show', [UrnaController::class, 'show'])->name('sondeo.show');
 

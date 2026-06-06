@@ -83,6 +83,11 @@ class VotoController extends Controller
         return view('voto.consulta_votos_carga', compact('tipoCandidato','tipo_candidato_id','locales','data','totalGeneral'));
     }
 
+    public function intendente_import()
+    {
+        return view('voto.intendente_import');
+    }
+
     public function consulta_lista(Request $request)
     {
         $tipoCandidato = $this->filtro_tipo_candidato_segundo();

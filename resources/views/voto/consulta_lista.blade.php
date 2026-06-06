@@ -96,20 +96,23 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $item)
-                                        <tr>
-                                            @if (request('tipo_reporte') == 'local')
-                                                <td>{{$item->local}}</td>
-                                            @endif
-                                            @if (request('tipo_reporte') == 'mesa')
-                                                <td>{{$item->local}}</td>
-                                                <td class="text-right">{{$item->mesa}}</td>
-                                            @endif
-                                            <td>{{$item->lista}}</td>
-                                            @if (request('tipo_reporte') <> 'lista')
-                                                <td>{{$item->nombre}} {{ $tipo_candidato_id == 5 ? '- OPCION ' . $item->orden : '' }}</td>
-                                            @endif
-                                            <td class="text-right">{{ number_format($item->total_votos, 0, ',', '.') }}</td>
-                                        </tr>
+                                        @if ($item->total_votos > 0)
+                                            <tr>
+                                                @if (request('tipo_reporte') == 'local')
+                                                    <td>{{$item->local}}</td>
+                                                @endif
+                                                @if (request('tipo_reporte') == 'mesa')
+                                                    <td>{{$item->local}}</td>
+                                                    <td class="text-right">{{$item->mesa}}</td>
+                                                @endif
+                                                <td>{{$item->lista}}</td>
+                                                @if (request('tipo_reporte') <> 'lista')
+                                                    <td>{{$item->nombre}} {{ $tipo_candidato_id == 5 ? '- OPCION ' . $item->orden : '' }}</td>
+                                                @endif
+                                                <td class="text-right">{{ number_format($item->total_votos, 0, ',', '.') }}</td>
+                                            </tr>
+                                        @endif
+
                                     @endforeach
                                 </tbody>
                                 <tfoot>
