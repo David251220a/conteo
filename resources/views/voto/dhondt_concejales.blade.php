@@ -9,7 +9,9 @@
             font-family: DejaVu Sans, sans-serif;
             font-size: 11px;
             color: #000;
+            margin-bottom: 45px;
         }
+
 
         .titulo {
             text-align: center;
@@ -64,11 +66,12 @@
 
         .footer {
             position: fixed;
-            bottom: 5px;
+            bottom: 8px;
             left: 0;
             right: 0;
             text-align: center;
             font-size: 9px;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -180,7 +183,8 @@
     </table>
 
     <div class="footer">
-        Generado el {{ now()->format('d/m/Y H:i') }}
+        <div>Equipo Técnico de Manuel Aguilar</div>
+        <div>Generado el {{ now()->format('d/m/Y H:i') }}</div>
     </div>
 
 </body>
