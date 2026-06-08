@@ -41,7 +41,7 @@ class ConsejalImport extends Component
     public function mount()
     {
         $this->general = General::find(1);
-        $this->normal = 2;
+        $this->normal = 3;
         $this->cargarLocales();
         $this->cargarMesas();
     }
@@ -184,23 +184,8 @@ class ConsejalImport extends Component
 
                 $lista = strtolower(trim($row[$colLista]));
 
-                $listaNormalizada = str_replace(
-                    ['á', 'é', 'í', 'ó', 'ú'],
-                    ['a', 'e', 'i', 'o', 'u'],
-                    $lista
-                );
-
-                $esEspecial = str_contains($listaNormalizada, 'nulo')
-                    || str_contains($listaNormalizada, 'blanco')
-                    || str_contains($listaNormalizada, 'computar');
-
                 foreach ($headers as $index => $header) {
                     if ($index == $colLista) {
-                        continue;
-                    }
-
-                    // Si es NULO / BLANCO / A COMPUTAR, solo tomar columna 1
-                    if ($esEspecial && trim($header) != '1') {
                         continue;
                     }
 
@@ -351,7 +336,7 @@ class ConsejalImport extends Component
                 $esBlanco = str_contains($listaNormalizada, 'blanco');
                 $esAComputar = str_contains($listaNormalizada, 'computar');
 
-                if ($esNulo || $esBlanco || $esAComputar) {
+                if ($this->normal == 3 && ($esNulo || $esBlanco || $esAComputar)) {
 
                     $especialesVienenEnArchivo = true;
 
@@ -419,7 +404,7 @@ class ConsejalImport extends Component
 
             // 5. Guardar NULOS, BLANCOS, A COMPUTAR
 
-            if (!$especialesVienenEnArchivo) {
+            if ($this->normal != 3) {
 
                 $especiales = [
                     97 => $this->nulos,

@@ -48,7 +48,7 @@
                             <input type="file" wire:model="archivo" wire:key="archivo-{{ $normal }}-{{ $local_id }}-{{ $mesa_id }}" class="form-control" accept=".xlsx,.xls,.csv">
                         </div>
 
-                        @if ($normal != 3)
+                        {{-- @if ($normal != 3)
                             <div class="form-group col-md-2">
                                 <label>Nulos</label>
                                 <input type="number" wire:model.defer="nulos" class="form-control" min="0">
@@ -63,7 +63,7 @@
                                 <label>A computar</label>
                                 <input type="number" wire:model.defer="a_computar" class="form-control" min="0">
                             </div>
-                        @endif
+                        @endif --}}
 
                         <div class="form-group {{ $normal == 3 ? 'col-md-2' : 'col-md-2' }}">
                             <label>&nbsp;</label>

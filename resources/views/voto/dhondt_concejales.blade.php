@@ -152,9 +152,12 @@
         <thead>
             <tr>
                 <th width="5%">#</th>
-                <th>Lista</th>
-                <th width="15%">Orden</th>
+                <th width="10%">Lista</th>
+                <th width="10%">Opcion</th>
                 <th>Candidato</th>
+                <th width="10%">Votos</th>
+                {{-- <th width="10%">Divisor</th>
+                <th width="10%">Cociente</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -164,6 +167,9 @@
                     <td>{{ $item->lista->descripcion ?? '' }}</td>
                     <td class="text-center">{{ $item->orden }}</td>
                     <td>{{ $item->nombre }}</td>
+                    <td class="text-right">{{ number_format($item->total_votos, 0, ',', '.') }}</td>
+                    {{-- <td class="text-right">{{ $item->divisor  }}</td>
+                    <td class="text-right">{{ number_format($item->cociente, 2, ',', '.') }}</td> --}}
                 </tr>
             @empty
                 <tr>
