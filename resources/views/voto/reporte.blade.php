@@ -140,16 +140,22 @@
                 @endforeach
             </tbody>
             <tfoot>
-                <tr>
-                    @php
-                        if ($local_descripcion == 'TODOS') {
-                            $fil = 8;
-                        } else {
-                            $fil = 4;
-                        }
+                <tr class="total">
+                    <th colspan="3" style="text-align: left">TOTAL GENERAL</th>
 
-                    @endphp
-                    <th colspan="{{$fil}}" style="text-align: left">Total</th>
+                    @foreach ($localesDinamicos as $local_id => $local)
+                        <th style="text-align: right">
+                            {{ number_format(
+                                $data->sum(function ($row) use ($local_id) {
+                                    return $row['locales'][$local_id] ?? 0;
+                                }),
+                                0,
+                                ',',
+                                '.'
+                            ) }}
+                        </th>
+                    @endforeach
+
                     <th style="text-align: right">
                         {{ number_format($data->sum('total'), 0, ',', '.') }}
                     </th>
