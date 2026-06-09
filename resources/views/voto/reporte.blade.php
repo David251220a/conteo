@@ -77,7 +77,7 @@
     <div class="titulo">REPORTE DE VOTOS</div>
 
     <div class="subtitulo">
-        {{ strtoupper($tipo_reporte ?? 'GENERAL') }}
+        {{ str_replace('_' ,' ', strtoupper($tipo_reporte ?? 'GENERAL')) }}
     </div>
     @php
         $tipo_vot = '';
@@ -99,80 +99,138 @@
         <strong>Local:</strong> {{ $local_descripcion ?? 'TODOS' }} <br>
         <strong>Año:</strong> {{ $general->anio ?? '' }} |
         <strong>Tipo votación:</strong> {{ $tipo_vot ?? '' }}
+        @if ($tipo_reporte == 'lista_local')
+            <strong>Lista:</strong> {{ $lista_descripcion ?? '' }}
+        @endif
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                @if (($tipo_reporte ?? 'general') == 'local')
-                    <th>Local</th>
-                @endif
-
-                @if (($tipo_reporte ?? 'general') == 'mesa')
-                    <th>Local</th>
-                    <th>Mesa</th>
-                @endif
-
-                <th>Lista</th>
-
-                @if (($tipo_reporte ?? 'general') != 'lista')
+    @if ($tipo_reporte == 'lista_local')
+        <table>
+            <thead>
+                <tr>
+                    <th>Lista</th>
                     <th>Candidato</th>
-                @endif
+                    <th>Opción</th>
 
-                <th>Total Votos</th>
-            </tr>
-        </thead>
+                    @foreach ($localesDinamicos as $local)
+                        <th>{{ $local }}</th>
+                    @endforeach
 
-        <tbody>
-            @foreach ($data as $item)
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach ($data as $row)
+                    <tr>
+                        <td>{{ $row['lista'] }}</td>
+                        <td>{{ $row['candidato'] }}</td>
+                        <td>{{ $row['opcion'] }}</td>
+
+                        @foreach ($localesDinamicos as $local_id => $local)
+                            <td class="text-right">
+                                {{ number_format($row['locales'][$local_id] ?? 0, 0, ',', '.') }}
+                            </td>
+                        @endforeach
+
+                        <td class="text-right font-weight-bold">
+                            {{ number_format($row['total'], 0, ',', '.') }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    @php
+                        if ($local_descripcion == 'TODOS') {
+                            $fil = 8;
+                        } else {
+                            $fil = 4;
+                        }
+
+                    @endphp
+                    <th colspan="{{$fil}}" style="text-align: left">Total</th>
+                    <th style="text-align: right">
+                        {{ number_format($data->sum('total'), 0, ',', '.') }}
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+    @else
+        <table>
+            <thead>
                 <tr>
                     @if (($tipo_reporte ?? 'general') == 'local')
-                        <td>{{ $item->local }}</td>
+                        <th>Local</th>
                     @endif
 
                     @if (($tipo_reporte ?? 'general') == 'mesa')
-                        <td>{{ $item->local }}</td>
-                        <td class="text-center">{{ $item->mesa }}</td>
+                        <th>Local</th>
+                        <th>Mesa</th>
                     @endif
 
-                    <td>{{ $item->lista }}</td>
+                    <th>Lista</th>
 
                     @if (($tipo_reporte ?? 'general') != 'lista')
-                        <td>{{ $item->nombre }}</td>
+                        <th>Candidato</th>
                     @endif
 
+                    <th>Total Votos</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach ($data as $item)
+                    <tr>
+                        @if (($tipo_reporte ?? 'general') == 'local')
+                            <td>{{ $item->local }}</td>
+                        @endif
+
+                        @if (($tipo_reporte ?? 'general') == 'mesa')
+                            <td>{{ $item->local }}</td>
+                            <td class="text-center">{{ $item->mesa }}</td>
+                        @endif
+
+                        <td>{{ $item->lista }}</td>
+
+                        @if (($tipo_reporte ?? 'general') != 'lista')
+                            <td>{{ $item->nombre }}</td>
+                        @endif
+
+                        <td class="text-right">
+                            {{ number_format($item->total_votos, 0, ',', '.') }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+
+            <tfoot>
+                @php
+                    $colspan = 2;
+
+                    if (($tipo_reporte ?? 'general') == 'local') {
+                        $colspan = 3;
+                    }
+
+                    if (($tipo_reporte ?? 'general') == 'mesa') {
+                        $colspan = 4;
+                    }
+
+                    if (($tipo_reporte ?? 'general') == 'lista') {
+                        $colspan = 1;
+                    }
+                @endphp
+
+                <tr class="total">
+                    <td colspan="{{ $colspan }}">TOTAL GENERAL</td>
                     <td class="text-right">
-                        {{ number_format($item->total_votos, 0, ',', '.') }}
+                        {{ number_format($data->sum('total_votos'), 0, ',', '.') }}
                     </td>
                 </tr>
-            @endforeach
-        </tbody>
+            </tfoot>
+        </table>
+    @endif
 
-        <tfoot>
-            @php
-                $colspan = 2;
-
-                if (($tipo_reporte ?? 'general') == 'local') {
-                    $colspan = 3;
-                }
-
-                if (($tipo_reporte ?? 'general') == 'mesa') {
-                    $colspan = 4;
-                }
-
-                if (($tipo_reporte ?? 'general') == 'lista') {
-                    $colspan = 1;
-                }
-            @endphp
-
-            <tr class="total">
-                <td colspan="{{ $colspan }}">TOTAL GENERAL</td>
-                <td class="text-right">
-                    {{ number_format($data->sum('total_votos'), 0, ',', '.') }}
-                </td>
-            </tr>
-        </tfoot>
-    </table>
 
     <div class="footer">
         <div>Equipo Técnico de Manuel Aguilar</div>

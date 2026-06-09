@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Candidato;
 use App\Models\General;
+use App\Models\Lista;
 use App\Models\Local;
 use App\Models\LocalMesa;
 use App\Models\TipoCantidato;
@@ -97,8 +98,21 @@ class VotoController extends Controller
             $tipo_candidato_id = $request->tipo_candidato_id;
         }
 
-        $local_id = $request->local_id != 0 ? $request->local_id : null;
+        $listas = Lista::where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('anio', $this->general->anio)
+        ->whereNotIn('orden',[97,98,99])
+        ->get();
+
         $tipo_reporte = $request->tipo_reporte ?? 'general';
+
+        if ($tipo_reporte == 'lista_local'){
+            $lista_id = $request->lista_id != 0 ? $request->lista_id : null;
+        }else {
+            $lista_id = null;
+        }
+
+
+        $local_id = $request->local_id != 0 ? $request->local_id : null;
 
         $locales = Local::where('estado_id', 1)
         ->where('anio', $this->general->anio)
@@ -115,7 +129,12 @@ class VotoController extends Controller
         ->where('votos.tipo_cantidato_id', $tipo_candidato_id)
         ->when($local_id, function ($query) use ($local_id) {
             $query->where('votos.local_id', $local_id);
+        })
+        ->when($lista_id, function ($query) use ($lista_id) {
+            $query->where('listas.id', $lista_id);
         });
+
+        $localesDinamicos= null;
 
         if ($tipo_reporte == 'general') {
             $data = $query
@@ -198,7 +217,60 @@ class VotoController extends Controller
                 ->get();
         }
 
-        return view('voto.consulta_lista', compact('tipo_candidato_id', 'tipoCandidato', 'locales','data'));
+        if ($tipo_reporte == 'lista_local') {
+
+            $resultados = $query
+            ->select(
+                'locals.id as local_id',
+                'locals.descripcion as local',
+                'candidatos.id as candidato_id',
+                'candidatos.nombre',
+                'candidatos.orden',
+                'listas.descripcion as lista',
+                DB::raw('SUM(votos.votos) as total_votos')
+            )
+            ->groupBy(
+                'locals.id',
+                'locals.descripcion',
+                'candidatos.id',
+                'candidatos.nombre',
+                'candidatos.orden',
+                'listas.descripcion'
+            )
+            ->get();
+
+            $localesDinamicos = $resultados
+            ->pluck('local', 'local_id')
+            ->unique();
+
+            $data = $resultados
+            ->groupBy('candidato_id')
+            ->map(function ($items) use ($localesDinamicos) {
+
+                $primero = $items->first();
+
+                $fila = [
+                    'lista' => $primero->lista,
+                    'candidato' => $primero->nombre,
+                    'opcion' => $primero->orden,
+                    'locales' => [],
+                    'total' => $items->sum('total_votos'),
+                ];
+
+                foreach ($localesDinamicos as $local_id => $local) {
+                    $fila['locales'][$local_id] = $items
+                        ->where('local_id', $local_id)
+                        ->sum('total_votos');
+                }
+
+                return $fila;
+            })
+            ->sortByDesc('total')
+            ->values();
+        }
+
+        return view('voto.consulta_lista', compact('tipo_candidato_id', 'tipoCandidato', 'locales','data','localesDinamicos','tipo_reporte'
+        , 'listas'));
     }
 
     public function consulta_pdf(LocalMesa $localMesa)
@@ -214,9 +286,13 @@ class VotoController extends Controller
     public function reporte(Request $request)
     {
         $datos = $this->getDataConsulta($request);
+        $orientacion = $request->tipo_reporte == 'lista_local'
+        ? 'landscape'
+        : 'portrait';
+
         $pdf = Pdf::loadView('voto.reporte', array_merge($datos, [
             'general' => $this->general,
-        ]));
+        ]))->setPaper('legal', $orientacion);
 
         return $pdf->stream('voto.pdf');
     }
@@ -224,15 +300,33 @@ class VotoController extends Controller
     private function getDataConsulta($request)
     {
         $tipoCandidato = $this->filtro_tipo_candidato_segundo();
-
         $tipo_candidato_id = $this->primer_filtro();
-
-        if ($request->tipo_candidato_id) {
+        if ($request->tipo_candidato_id)
+        {
             $tipo_candidato_id = $request->tipo_candidato_id;
         }
 
-        $local_id = $request->local_id != 0 ? $request->local_id : null;
+        $listas = Lista::where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('anio', $this->general->anio)
+        ->whereNotIn('orden',[97,98,99])
+        ->get();
+
         $tipo_reporte = $request->tipo_reporte ?? 'general';
+
+        if ($tipo_reporte == 'lista_local'){
+            $lista_id = $request->lista_id != 0 ? $request->lista_id : null;
+        }else {
+            $lista_id = null;
+        }
+
+
+        $local_id = $request->local_id != 0 ? $request->local_id : null;
+
+        $locales = Local::where('estado_id', 1)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->get();
+
         $query = Voto::query()
         ->join('candidatos', 'candidatos.id', '=', 'votos.candidato_id')
         ->join('listas', 'listas.id', '=', 'candidatos.lista_id')
@@ -241,60 +335,153 @@ class VotoController extends Controller
         ->where('votos.anio', $this->general->anio)
         ->where('votos.tipo_votacion', $this->general->tipo_votacion)
         ->where('votos.tipo_cantidato_id', $tipo_candidato_id)
-        ->when($local_id, fn($q) => $q->where('votos.local_id', $local_id));
+        ->when($local_id, function ($query) use ($local_id) {
+            $query->where('votos.local_id', $local_id);
+        })
+        ->when($lista_id, function ($query) use ($lista_id) {
+            $query->where('listas.id', $lista_id);
+        });
+
+        $localesDinamicos= null;
 
         if ($tipo_reporte == 'general') {
-            $data = $query->select(
+            $data = $query
+            ->select(
                 'candidatos.id',
                 'candidatos.nombre',
                 'listas.descripcion as lista',
+                'candidatos.orden',
                 DB::raw('SUM(votos.votos) as total_votos')
             )
-            ->groupBy('candidatos.id', 'candidatos.nombre', 'listas.descripcion')
-            ->orderByDesc('total_votos')
+            ->groupBy(
+                'candidatos.id',
+                'candidatos.nombre',
+                'listas.descripcion',
+                'candidatos.orden'
+            )
+            ->orderByDesc('total_votos', 'DESC')
             ->get();
         }
 
         if ($tipo_reporte == 'local') {
-            $data = $query->select(
+            $data = $query
+            ->select(
                 'locals.descripcion as local',
+                'candidatos.id',
                 'candidatos.nombre',
+                'candidatos.orden',
                 'listas.descripcion as lista',
                 DB::raw('SUM(votos.votos) as total_votos')
             )
-            ->groupBy('locals.descripcion','candidatos.nombre','listas.descripcion')
+            ->groupBy(
+                'locals.descripcion',
+                'candidatos.id',
+                'candidatos.nombre',
+                'candidatos.orden',
+                'listas.descripcion'
+            )
             ->orderBy('locals.descripcion')
-            ->orderByDesc('total_votos')
+            ->orderByDesc('total_votos', 'DESC')
             ->get();
         }
 
         if ($tipo_reporte == 'mesa') {
-            $data = $query->select(
-                'locals.descripcion as local',
-                'votos.mesa',
-                'candidatos.nombre',
-                'listas.descripcion as lista',
-                DB::raw('SUM(votos.votos) as total_votos')
-            )
-            ->groupBy('locals.descripcion','votos.mesa','candidatos.nombre','listas.descripcion')
-            ->orderBy('locals.descripcion')
-            ->orderBy('votos.mesa')
-            ->orderByDesc('total_votos')
-            ->get();
+            $data = $query
+                ->select(
+                    'locals.descripcion as local',
+                    'votos.mesa',
+                    'candidatos.id',
+                    'candidatos.nombre',
+                    'candidatos.orden',
+                    'listas.descripcion as lista',
+                    DB::raw('SUM(votos.votos) as total_votos')
+                )
+                ->groupBy(
+                    'locals.descripcion',
+                    'votos.mesa',
+                    'candidatos.id',
+                    'candidatos.nombre',
+                    'candidatos.orden',
+                    'listas.descripcion'
+                )
+                ->orderBy('locals.descripcion')
+                ->orderBy('votos.mesa')
+                ->orderByDesc('total_votos', 'DESC')
+                ->get();
         }
 
         if ($tipo_reporte == 'lista') {
-            $data = $query->select(
+            $data = $query
+                ->select(
+                    'listas.id',
+                    'listas.descripcion as lista',
+                    DB::raw('SUM(votos.votos) as total_votos')
+                )
+                ->groupBy(
+                    'listas.id',
+                    'listas.descripcion'
+                )
+                ->orderByDesc('total_votos')
+                ->get();
+        }
+
+        if ($tipo_reporte == 'lista_local') {
+
+            $resultados = $query
+            ->select(
+                'locals.id as local_id',
+                'locals.descripcion as local',
+                'candidatos.id as candidato_id',
+                'candidatos.nombre',
+                'candidatos.orden',
                 'listas.descripcion as lista',
                 DB::raw('SUM(votos.votos) as total_votos')
             )
-            ->groupBy('listas.descripcion')
-            ->orderByDesc('total_votos')
+            ->groupBy(
+                'locals.id',
+                'locals.descripcion',
+                'candidatos.id',
+                'candidatos.nombre',
+                'candidatos.orden',
+                'listas.descripcion'
+            )
             ->get();
+
+            $localesDinamicos = $resultados
+            ->pluck('local', 'local_id')
+            ->unique();
+
+            $data = $resultados
+            ->groupBy('candidato_id')
+            ->map(function ($items) use ($localesDinamicos) {
+
+                $primero = $items->first();
+
+                $fila = [
+                    'lista' => $primero->lista,
+                    'candidato' => $primero->nombre,
+                    'opcion' => $primero->orden,
+                    'locales' => [],
+                    'total' => $items->sum('total_votos'),
+                ];
+
+                foreach ($localesDinamicos as $local_id => $local) {
+                    $fila['locales'][$local_id] = $items
+                        ->where('local_id', $local_id)
+                        ->sum('total_votos');
+                }
+
+                return $fila;
+            })
+            ->sortByDesc('total')
+            ->values();
         }
 
         $local_descripcion = $local_id
         ? Local::find($local_id)?->descripcion
+        : 'TODOS';
+
+        $lista_descripcion = $lista_id ? Lista::find($lista_id)?->descripcion
         : 'TODOS';
 
         $tipo_candidato_descripcion = $tipoCandidato
@@ -308,7 +495,10 @@ class VotoController extends Controller
             'local_id',
             'tipoCandidato',
             'local_descripcion',
-            'tipo_candidato_descripcion'
+            'tipo_candidato_descripcion',
+            'localesDinamicos',
+            'tipo_reporte',
+            'lista_descripcion'
         );
     }
 

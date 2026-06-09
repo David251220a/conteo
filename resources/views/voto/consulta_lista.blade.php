@@ -49,6 +49,24 @@
                             </div>
                         </div>
 
+                        @if ($tipo_reporte == 'lista_local')
+                            <!-- LISTA -->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="lista_id">Listas</label>
+                                    <select name="lista_id" id="lista_id" class="form-control">
+                                        <option value="0">-- Todos --</option>
+                                        @foreach ($listas as $item)
+                                            <option {{ request('lista_id') == $item->id ? 'selected' : '' }} value="{{ $item->id }}">
+                                                {{ $item->descripcion }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        @endif
+
+
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="tipo_reporte">Tipo Reporte</label>
@@ -57,6 +75,7 @@
                                     <option {{ request('tipo_reporte') == 'local' ? 'selected' : '' }} value="local">LOCAL</option>
                                     <option {{ request('tipo_reporte') == 'mesa' ? 'selected' : '' }} value="mesa">MESA</option>
                                     <option {{ request('tipo_reporte') == 'lista' ? 'selected' : '' }} value="lista">LISTA</option>
+                                    <option {{ request('tipo_reporte') == 'lista_local' ? 'selected' : '' }} value="lista_local">LISTA/LOCAL</option>
                                 </select>
                             </div>
                         </div>
@@ -74,66 +93,109 @@
                     </div>
                 </form>
 
+
+
                 <div class="row mt-1">
                     <div  class="col-xl-12 col-md-12 col-sm-12 col-12">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-checkable table-highlight-head mb-4">
-                                <thead>
-                                    <tr>
-                                        @if (request('tipo_reporte') == 'local')
-                                            <th>Local</th>
-                                        @endif
-                                        @if (request('tipo_reporte') == 'mesa')
-                                            <th>Local</th>
-                                            <th>Mesa</th>
-                                        @endif
-                                        <th class="">Lista</th>
-                                        @if (request('tipo_reporte') <> 'lista')
-                                            <th class="">Candidato</th>
-                                        @endif
-                                        <th class="text-center" width="10%">Total Voto</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data as $item)
-                                        @if ($item->total_votos > 0)
-                                            <tr>
-                                                @if (request('tipo_reporte') == 'local')
-                                                    <td>{{$item->local}}</td>
-                                                @endif
-                                                @if (request('tipo_reporte') == 'mesa')
-                                                    <td>{{$item->local}}</td>
-                                                    <td class="text-right">{{$item->mesa}}</td>
-                                                @endif
-                                                <td>{{$item->lista}}</td>
-                                                @if (request('tipo_reporte') <> 'lista')
-                                                    <td>{{$item->nombre}} {{ $tipo_candidato_id == 5 ? '- OPCION ' . $item->orden : '' }}</td>
-                                                @endif
-                                                <td class="text-right">{{ number_format($item->total_votos, 0, ',', '.') }}</td>
-                                            </tr>
-                                        @endif
+                            @if ($tipo_reporte == 'lista_local')
 
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        @php
-                                            $i = 2;
-                                            if(request('tipo_reporte') == 'local'){
-                                                $i = 3;
-                                            }
-                                            if(request('tipo_reporte') == 'mesa'){
-                                                $i = 4;
-                                            }
-                                            if(request('tipo_reporte') == 'lista'){
-                                                $i = 1;
-                                            }
-                                        @endphp
-                                        <td colspan="{{$i}}" style="font-weight: bold; font-size:20px">Total General</td>
-                                        <td class="text-right" style="font-weight: bold; font-size:20px">{{ number_format($data->sum('total_votos'), 0, ',', '.') }}</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                <table class="table table-bordered table-hover table-checkable table-highlight-head mb-4">
+                                    <thead>
+                                        <tr>
+                                            <th>Lista</th>
+                                            <th>Candidato</th>
+                                            <th>Opción</th>
+
+                                            @foreach ($localesDinamicos as $local)
+                                                <th>{{ $local }}</th>
+                                            @endforeach
+
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach ($data as $row)
+                                            <tr>
+                                                <td>{{ $row['lista'] }}</td>
+                                                <td>{{ $row['candidato'] }}</td>
+                                                <td>{{ $row['opcion'] }}</td>
+
+                                                @foreach ($localesDinamicos as $local_id => $local)
+                                                    <td class="text-right">
+                                                        {{ number_format($row['locales'][$local_id] ?? 0, 0, ',', '.') }}
+                                                    </td>
+                                                @endforeach
+
+                                                <td class="text-right font-weight-bold">
+                                                    {{ number_format($row['total'], 0, ',', '.') }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                            @else
+                                <table class="table table-bordered table-hover table-checkable table-highlight-head mb-4">
+                                    <thead>
+                                        <tr>
+                                            @if (request('tipo_reporte') == 'local')
+                                                <th>Local</th>
+                                            @endif
+                                            @if (request('tipo_reporte') == 'mesa')
+                                                <th>Local</th>
+                                                <th>Mesa</th>
+                                            @endif
+                                            <th class="">Lista</th>
+                                            @if (request('tipo_reporte') <> 'lista')
+                                                <th class="">Candidato</th>
+                                            @endif
+                                            <th class="text-center" width="10%">Total Voto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($data as $item)
+                                            @if ($item->total_votos > 0)
+                                                <tr>
+                                                    @if (request('tipo_reporte') == 'local')
+                                                        <td>{{$item->local}}</td>
+                                                    @endif
+                                                    @if (request('tipo_reporte') == 'mesa')
+                                                        <td>{{$item->local}}</td>
+                                                        <td class="text-right">{{$item->mesa}}</td>
+                                                    @endif
+                                                    <td>{{$item->lista}}</td>
+                                                    @if (request('tipo_reporte') <> 'lista')
+                                                        <td>{{$item->nombre}} {{ $tipo_candidato_id == 5 ? '- OPCION ' . $item->orden : '' }}</td>
+                                                    @endif
+                                                    <td class="text-right">{{ number_format($item->total_votos, 0, ',', '.') }}</td>
+                                                </tr>
+                                            @endif
+
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            @php
+                                                $i = 2;
+                                                if(request('tipo_reporte') == 'local'){
+                                                    $i = 3;
+                                                }
+                                                if(request('tipo_reporte') == 'mesa'){
+                                                    $i = 4;
+                                                }
+                                                if(request('tipo_reporte') == 'lista'){
+                                                    $i = 1;
+                                                }
+                                            @endphp
+                                            <td colspan="{{$i}}" style="font-weight: bold; font-size:20px">Total General</td>
+                                            <td class="text-right" style="font-weight: bold; font-size:20px">{{ number_format($data->sum('total_votos'), 0, ',', '.') }}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            @endif
+
                         </div>
                     </div>
                 </div>
