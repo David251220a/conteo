@@ -104,6 +104,11 @@ Route::group([
     Route::get('/consulta/referentes-por-local/{localId}', [ConsultaController::class, 'referentesPorLocal'])->name('consulta.referentes.local');
     Route::get('/consulta/simulacion', [SimuladorController::class, 'simulacion'])->name('consulta.simulacion');
     Route::get('/consulta/simulacion/{fecha}/ver', [SimuladorController::class, 'simulacion_ver'])->name('consulta.simulacion_ver');
+    Route::get('/consulta/referentes-ver-movil/{referenteId}', [ConsultaController::class, 'referentesMovil'])->name('consulta.referentes.movil');
+    Route::post('/consulta/referente/asignar-vehiculo', [ConsultaController::class, 'asginar_movil'])->name('consulta.referentes.asginar_movil');
+    Route::get('/consulta/referentes-imprimir', [ConsultaController::class, 'referenteImprimir'])->name('consulta.referentes.imprimir');
+    Route::get('/consulta/resumen', [ConsultaController::class, 'resumen'])->name('consulta.resumen');
+    Route::get('/consulta/resumen/imprimir', [ConsultaController::class, 'resumen_imprimir'])->name('consulta.resumen.imprimir');
 
     Route::get('/lista', [ListaController::class, 'index'])->name('lista.index');
     Route::get('/lista/crear', [ListaController::class, 'create'])->name('lista.create');

@@ -58,9 +58,9 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <b>{{ \Carbon\Carbon::parse($data->padronConsulta()->latest()->first()->created_at)->format('d/m/Y H:i') }}
+                                            {{-- <b>{{ \Carbon\Carbon::parse($data->padronConsulta()->latest()->first()->created_at)->format('d/m/Y H:i') }}
                                                 | Cantidad: {{$data->padronConsulta()->count()}}
-                                            </b>
+                                            </b> --}}
                                             <button type="button" wire:click="toggleVerMas" class="btn btn-sm btn-primary ml-2">
                                                 {{ $verMas ? '-' : '+' }}
                                             </button>
@@ -158,5 +158,3 @@
     @include('padron.modal_referente')
     @include('padron.modal_vehiculo')
 </div>
-
-

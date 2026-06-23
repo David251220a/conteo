@@ -44,10 +44,27 @@
                                     </select>
                                 </div>
 
+                                <div class="form-group col-md-3">
+                                    <label for="movil_id">Movil</label>
+                                    <select name="movil_id" id="movil_id" class="form-control basic">
+                                        @foreach ($moviles as $item)
+                                            <option {{ request('movil_id') == $item->id ? 'selected' : '' }} value="{{ $item->id }}">
+                                                {{ $item->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                                 <div class="form-group col-md-3 d-flex align-items-center">
-                                    <button type="submit" class="btn btn-danger">
+                                    <button type="submit" class="btn btn-danger mr-2">
                                         <i class="fa fa-search"></i> Buscar
                                     </button>
+
+                                    <a href="{{ route('consulta.referentes.imprimir', request()->query()) }}" target="__blank"
+                                        class="btn btn-primary"
+                                        title="Imprimir Ruta">
+                                        <i class="fa fa-print"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +84,8 @@
                                         @if (request('referente_id') <= 1)
                                             <th>Referente</th>
                                         @endif
-                                        <th width="13%" class="text-center">Accion</th>
+                                        <th>Movil</th>
+                                        <th width="15%" class="text-center">Accion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -81,6 +99,17 @@
                                                 <td>{{$item->refe->referente}}</td>
                                             @endif
                                             <td>
+                                                @if ($item->vehiculo_id == 0)
+                                                    SIN ESPECIFICAR
+                                                @else
+                                                    {{$item->Vehiculo->nombre}}
+                                                @endif
+                                            </td>
+                                            {{-- <td>
+                                                <button type="button" class="btn btn-sm btn-danger btn-sm" data-toggle="modal" data-target="#carga_{{ $item->id }}">
+                                                    Movil
+                                                </button>
+
                                                 <a href="https://www.google.com/maps?q={{ $item->latitude }},{{ $item->longitude }}"
                                                     target="_blank"
                                                     class="btn btn-sm btn-success ml-2">
@@ -91,14 +120,41 @@
                                                     class="btn btn-sm btn-success ml-2">
                                                     <i class="fas fa-phone"></i>
                                                 </a>
+                                            </td> --}}
+                                            <td class="text-center">
+                                                <div class="d-flex flex-column flex-md-row justify-content-center">
+                                                    <button type="button"
+                                                        class="btn btn-danger btn-sm btn-cargar-movil"
+                                                        data-toggle="modal"
+                                                        data-target="#carga_{{ $item->id }}"
+                                                        data-item-id="{{ $item->id }}"
+                                                        data-referente-id="{{ $item->referente_id }}"
+                                                        data-vehiculo-id="{{ $item->vehiculo_id }}">
+                                                        <i class="fas fa-car-side"></i>
+                                                    </button>
+
+                                                    <a href="https://www.google.com/maps?q={{ $item->latitude }},{{ $item->longitude }}"
+                                                        target="_blank"
+                                                        class="btn btn-success btn-sm mb-1 mb-md-0 mr-md-1">
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                    </a>
+
+                                                    <a href="https://wa.me/?text={{ urlencode('Ubicación de ' . $item->nombre . ' ' . $item->apellido . ': https://www.google.com/maps?q=' . $item->latitude . ',' . $item->longitude) }}"
+                                                        target="_blank"
+                                                        class="btn btn-success btn-sm">
+                                                        <i class="fas fa-phone"></i>
+                                                    </a>
+                                                </div>
                                             </td>
+
                                         </tr>
+                                        @include('consulta.modal_asignar_movil')
                                     @endforeach
                                 </tbody>
                                 <tfoot>
-                                    <th>
+                                    <tr>
                                         <td colspan="7"></td>
-                                    </th>
+                                    </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -106,7 +162,7 @@
                 </div>
 
                 <div class="row">
-                    {{-- {{ $data->appends(request()->query())->links() }} --}}
+                    {{ $data->appends(request()->query())->links() }}
                 </div>
             </div>
         </div>

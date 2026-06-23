@@ -17,7 +17,7 @@ class RoleSeeder extends Seeder
     public function run()
     {
         // $admin = Role::create(['name' => 'admin']);
-        // $admin = Role::find(1);
+        $admin = Role::find(1);
 
         // $permission = Permission::create(['name' => 'rol.index', 'descripcion' => 'Rol Index'])->syncRoles($admin);
         // $permission = Permission::create(['name' => 'rol.create', 'descripcion' => 'Rol Crear'])->syncRoles($admin);
@@ -79,10 +79,12 @@ class RoleSeeder extends Seeder
         // $permission = Permission::create(['name' => 'consulta.simulacion', 'descripcion' => 'Consulta Simulacion']);
         // $permission = Permission::create(['name' => 'consulta.simulacion_ver', 'descripcion' => 'Consulta Simulacion Ver']);
 
-        $permission = Permission::create(['name' => 'padron.index', 'descripcion' => 'Padron Vista Principal']);
-        $permission = Permission::create(['name' => 'role.permiso_crear', 'descripcion' => 'Rol: Crear Permiso']);
-        $permission = Permission::create(['name' => 'sondeo.index', 'descripcion' => 'Sondeo: Carga']);
-        $permission = Permission::create(['name' => 'sondeo.show', 'descripcion' => 'Sondeo: Consulta']);
+        // $permission = Permission::create(['name' => 'padron.index', 'descripcion' => 'Padron Vista Principal']);
+        // $permission = Permission::create(['name' => 'role.permiso_crear', 'descripcion' => 'Rol: Crear Permiso']);
+        // $permission = Permission::create(['name' => 'sondeo.index', 'descripcion' => 'Sondeo: Carga']);
+        // $permission = Permission::create(['name' => 'sondeo.show', 'descripcion' => 'Sondeo: Consulta']);
+
+        // $permission = Permission::create(['name' => 'consulta.resumen', 'descripcion' => 'Consulta: Resumen Referente']);
         // $permission = Permission::create(['name' => 'habilitacion.estado_alumno', 'descripcion' => 'Habilitacion de Curso: Estado Alumno']);
 
     }
