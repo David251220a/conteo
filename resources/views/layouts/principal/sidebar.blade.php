@@ -262,6 +262,21 @@
             </li>
         @endcan
 
+        @can('rol.index')
+            <li class="menu">
+                <a href="{{route('general_config')}}" aria-expanded="false" class="dropdown-toggle"
+                    @if(Str::startsWith(Route::currentRouteName(), 'general_config')) data-active="true" @endif
+                >
+                    <div class="">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-unlock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                        </svg>
+                        <span>General</span>
+                    </div>
+                </a>
+            </li>
+        @endcan
 
         @can('usuario.index')
             <li class="menu">

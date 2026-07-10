@@ -23,7 +23,8 @@ class InicioController extends Controller
         ->where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
-        return view('welcome', compact('data'));
+        $inte = Candidato::find(59);
+        return view('welcome', compact('data','inte'));
     }
 
     public function adolfo(Request $request)
