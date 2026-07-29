@@ -85,21 +85,23 @@ class ConsultaController extends Controller
         }
 
 
-        $data = Padron::where('referente_id', '>', 0)->paginate(50);
+        $data = Padron::where('referente_id', '>', 1)->paginate(50);
 
         if ($request->filled('local_id') || $request->filled('referente_id') || $request->filled('movil_id')) {
 
             $query = Padron::query()
             ->where('anio', $this->general->anio)
             ->where('tipo_votacion', $this->general->tipo_votacion)
-            ->where('estado_id', 1);
+            ->where('estado_id', 1)
+            ->where('referente_id', '>', 1);
 
             // Si eligió un referente específico, manda el referente
             if ((int)$request->referente_id > 1) {
                 $query->where('referente_id', $request->referente_id);
-            } else {
-                $query->where('referente_id', '>', 1);
             }
+            //  else {
+            //     $query->where('referente_id', '>', 1);
+            // }
 
             if ((int)$request->local_id > 0) {
                 $query->where('local_id', $request->local_id);
