@@ -552,7 +552,7 @@
                 <div>
                     <div class="candidato-nombre">Manuel Aguilar</div>
                     <div class="candidato-cargo">Intendente</div>
-                    <div class="candidato-opcion">Lista 2A</div>
+                    <div class="candidato-opcion">{{ $inte->lista->descripcion }}</div>
                 </div>
             </div>
 
@@ -707,7 +707,7 @@
 
                     @php
 
-                        $mensaje = "Lista 2A Manuel Aguilar.\n"
+                        $mensaje = "Lista {$inte->lista->descripcion} Manuel Aguilar.\n"
                             . "{$con->lista->descripcion} Opción {$con->orden} {$con->nombre}.\n\n"
                             . "Datos de votación:\n"
                             . "Documento: {$data->documento}\n"

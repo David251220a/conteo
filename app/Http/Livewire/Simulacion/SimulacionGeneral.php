@@ -6,6 +6,7 @@ use App\Http\Livewire\Voto\Consejal;
 use App\Models\Candidato;
 use App\Models\General;
 use App\Models\Lista;
+use App\Models\Movimiento;
 use App\Models\Simulacion;
 use Livewire\Component;
 
@@ -28,6 +29,8 @@ class SimulacionGeneral extends Component
     public $back;
     public $consejal_nuestra;
 
+    public $estilo_titulo = '';
+
     public function mount($padron_id, $back)
     {
         $this->general = General::find(1);
@@ -47,7 +50,7 @@ class SimulacionGeneral extends Component
         $this->padron_id = $padron_id;
         $this->back = $back;
 
-        $this->dato = Candidato::find(1);
+        $this->dato = Candidato::find(59);
         $this->modo = 1;
 
         $this->muestra();
@@ -109,6 +112,13 @@ class SimulacionGeneral extends Component
             ->get();
             $this->paso = 3;
             $this->titulo = 'Candidatos al cargo de CONCEJAL';
+            if($this->general->tipo_votacion === 2){
+                $movimiento_id = Lista::find($id)->movimiento_id;
+                $movimiento = Movimiento::find($movimiento_id);
+                $this->estilo_titulo = 'background-color:' . $movimiento->color_fondo . '; color:' . $movimiento->color_letra . ';';
+            }else{
+                $this->estilo_titulo = '';
+            }
         } else {
             $this->consejal_id = Candidato::where('anio', $this->general->anio)
             ->where('tipo_votacion', $this->general->tipo_votacion)
@@ -185,113 +195,113 @@ class SimulacionGeneral extends Component
     }
 
     public function muestra(){
-        if ($this->back == 'cesar'){
-            $this->consejal_nuestra = Candidato::find(8);
-        }
-
-        if ($this->back == 'dani'){
-            $this->consejal_nuestra = Candidato::find(9);
-        }
-
         if ($this->back == 'giselle'){
-            $this->consejal_nuestra = Candidato::find(10);
+            $this->consejal_nuestra = Candidato::find(63);
         }
 
-        if ($this->back == 'roberto'){
-            $this->consejal_nuestra = Candidato::find(11);
+        if ($this->back == 'danilo'){
+            $this->consejal_nuestra = Candidato::find(64);
         }
 
-        if ($this->back == 'esmilse'){
-            $this->consejal_nuestra = Candidato::find(12);
-        }
-
-        if ($this->back == 'diosnel'){
-            $this->consejal_nuestra = Candidato::find(13);
+        if ($this->back == 'cesar'){
+            $this->consejal_nuestra = Candidato::find(65);
         }
 
         if ($this->back == 'liza'){
-            $this->consejal_nuestra = Candidato::find(14);
+            $this->consejal_nuestra = Candidato::find(66);
+        }
+
+        if ($this->back == 'hector'){
+            $this->consejal_nuestra = Candidato::find(67);
+        }
+
+        if ($this->back == 'dani'){
+            $this->consejal_nuestra = Candidato::find(68);
+        }
+
+        if ($this->back == 'santiago'){
+            $this->consejal_nuestra = Candidato::find(69);
+        }
+
+        if ($this->back == 'diosnel'){
+            $this->consejal_nuestra = Candidato::find(70);
+        }
+
+        if ($this->back == 'roberto'){
+            $this->consejal_nuestra = Candidato::find(71);
+        }
+
+        if ($this->back == 'susi'){
+            $this->consejal_nuestra = Candidato::find(72);
         }
 
         if ($this->back == 'carlos'){
-            $this->consejal_nuestra = Candidato::find(15);
+            $this->consejal_nuestra = Candidato::find(73);
         }
 
-        if ($this->back == 'julio'){
-            $this->consejal_nuestra = Candidato::find(16);
-        }
-
-        if ($this->back == 'joel'){
-            $this->consejal_nuestra = Candidato::find(17);
-        }
-
-        if ($this->back == 'oliver'){
-            $this->consejal_nuestra = Candidato::find(18);
-        }
-
-        if ($this->back == 'adolfo'){
-            $this->consejal_nuestra = Candidato::find(19);
+        if ($this->back == 'esmilse'){
+            $this->consejal_nuestra = Candidato::find(74);
         }
 
 
-        if ($this->back == 'benito'){
-            $this->consejal_nuestra = Candidato::find(32);
-        }
+        // if ($this->back == 'benito'){
+        //     $this->consejal_nuestra = Candidato::find(32);
+        // }
 
 
-        if ($this->back == 'humberto'){
-            $this->consejal_nuestra = Candidato::find(33);
-        }
+        // if ($this->back == 'humberto'){
+        //     $this->consejal_nuestra = Candidato::find(33);
+        // }
 
 
-        if ($this->back == 'juan'){
-            $this->consejal_nuestra = Candidato::find(34);
-        }
+        // if ($this->back == 'juan'){
+        //     $this->consejal_nuestra = Candidato::find(34);
+        // }
 
 
-        if ($this->back == 'gabriela'){
-            $this->consejal_nuestra = Candidato::find(35);
-        }
+        // if ($this->back == 'gabriela'){
+        //     $this->consejal_nuestra = Candidato::find(35);
+        // }
 
 
-        if ($this->back == 'diego'){
-            $this->consejal_nuestra = Candidato::find(36);
-        }
+        // if ($this->back == 'diego'){
+        //     $this->consejal_nuestra = Candidato::find(36);
+        // }
 
 
-        if ($this->back == 'miguel'){
-            $this->consejal_nuestra = Candidato::find(37);
-        }
+        // if ($this->back == 'miguel'){
+        //     $this->consejal_nuestra = Candidato::find(37);
+        // }
 
 
-        if ($this->back == 'espinola'){
-            $this->consejal_nuestra = Candidato::find(38);
-        }
+        // if ($this->back == 'espinola'){
+        //     $this->consejal_nuestra = Candidato::find(38);
+        // }
 
 
-        if ($this->back == 'ofelia'){
-            $this->consejal_nuestra = Candidato::find(39);
-        }
+        // if ($this->back == 'ofelia'){
+        //     $this->consejal_nuestra = Candidato::find(39);
+        // }
 
 
-        if ($this->back == 'gilberto'){
-            $this->consejal_nuestra = Candidato::find(40);
-        }
+        // if ($this->back == 'gilberto'){
+        //     $this->consejal_nuestra = Candidato::find(40);
+        // }
 
 
-        if ($this->back == 'ernesto'){
-            $this->consejal_nuestra = Candidato::find(41);
-        }
+        // if ($this->back == 'ernesto'){
+        //     $this->consejal_nuestra = Candidato::find(41);
+        // }
 
 
-        if ($this->back == 'maria'){
-            $this->consejal_nuestra = Candidato::find(42);
-        }
+        // if ($this->back == 'maria'){
+        //     $this->consejal_nuestra = Candidato::find(42);
+        // }
 
 
-        if ($this->back == 'cuevas'){
-            $this->consejal_nuestra = Candidato::find(43);
-        }
+        // if ($this->back == 'cuevas'){
+        //     $this->consejal_nuestra = Candidato::find(43);
+        // }
     }
 
 }

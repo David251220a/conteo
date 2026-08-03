@@ -27,15 +27,15 @@ class InicioController extends Controller
         return view('welcome', compact('data','inte'));
     }
 
-    public function adolfo(Request $request)
+    public function danilo(Request $request)
     {
         $data = Padron::where('documento', $request->documento)
         ->where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(19);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(64);
         return view('padron.general', compact('data','inte','con'));
     }
 
@@ -46,8 +46,8 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(8);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(65);
         return view('padron.general', compact('data','inte','con'));
     }
 
@@ -58,8 +58,8 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(9);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(68);
         return view('padron.general', compact('data','inte','con'));
     }
 
@@ -70,20 +70,20 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(10);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(63);
         return view('padron.general', compact('data','inte','con'));
     }
 
-    public function roberto(Request $request)
+    public function hector(Request $request)
     {
         $data = Padron::where('documento', $request->documento)
         ->where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(11);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(67);
         return view('padron.general', compact('data','inte','con'));
     }
 
@@ -94,8 +94,8 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(12);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(74);
         return view('padron.general', compact('data','inte','con'));
     }
 
@@ -106,8 +106,8 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(13);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(70);
         return view('padron.general', compact('data','inte','con'));
     }
 
@@ -118,8 +118,8 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(14);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(66);
         return view('padron.general', compact('data','inte','con'));
     }
 
@@ -130,51 +130,51 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(15);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(73);
         return view('padron.general', compact('data','inte','con'));
     }
 
-    public function julio(Request $request)
+    public function santiago(Request $request)
     {
         $data = Padron::where('documento', $request->documento)
         ->where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(16);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(69);
         return view('padron.general', compact('data','inte','con'));
     }
 
-    public function joel(Request $request)
+    public function susi(Request $request)
     {
         $data = Padron::where('documento', $request->documento)
         ->where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(17);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(72);
         return view('padron.general', compact('data','inte','con'));
     }
 
-    public function oliver(Request $request)
+    public function roberto(Request $request)
     {
         $data = Padron::where('documento', $request->documento)
         ->where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
-        $con = Candidato::find(18);
+        $inte = Candidato::find(59);
+        $con = Candidato::find(71);
         return view('padron.general', compact('data','inte','con'));
     }
 
     public function simulacion(Request  $request)
     {
         $padron_id = 0;
-        $back = 'cesar';
+        $back = 'giselle';
         if($request->padron_id){
             $padron_id = $request->padron_id;
         }
@@ -195,7 +195,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(32);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -208,7 +208,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(33);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -220,7 +220,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(34);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -232,7 +232,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(35);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -244,7 +244,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(36);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -256,7 +256,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(37);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -268,7 +268,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(38);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -280,7 +280,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(39);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -292,7 +292,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(40);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -304,7 +304,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(41);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -316,7 +316,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(42);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -328,7 +328,7 @@ class InicioController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(43);
         return view('padron.general', compact('data','inte','con'));
     }
@@ -368,7 +368,7 @@ class InicioController extends Controller
 
         }
 
-        $inte = Candidato::find(1);
+        $inte = Candidato::find(59);
         $con = Candidato::find(10);
         return view('padron.solo', compact('data', 'inte', 'con', 'mensaje', 'estado_id'));
     }

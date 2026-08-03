@@ -1,8 +1,8 @@
 <div class="container-fluid py-2">
 
-    <div class="header-voto">
+    <div class="header-voto" style="{{ $estilo_titulo }}">
         <img src="{{ Storage::url('imagenes/logo_eleccion.png') }}" class="logo-voto logo-left" alt="" style="background: white">
-        <div class="titulo-voto">
+        <div class="titulo-voto" >
             {{ $titulo }}
         </div>
         <img src="{{ Storage::url('imagenes/header.png') }}" class="logo-voto logo-right" alt="" style="background: white">
@@ -13,9 +13,15 @@
 
             @foreach($intendente as $item)
 
+                @php
+                    $estilo_primero = '';
+                    if($general->tipo_votacion === 2){
+                        $estilo_primero = 'background-color:' . $item->movimiento->color_fondo . '; color:' . $item->movimiento->color_letra . ';';
+                    }
+                @endphp
                 <div class="col-lg-4 col-md-4 col-4">
 
-                    <div class="card-voto voto-blanco" wire:click="seleccionarIntendente({{ $item->id }}, {{ $modo }})">
+                    <div class="card-voto voto-blanco" wire:click="seleccionarIntendente({{ $item->id }}, {{ $modo }})" style="{{ $estilo_primero }}">
 
                         <div class="movimiento-voto">
                             @if ($item->orden < 90)
@@ -63,10 +69,16 @@
         <div class="row g-1">
 
             @foreach($listas as $item)
+                @php
+                    $estilo_segundo = '';
+                    if($general->tipo_votacion === 2){
+                        $estilo_segundo = 'background-color:' . $item->movimiento->color_fondo . '; color:' . $item->movimiento->color_letra . ';';
+                    }
+                @endphp
 
                 <div class="col-lg-4 col-md-4 col-4">
 
-                    <div class="card-voto voto-blanco" wire:click="seleccionarLista({{ $item->id }}, {{ $item->orden }})">
+                    <div class="card-voto voto-blanco" wire:click="seleccionarLista({{ $item->id }}, {{ $item->orden }})" style="{{ $estilo_segundo }}">
 
                         <div class="movimiento-voto">
                             @if ($item->orden < 90)
@@ -102,7 +114,6 @@
         <div class="row g-1">
 
             @foreach($consejales as $item)
-
                 <div class="col-lg-3 col-md-3 col-3">
 
                     <div class="card-voto card-concejal" wire:click="seleccionarConsejal({{ $item->id }})">
@@ -257,7 +268,7 @@
                 </div>
 
                 <div class="vota-titulo">
-                    VOTÁ ASÍ EL 7 DE JUNIO
+                    VOTÁ ASÍ EL 4 DE OCTUBRE
                 </div>
 
                 <div class="resumen-voto">

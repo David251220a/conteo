@@ -43,10 +43,10 @@
         height: 100%;
     }
 
-    .card-voto:hover {
+    /* .card-voto:hover {
         border: 5px solid #e92d2d;
         box-shadow: 0 0 12px rgba(233, 45, 45, .7);
-    }
+    } */
 
     .movimiento-voto {
         font-size: 24px;
