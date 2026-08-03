@@ -42,7 +42,11 @@ class PadronController extends Controller
             ->where('tipo_votacion', $this->general->tipo_votacion)
             ->where('nombre', 'LIKE', '%' . $request->search . '%')
             ->orWhere('apellido', 'LIKE', '%' . $request->search . '%')
+            ->where('anio', $this->general->anio)
+            ->where('tipo_votacion', $this->general->tipo_votacion)
             ->orWhere('documento', 'LIKE', '%' . $request->search . '%')
+            ->where('anio', $this->general->anio)
+            ->where('tipo_votacion', $this->general->tipo_votacion)
             ->paginate(50);
         }else{
             $data = Padron::where('anio', $this->general->anio)
