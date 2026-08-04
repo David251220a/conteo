@@ -37,6 +37,7 @@ class ListaController extends Controller
         ->where('tipo_votacion', $this->general->tipo_votacion)
         // ->where('tipo_cantidato_id', $tipo_candidato_id)
         ->whereBetween('movimiento_id', [$desde, $hasta])
+        ->orderBy('orden', 'ASC')
         ->get();
 
         return view('lista.index', compact('data','movimientos'));

@@ -76,7 +76,7 @@
                     }
                 @endphp
 
-                <div class="col-lg-4 col-md-4 col-4">
+                <div class="col-lg-3 col-md-3 col-3">
 
                     <div class="card-voto voto-blanco" wire:click="seleccionarLista({{ $item->id }}, {{ $item->orden }})" style="{{ $estilo_segundo }}">
 
@@ -126,7 +126,7 @@
 
                         <div class="d-flex align-items-center justify-content-around">
                             @if ($item->orden < 90)
-                                <img src="{{ Storage::url($item->imagen) }}" class="foto-voto" alt="">
+                                <img src="{{ Storage::url($item->imagen ? $item->imagen : 'candidato/defecto.jpeg') }}" class="foto-voto" alt="">
                             @endif
 
                             <div class="text-center">
@@ -165,7 +165,9 @@
         <div class="row g-1 align-items-stretch">
 
             <div class="col-lg-5 col-md-6 col-6">
-                <div class="card-seleccionado">
+                <div class="card-seleccionado" style="{{'background-color:' . $intendenteSeleccionado->lista->movimiento->color_fondo . ';
+                    color:' . $intendenteSeleccionado->lista->movimiento->color_letra . ';' }}"
+                >
 
                     <div class="cargo-seleccionado">
                         INTENDENTE MUNICIPAL
@@ -193,7 +195,10 @@
             </div>
 
             <div class="col-lg-5 col-md-6 col-6">
-                <div class="card-seleccionado">
+                <div class="card-seleccionado" style="{{'background-color:' . $concejalSeleccionado->lista->movimiento->color_fondo .
+                    '; color:' . $concejalSeleccionado->lista->movimiento->color_letra . ';' }}"
+
+                >
 
                     <div class="cargo-seleccionado">
                         CONSEJAL
@@ -207,7 +212,7 @@
                         <h3>{{ ($concejalSeleccionado->orden < 90 ? '' : 'VOTO EN ') .  $concejalSeleccionado->lista->descripcion }}</h3>
 
                         @if ($concejalSeleccionado->orden < 90)
-                            <img src="{{ Storage::url($concejalSeleccionado->imagen) }}" class="foto-seleccionado" alt="">
+                            <img src="{{ Storage::url($concejalSeleccionado->imagen ? $concejalSeleccionado->imagen : 'candidato/defecto.jpeg') }}" class="foto-seleccionado" alt="">
                             <h4>{{ $concejalSeleccionado->nombre }} {{ $concejalSeleccionado->apellido }}</h4>
                             <p style="font-weight: bold">Opción {{ $concejalSeleccionado->orden }}</p>
                         @endif

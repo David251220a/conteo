@@ -82,6 +82,7 @@ class SimulacionGeneral extends Component
             $this->listas = Lista::where('anio', $this->general->anio)
             ->where('tipo_votacion', $this->general->tipo_votacion)
             ->whereNotIn('orden', [97,99])
+            ->orderBy('orden', 'ASC')
             ->get();
             $this->titulo = 'Listas participantes al cargo de CONCEJAL';
             $this->paso = 2;
@@ -141,6 +142,7 @@ class SimulacionGeneral extends Component
         $this->paso = 4;
         $this->intendenteSeleccionado = Candidato::find($this->intendente_id);
         $this->concejalSeleccionado = Candidato::find($id);
+        $this->estilo_titulo = '';
     }
 
     public function volverIntendente()
@@ -149,6 +151,7 @@ class SimulacionGeneral extends Component
         $this->reset('intendenteSeleccionado');
         $this->reset('intendente_id');
         $this->paso = 1;
+        $this->estilo_titulo = '';
     }
 
     public function volverConcejal()
@@ -156,16 +159,18 @@ class SimulacionGeneral extends Component
         $this->listas = Lista::where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->whereNotIn('orden', [97,99])
+        ->orderBy('orden', 'ASC')
         ->get();
         $this->titulo = 'Listas participantes al cargo de CONCEJAL';
         $this->paso = 2;
+        $this->estilo_titulo = '';
     }
 
     public function imprimirSeleccion()
     {
         $this->paso = 5;
         $this->titulo = '';
-
+        $this->estilo_titulo = '';
         Simulacion::create([
             'fecha' => now(),
             'candidato_id' => $this->intendenteSeleccionado->id,

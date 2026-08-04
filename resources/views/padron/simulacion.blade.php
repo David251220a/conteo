@@ -127,7 +127,7 @@
 
     .card-seleccionado {
         background: #fff;
-        border: 4px solid #e92d2d;
+        /* border: 4px solid #e92d2d; */
         height: 500px;
         text-align: center;
         position: relative;
