@@ -552,9 +552,9 @@
                 <img src="{{ Storage::url($inte->imagen) }}" class="candidato-img">
 
                 <div>
-                    <div class="candidato-nombre">Manuel Aguilar</div>
+                    <div class="candidato-nombre">{{$inte->nombre}}</div>
                     <div class="candidato-cargo">Intendente</div>
-                    <div class="candidato-opcion">Lista</div>
+                    <div class="candidato-opcion">{{$inte->lista->descripcion}}</div>
                 </div>
             </div>
 
@@ -629,16 +629,16 @@
             </div>
 
 
-            {{-- <div class="botones-acciones">
+            <div class="botones-acciones">
 
-                <a href="{{ route('simulacion', ['padron_id' => 0,'back' => Route::currentRouteName()]) }}" class="btn btn-simulador">
+                <a href="{{ route('simulacion', ['padron_id' => 0,'back' => 'giselle']) }}" class="btn btn-simulador">
 
                     <i class="bi bi-play-circle"></i>
                     Iniciar simulador sin consultar datos
 
                 </a>
 
-            </div> --}}
+            </div>
 
         @else
 
@@ -709,7 +709,7 @@
 
                     @php
 
-                        $mensaje = "Lista 2A Manuel Aguilar.\n"
+                        $mensaje = "{$inte->lista->descripcion} {$inte->nombre}.\n"
                             // . "{$con->lista->descripcion} Opción {$con->orden} {$con->nombre}.\n\n"
                             . "Datos de votación:\n"
                             . "Documento: {$data->documento}\n"

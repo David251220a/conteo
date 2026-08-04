@@ -200,6 +200,10 @@ class SimulacionGeneral extends Component
     }
 
     public function muestra(){
+        if ($this->back == 'inicio'){
+            $this->consejal_nuestra = Candidato::find(63);
+        }
+
         if ($this->back == 'giselle'){
             $this->consejal_nuestra = Candidato::find(63);
         }
