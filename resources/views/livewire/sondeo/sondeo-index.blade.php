@@ -21,7 +21,7 @@
                         $estilo_primero = 'background-color:' . $item->movimiento->color_fondo . '; color:' . $item->movimiento->color_letra . ';';
                     }
                 @endphp
-                <div class="col-lg-3 col-md-3 col-3">
+                <div class="col-lg-4 col-md-4 col-4">
 
                     <div class="card-voto voto-blanco" wire:click="seleccionarIntendente({{ $item->id }}, {{ $modo }})" style="{{ $estilo_primero }}">
 
@@ -78,7 +78,7 @@
                         $estilo_segundo = 'background-color:' . $item->movimiento->color_fondo . '; color:' . $item->movimiento->color_letra . ';';
                     }
                 @endphp
-                <div class="col-lg-4 col-md-4 col-4">
+                <div class="col-lg-3 col-md-3 col-3">
 
                     <div class="card-voto voto-blanco" wire:click="seleccionarLista({{ $item->id }}, {{ $item->orden }})" style="{{ $estilo_segundo }}">
 

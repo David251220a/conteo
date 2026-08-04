@@ -58,6 +58,10 @@ class PlantillaConcejalesExport implements FromArray, WithHeadings
                 $headers[] = $lista->descripcion;
             }
 
+            $headers[] = 'NULOS';
+            $headers[] = 'BLANCOS';
+            $headers[] = 'A COMPUTAR';
+
             return $headers;
         }
 
@@ -82,8 +86,12 @@ class PlantillaConcejalesExport implements FromArray, WithHeadings
 
         $rows = [];
 
+        /*
+        |--------------------------------------------------------------------------
+        | FORMA 3: LISTA / OPCIÓN / VOTO
+        |--------------------------------------------------------------------------
+        */
         if ($this->forma == 3) {
-
             foreach ($listas as $lista) {
                 foreach ($ordenes as $orden) {
                     $rows[] = [
@@ -100,8 +108,15 @@ class PlantillaConcejalesExport implements FromArray, WithHeadings
 
             return $rows;
         }
-        // OPCION / LISTA
-        // orden | Lista 2A | Lista 3
+
+        /*
+        |--------------------------------------------------------------------------
+        | FORMA 1: OPCIÓN / LISTAS
+        |--------------------------------------------------------------------------
+        | orden       | Lista 1 | Lista 2 | Lista 3 | NULO
+        | 1           | 0       | 0       | 0       | 0
+        |--------------------------------------------------------------------------
+        */
         if ($this->forma == 1) {
             foreach ($ordenes as $orden) {
                 $fila = [$orden];
@@ -110,14 +125,26 @@ class PlantillaConcejalesExport implements FromArray, WithHeadings
                     $fila[] = 0;
                 }
 
+                // Columnas especiales
+                $fila[] = 0; // NULOS
+                $fila[] = 0; // BLANCOS
+                $fila[] = 0; // A COMPUTAR
+
                 $rows[] = $fila;
             }
 
             return $rows;
         }
 
-        // LISTA / OPCION
-        // lista | 1 | 2 | 3 | ...
+        /*
+        |--------------------------------------------------------------------------
+        | FORMA 2: LISTA / OPCIONES
+        |--------------------------------------------------------------------------
+        | lista       | 1 | 2 | 3
+        | Lista A     | 0 | 0 | 0
+        | NULOS       | 0 | 0 | 0
+        |--------------------------------------------------------------------------
+        */
         foreach ($listas as $lista) {
             $fila = [$lista->descripcion];
 
@@ -128,6 +155,79 @@ class PlantillaConcejalesExport implements FromArray, WithHeadings
             $rows[] = $fila;
         }
 
+        $especiales = [
+            'NULOS',
+            'BLANCOS',
+            'A COMPUTAR',
+        ];
+
+        foreach ($especiales as $nombre) {
+            $fila = [$nombre];
+
+            foreach ($ordenes as $orden) {
+                $fila[] = 0;
+            }
+
+            $rows[] = $fila;
+        }
+
         return $rows;
     }
+
+    // public function array(): array
+    // {
+    //     $datos = $this->datos();
+    //     $listas = $datos['listas'];
+    //     $ordenes = $datos['ordenes'];
+
+    //     $rows = [];
+
+    //     if ($this->forma == 3) {
+
+    //         foreach ($listas as $lista) {
+    //             foreach ($ordenes as $orden) {
+    //                 $rows[] = [
+    //                     $lista->descripcion,
+    //                     $orden,
+    //                     0,
+    //                 ];
+    //             }
+    //         }
+
+    //         $rows[] = ['NULOS', 97, 0];
+    //         $rows[] = ['BLANCOS', 98, 0];
+    //         $rows[] = ['A COMPUTAR', 99, 0];
+
+    //         return $rows;
+    //     }
+    //     // OPCION / LISTA
+    //     // orden | Lista 2A | Lista 3
+    //     if ($this->forma == 1) {
+    //         foreach ($ordenes as $orden) {
+    //             $fila = [$orden];
+
+    //             foreach ($listas as $lista) {
+    //                 $fila[] = 0;
+    //             }
+
+    //             $rows[] = $fila;
+    //         }
+
+    //         return $rows;
+    //     }
+
+    //     // LISTA / OPCION
+    //     // lista | 1 | 2 | 3 | ...
+    //     foreach ($listas as $lista) {
+    //         $fila = [$lista->descripcion];
+
+    //         foreach ($ordenes as $orden) {
+    //             $fila[] = 0;
+    //         }
+
+    //         $rows[] = $fila;
+    //     }
+
+    //     return $rows;
+    // }
 }
