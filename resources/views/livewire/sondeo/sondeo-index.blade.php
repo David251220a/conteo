@@ -1,6 +1,6 @@
 <div class="container-fluid py-2">
 
-    <div class="header-voto">
+    <div class="header-voto" style="{{ $estilo_titulo }}">
         <a href="{{ route('home') }}">
             <img src="{{ Storage::url('imagenes/logo_eleccion.png') }}" class="logo-voto logo-left" alt="" style="background: white">
         </a>
@@ -15,10 +15,15 @@
         <div class="row g-1">
 
             @foreach($intendente as $item)
+                @php
+                    $estilo_primero = '';
+                    if($general->tipo_votacion === 2){
+                        $estilo_primero = 'background-color:' . $item->movimiento->color_fondo . '; color:' . $item->movimiento->color_letra . ';';
+                    }
+                @endphp
+                <div class="col-lg-3 col-md-3 col-3">
 
-                <div class="col-lg-4 col-md-4 col-4">
-
-                    <div class="card-voto voto-blanco" wire:click="seleccionarIntendente({{ $item->id }}, {{ $modo }})">
+                    <div class="card-voto voto-blanco" wire:click="seleccionarIntendente({{ $item->id }}, {{ $modo }})" style="{{ $estilo_primero }}">
 
                         <div class="movimiento-voto">
                             @if ($item->orden < 90)
@@ -67,9 +72,15 @@
 
             @foreach($listas as $item)
 
+                @php
+                    $estilo_segundo = '';
+                    if($general->tipo_votacion === 2){
+                        $estilo_segundo = 'background-color:' . $item->movimiento->color_fondo . '; color:' . $item->movimiento->color_letra . ';';
+                    }
+                @endphp
                 <div class="col-lg-4 col-md-4 col-4">
 
-                    <div class="card-voto voto-blanco" wire:click="seleccionarLista({{ $item->id }}, {{ $item->orden }})">
+                    <div class="card-voto voto-blanco" wire:click="seleccionarLista({{ $item->id }}, {{ $item->orden }})" style="{{ $estilo_segundo }}">
 
                         <div class="movimiento-voto">
                             @if ($item->orden < 90)
@@ -157,7 +168,10 @@
         <div class="row g-1 align-items-stretch">
 
             <div class="col-lg-5 col-md-6 col-6">
-                <div class="card-seleccionado">
+                <div class="card-seleccionado" style="{{'background-color:' . $intendenteSeleccionado->lista->movimiento->color_fondo .
+                    '; color:' . $intendenteSeleccionado->lista->movimiento->color_letra . ';' }}"
+
+                >
 
                     <div class="cargo-seleccionado">
                         INTENDENTE MUNICIPAL
@@ -185,7 +199,10 @@
             </div>
 
             <div class="col-lg-5 col-md-6 col-6">
-                <div class="card-seleccionado">
+                <div class="card-seleccionado" style="{{'background-color:' . $concejalSeleccionado->lista->movimiento->color_fondo .
+                    '; color:' . $concejalSeleccionado->lista->movimiento->color_letra . ';' }}"
+
+                >
 
                     <div class="cargo-seleccionado">
                         CONSEJAL

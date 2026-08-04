@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Sondeo;
 use App\Models\Candidato;
 use App\Models\General;
 use App\Models\Lista;
+use App\Models\Movimiento;
 use App\Models\Urna;
 use App\Models\User;
 use Livewire\Component;
@@ -22,6 +23,7 @@ class SondeoIndex extends Component
     public $intendenteSeleccionado;
     public $concejalSeleccionado;
     public $modo = 1;
+    public $estilo_titulo = '';
 
     public function mount()
     {
@@ -68,6 +70,7 @@ class SondeoIndex extends Component
             $this->listas = Lista::where('anio', $this->general->anio)
             ->where('tipo_votacion', $this->general->tipo_votacion)
             ->whereNotIn('orden', [97,99])
+            ->orderBy('orden', 'ASC')
             ->get();
             $this->titulo = 'Listas participantes al cargo de CONCEJAL';
             $this->paso = 2;
@@ -98,6 +101,13 @@ class SondeoIndex extends Component
             ->get();
             $this->paso = 3;
             $this->titulo = 'Candidatos al cargo de CONCEJAL';
+            if($this->general->tipo_votacion === 2){
+                $movimiento_id = Lista::find($id)->movimiento_id;
+                $movimiento = Movimiento::find($movimiento_id);
+                $this->estilo_titulo = 'background-color:' . $movimiento->color_fondo . '; color:' . $movimiento->color_letra . ';';
+            }else{
+                $this->estilo_titulo = '';
+            }
         } else {
             $this->consejal_id = Candidato::where('anio', $this->general->anio)
             ->where('tipo_votacion', $this->general->tipo_votacion)
@@ -120,6 +130,7 @@ class SondeoIndex extends Component
         $this->paso = 4;
         $this->intendenteSeleccionado = Candidato::find($this->intendente_id);
         $this->concejalSeleccionado = Candidato::find($id);
+        $this->estilo_titulo = '';
     }
 
     public function volverIntendente()
@@ -128,6 +139,7 @@ class SondeoIndex extends Component
         $this->reset('intendenteSeleccionado');
         $this->reset('intendente_id');
         $this->paso = 1;
+        $this->estilo_titulo = '';
     }
 
     public function volverConcejal()
@@ -135,15 +147,18 @@ class SondeoIndex extends Component
         $this->listas = Lista::where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->whereNotIn('orden', [97,99])
+        ->orderBy('orden', 'ASC')
         ->get();
         $this->titulo = 'Listas participantes al cargo de CONCEJAL';
         $this->paso = 2;
+        $this->estilo_titulo = '';
     }
 
     public function imprimirSeleccion()
     {
         $this->paso = 5;
         $this->titulo = '';
+        $this->estilo_titulo = '';
         Urna::create([
             'fecha' => now(),
             'candidato_id' => $this->intendenteSeleccionado->id,

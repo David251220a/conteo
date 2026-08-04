@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\General;
+use App\Models\Referente;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -46,6 +47,10 @@ class HomeController extends Controller
         $data->anio = $request->anio;
         $data->tipo_votacion = $request->tipo_votacion;
         $data->update();
+        $referente = Referente::find(1);
+        $referente->anio = $request->anio;
+        $referente->tipo_votacion = $request->tipo_votacion;
+        $referente->update();
         return redirect()->route('general_config')->with('message', 'Actualizado con exito.');
 
     }

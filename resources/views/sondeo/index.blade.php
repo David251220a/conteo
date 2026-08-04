@@ -44,8 +44,8 @@
     }
 
     .card-voto:hover {
-        border: 5px solid #e92d2d;
-        box-shadow: 0 0 12px rgba(233, 45, 45, .7);
+        /* border: 5px solid #e92d2d; */
+        /* box-shadow: 0 0 12px rgba(233, 45, 45, .7); */
     }
 
     .movimiento-voto {
@@ -127,7 +127,7 @@
 
     .card-seleccionado {
         background: #fff;
-        border: 4px solid #e92d2d;
+        /* border: 4px solid #e92d2d; */
         height: 500px;
         text-align: center;
         position: relative;
@@ -227,7 +227,7 @@
         max-width: 100%;
         background: #fff;
         border-radius: 14px;
-        border-top: 5px solid #e73535;
+        /* border-top: 5px solid #e73535; */
         padding: 14px;
         box-shadow: 0 10px 30px rgba(0,0,0,.12);
     }
