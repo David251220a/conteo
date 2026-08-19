@@ -1,3 +1,23 @@
+@php
+    // $parametro_general = request()->routeIs(['entidad.*', 'miembros.*', 'role.*', 'user.*', 'establecimiento.*', 'entidad_soli.*']) && !request()->routeIs('user.cambiar_contrase');
+    $consulta_general = request()->routeIs(['consulta.*', 'voto.consulta_votos_carga', 'voto.consulta_lista', 'voto.dhondt']);
+    $consulta_referente = request()->routeIs(['consulta.referente']);
+    $consulta_simulacion = request()->routeIs(['consulta.simulacion', 'consulta.simulacion_ver']);
+    $consulta_resumen = request()->routeIs(['consulta.resumen']);
+    $consulta_carga = request()->routeIs(['voto.consulta_votos_carga']);
+    $consulta_lista = request()->routeIs(['voto.consulta_lista']);
+    $consulta_dhondt = request()->routeIs(['voto.dhondt']);
+    $parametro_general = request()->routeIs(['role.*', 'user.*']);
+    $userActiva =request()->routeIs('user.*');
+    $rolActiva = request()->routeIs(['role.*']);
+    $generalConfigActiva = request()->routeIs(['general_config']);
+    $carga = request()->routeIs(['voto.intendente_manual','voto.intendente_import','voto.consejal_manual','voto.consejal_import']);
+    $inte_manual = request()->routeIs(['voto.intendente_manual']);
+    $inte_import = request()->routeIs(['voto.intendente_import']);
+    $consejal_manual = request()->routeIs(['voto.consejal_manual']);
+    $consejal_import = request()->routeIs(['voto.consejal_import']);
+    $consulta_pollito = request()->routeIs(['consulta.pollito']);
+@endphp
 <nav id="sidebar">
     <div class="shadow-bottom"></div>
     <ul class="list-unstyled menu-categories" id="accordionExample">
@@ -13,6 +33,32 @@
             </a>
         </li>
 
+        @can('padron.index')
+            <li class="menu">
+                <a href="{{route('padron.index')}}" aria-expanded="false" class="dropdown-toggle"
+                    @if(Str::startsWith(Route::currentRouteName(), 'padron.index')) data-active="true" @endif
+                >
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span>Padron</span>
+                    </div>
+                </a>
+            </li>
+        @endcan
+
+        @can('padron.todos')
+            <li class="menu">
+                <a href="{{route('padron.todos')}}" aria-expanded="false" class="dropdown-toggle"
+                    @if(Str::startsWith(Route::currentRouteName(), 'padron.todos')) data-active="true" @endif
+                >
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span>Padron Todos</span>
+                    </div>
+                </a>
+            </li>
+        @endcan
+
         @can('referente.index')
             <li class="menu">
                 <a href="{{route('referente.index')}}" aria-expanded="false" class="dropdown-toggle"
@@ -21,6 +67,19 @@
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-smile"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
                         <span>Referentes</span>
+                    </div>
+                </a>
+            </li>
+        @endcan
+
+        @can('vehiculo.index')
+            <li class="menu">
+                <a href="{{route('vehiculo.index')}}" aria-expanded="false" class="dropdown-toggle"
+                    @if(Str::startsWith(Route::currentRouteName(), 'vehiculo.index')) data-active="true" @endif
+                >
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        <span>Vehiculos</span>
                     </div>
                 </a>
             </li>
@@ -52,6 +111,128 @@
             </li>
         @endcan
 
+        @can('carga_permiso')
+            <li class="menu">
+                <a href="#carga" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Carga</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ $carga ? 'show' : '' }}" id="carga" data-parent="#accordionExample">
+
+                    @can('voto.intendente_manual')
+                        <li class="{{ $inte_manual ? 'active' : '' }}">
+                            <a href="{{route('voto.intendente_manual')}}" >
+                                <span>Intendente Manual</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('voto.intendente_import')
+                        <li class="{{ $inte_import ? 'active' : '' }}">
+                            <a href="{{route('voto.intendente_import')}}" >
+                                <span>Intendente Import</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('voto.consejal_manual')
+                        <li class="{{ $consejal_manual ? 'active' : '' }}">
+                            <a href="{{route('voto.consejal_manual')}}" >
+                                <span>Consejal Manual</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('voto.consejal_import')
+                        <li class="{{ $consejal_import ? 'active' : '' }}">
+                            <a href="{{route('voto.consejal_import')}}" >
+                                <span>Consejal Import</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                </ul>
+            </li>
+        @endcan
+
+        @can('consultas')
+            <li class="menu">
+                <a href="#anulacion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <span>Consultas</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ $consulta_general ? 'show' : '' }}" id="anulacion" data-parent="#accordionExample">
+                    @can('consulta.referente')
+                        <li class="{{ $consulta_referente ? 'active' : '' }}">
+                            <a href="{{route('consulta.referente')}}" >
+                                <span>Referente</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('consulta.resumen')
+                        <li class="{{ $consulta_resumen ? 'active' : '' }}">
+                            <a href="{{route('consulta.resumen')}}" >
+                                <span>Referen. Resumen</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('consulta.simulacion')
+                        <li class="{{ $consulta_simulacion ? 'active' : '' }}">
+                            <a href="{{route('consulta.simulacion')}}" >
+                                <span>Simulacion</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('consulta.pollito')
+                        <li class="{{ $consulta_pollito ? 'active' : '' }}">
+                            <a href="{{route('consulta.pollito')}}" >
+                                <span>Voto Consulta</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('voto.consulta_votos_carga')
+                        <li class="{{ $consulta_carga ? 'active' : '' }}">
+                            <a href="{{route('voto.consulta_votos_carga')}}" >
+                                <span>Votos Carga</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('voto.consulta_lista')
+                        <li class="{{ $consulta_lista ? 'active' : '' }}">
+                            <a href="{{route('voto.consulta_lista')}}" >
+                                <span>Votos Lista</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('voto.dhondt')
+                        <li class="{{ $consulta_dhondt ? 'active' : '' }}">
+                            <a href="{{route('voto.dhondt')}}" >
+                                <span>D'Hondt</span>
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+        @endcan
+
         @can('local.index')
             <li class="menu">
                 <a href="{{route('local.index')}}" aria-expanded="false" class="dropdown-toggle"
@@ -65,48 +246,7 @@
             </li>
         @endcan
 
-
-
-        @can('vehiculo.index')
-            <li class="menu">
-                <a href="{{route('vehiculo.index')}}" aria-expanded="false" class="dropdown-toggle"
-                    @if(Str::startsWith(Route::currentRouteName(), 'vehiculo.index')) data-active="true" @endif
-                >
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-                        <span>Vehiculos</span>
-                    </div>
-                </a>
-            </li>
-        @endcan
-
-        @can('padron.index')
-            <li class="menu">
-                <a href="{{route('padron.index')}}" aria-expanded="false" class="dropdown-toggle"
-                    @if(Str::startsWith(Route::currentRouteName(), 'padron.index')) data-active="true" @endif
-                >
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                        <span>Padron</span>
-                    </div>
-                </a>
-            </li>
-        @endcan
-
-        @can('padron.todos')
-            <li class="menu">
-                <a href="{{route('padron.todos')}}" aria-expanded="false" class="dropdown-toggle"
-                    @if(Str::startsWith(Route::currentRouteName(), 'padron.todos')) data-active="true" @endif
-                >
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                        <span>Padron Todos</span>
-                    </div>
-                </a>
-            </li>
-        @endcan
-
-        @can('consulta.referente')
+        {{-- @can('consulta.referente')
             <li class="menu">
                 <a href="{{route('consulta.referente')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'consulta.referente')) data-active="true" @endif
@@ -117,9 +257,9 @@
                     </div>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
 
-        @can('consulta.resumen')
+        {{-- @can('consulta.resumen')
             <li class="menu">
                 <a href="{{route('consulta.resumen')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'consulta.resumen')) data-active="true" @endif
@@ -127,6 +267,19 @@
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         <span>Resumen</span>
+                    </div>
+                </a>
+            </li>
+        @endcan --}}
+
+        @can('candidato.index')
+            <li class="menu">
+                <a href="{{route('candidato.index')}}" aria-expanded="false" class="dropdown-toggle"
+                    @if(Str::startsWith(Route::currentRouteName(), 'candidato.index')) data-active="true" @endif
+                >
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                        <span>Candidato</span>
                     </div>
                 </a>
             </li>
@@ -145,20 +298,7 @@
             </li>
         @endcan
 
-        @can('candidato.index')
-            <li class="menu">
-                <a href="{{route('candidato.index')}}" aria-expanded="false" class="dropdown-toggle"
-                    @if(Str::startsWith(Route::currentRouteName(), 'candidato.index')) data-active="true" @endif
-                >
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
-                        <span>Candidato</span>
-                    </div>
-                </a>
-            </li>
-        @endcan
-
-        @can('voto.intendente_manual')
+        {{-- @can('voto.intendente_manual')
             <li class="menu">
                 <a href="{{route('voto.intendente_manual')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.intendente_manual')) data-active="true" @endif
@@ -169,9 +309,9 @@
                     </div>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
 
-        @can('voto.intendente_import')
+        {{-- @can('voto.intendente_import')
             <li class="menu">
                 <a href="{{route('voto.intendente_import')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.intendente_import')) data-active="true" @endif
@@ -182,9 +322,9 @@
                     </div>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
 
-        @can('voto.consejal_manual')
+        {{-- @can('voto.consejal_manual')
             <li class="menu">
                 <a href="{{route('voto.consejal_manual')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.consejal_manual')) data-active="true" @endif
@@ -208,9 +348,9 @@
                     </div>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
 
-        @can('consulta.simulacion')
+        {{-- @can('consulta.simulacion')
             <li class="menu">
                 <a href="{{route('consulta.simulacion')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'consulta.simulacion')) data-active="true" @endif
@@ -221,9 +361,9 @@
                     </div>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
 
-        @can('voto.consulta_votos_carga')
+        {{-- @can('voto.consulta_votos_carga')
             <li class="menu">
                 <a href="{{route('voto.consulta_votos_carga')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.consulta_votos_carga')) data-active="true" @endif
@@ -234,9 +374,9 @@
                     </div>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
 
-        @can('voto.consulta_lista')
+        {{-- @can('voto.consulta_lista')
             <li class="menu">
                 <a href="{{route('voto.consulta_lista')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.consulta_lista')) data-active="true" @endif
@@ -247,9 +387,9 @@
                     </div>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
 
-        @can('voto.dhondt')
+        {{-- @can('voto.dhondt')
             <li class="menu">
                 <a href="{{route('voto.dhondt')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'voto.dhondt')) data-active="true" @endif
@@ -260,9 +400,91 @@
                     </div>
                 </a>
             </li>
+        @endcan --}}
+
+        @can('parametro_general')
+            <li class="menu">
+                <a href="#parametro_general" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-settings"
+                        >
+                            <circle cx="12" cy="12" r="3"></circle>
+
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06
+                                a2 2 0 1 1-2.83 2.83l-.06-.06
+                                a1.65 1.65 0 0 0-1.82-.33
+                                1.65 1.65 0 0 0-1 1.51V21
+                                a2 2 0 1 1-4 0v-.09
+                                a1.65 1.65 0 0 0-1.08-1.51
+                                1.65 1.65 0 0 0-1.82.33l-.06.06
+                                a2 2 0 1 1-2.83-2.83l.06-.06
+                                A1.65 1.65 0 0 0 4.6 15
+                                1.65 1.65 0 0 0 3.09 14H3
+                                a2 2 0 1 1 0-4h.09
+                                A1.65 1.65 0 0 0 4.6 9
+                                a1.65 1.65 0 0 0-.33-1.82l-.06-.06
+                                a2 2 0 1 1 2.83-2.83l.06.06
+                                A1.65 1.65 0 0 0 9 4.6h.08
+                                A1.65 1.65 0 0 0 10 3.09V3
+                                a2 2 0 1 1 4 0v.09
+                                a1.65 1.65 0 0 0 1 1.51
+                                1.65 1.65 0 0 0 1.82-.33l.06-.06
+                                a2 2 0 1 1 2.83 2.83l-.06.06
+                                a1.65 1.65 0 0 0-.33 1.82V9
+                                c.12.6.6 1.08 1.2 1.2H21
+                                a2 2 0 1 1 0 4h-.09
+                                a1.65 1.65 0 0 0-1.51 1z"
+                            ></path>
+                        </svg>
+                        <span>Param General</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ $parametro_general ? 'show' : '' }}" id="parametro_general" data-parent="#accordionExample">
+
+                    @can('usuario.index')
+                        <li class="{{ $userActiva ? 'active' : '' }}">
+                            <a href="{{route('user.index')}}" >
+                                <span>Usuario</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('rol.index')
+                        <li class="{{ $rolActiva ? 'active' : '' }}">
+                            <a href="{{route('role.index')}}" >
+                                <span>Roles</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('general_config')
+                        <li class="{{ $generalConfigActiva ? 'active' : '' }}">
+                            <a href="{{route('general_config')}}" >
+                                <span>General</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                </ul>
+            </li>
         @endcan
 
-        @can('rol.index')
+        {{-- @can('rol.index')
             <li class="menu">
                 <a href="{{route('general_config')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'general_config')) data-active="true" @endif
@@ -276,9 +498,9 @@
                     </div>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
 
-        @can('usuario.index')
+        {{-- @can('usuario.index')
             <li class="menu">
                 <a href="{{route('user.index')}}" aria-expanded="false" class="dropdown-toggle"
                     @if(Str::startsWith(Route::currentRouteName(), 'user.index')) data-active="true" @endif
@@ -309,7 +531,7 @@
                     </div>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
 
     </ul>
 

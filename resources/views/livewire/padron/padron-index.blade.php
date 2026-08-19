@@ -54,14 +54,16 @@
                                         <td>Mesa: <b>{{$data->mesa}}</b> | Orden:<b>{{$data->orden}}</b></td>
                                     </tr>
                                     <tr>
-                                        <td>Consultado fecha</td>
+                                        <td>
+                                            Voto: <b>{{ $data->voto == 1 ? 'CONFIRMADO' : 'NO CONFIRMADO' }}</b>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             {{-- <b>{{ \Carbon\Carbon::parse($data->padronConsulta()->latest()->first()->created_at)->format('d/m/Y H:i') }}
                                                 | Cantidad: {{$data->padronConsulta()->count()}}
                                             </b> --}}
-                                            <button type="button" wire:click="toggleVerMas" class="btn btn-sm btn-primary ml-2">
+                                            <button type="button" wire:click="toggleVerMas" class="btn btn-sm btn-primary ml-2" hidden>
                                                 {{ $verMas ? '-' : '+' }}
                                             </button>
                                         </td>

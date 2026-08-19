@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class ConsultaController extends Controller
 {
-    public $general;
+    public $general ;
 
     public function __construct()
     {
@@ -21,6 +21,7 @@ class ConsultaController extends Controller
         $this->middleware('permission:consulta.referente')->only('referente');
         $this->middleware('permission:consulta.referentesPorLocal')->only('referentesPorLocal');
         $this->middleware('permission:consulta.resumen')->only('resumen');
+        $this->middleware('permission:consulta.pollito')->only('pollito');
     }
 
     public function referente(Request $request)
@@ -83,7 +84,6 @@ class ConsultaController extends Controller
                 ]
             ]);
         }
-
 
         $data = Padron::where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
@@ -358,6 +358,19 @@ class ConsultaController extends Controller
         ])->setPaper('a4', 'portrait');
 
         return $pdf->stream('Resumen.pdf');
+    }
+
+    public function pollito(Request $request)
+    {
+        $data = Padron::with('local')
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->where('voto', 1)
+        ->select('local_id', DB::raw('COUNT(*) as total_votos'))
+        ->groupBy('local_id')
+        ->get();
+        return view('consulta.pollito', compact('data'));
     }
 
 }

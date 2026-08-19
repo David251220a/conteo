@@ -114,6 +114,7 @@ Route::group([
     Route::get('/consulta/referentes-imprimir', [ConsultaController::class, 'referenteImprimir'])->name('consulta.referentes.imprimir');
     Route::get('/consulta/resumen', [ConsultaController::class, 'resumen'])->name('consulta.resumen');
     Route::get('/consulta/resumen/imprimir', [ConsultaController::class, 'resumen_imprimir'])->name('consulta.resumen.imprimir');
+    Route::get('/consulta/pollitos', [ConsultaController::class, 'pollito'])->name('consulta.pollito');
 
     Route::get('/lista', [ListaController::class, 'index'])->name('lista.index');
     Route::get('/lista/crear', [ListaController::class, 'create'])->name('lista.create');

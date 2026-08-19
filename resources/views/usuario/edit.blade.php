@@ -54,7 +54,7 @@
                                 <select name="local_id" id="local_id" class="form-control">
                                     <option value=""></option>
                                     @foreach ($locales as $item)
-                                        <option value="{{ $item->id }}" {{ old('local_id', $user->local_id) ? 'selected' : '' }}>{{ $item->descripcion }}</option>
+                                        <option value="{{ $item->id }}" {{ old('local_id', $user->local_id) == $item->id ? 'selected' : '' }}>{{ $item->descripcion }}</option>
                                     @endforeach
                                 </select>
                             </div>

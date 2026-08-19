@@ -20,7 +20,9 @@ class SimuladorController extends Controller
 
     public function simulacion()
     {
-        $data = Simulacion::select('fecha')
+        $data = Simulacion::where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->select('fecha')
         ->groupBy('fecha')
         ->orderBy('fecha', 'DESC')
         ->get();

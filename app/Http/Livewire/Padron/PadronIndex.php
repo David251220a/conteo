@@ -48,19 +48,37 @@ class PadronIndex extends Component
         ->where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
+        $usuario_local = auth()->user()->local_id;
+        if ($this->data && $this->data->local_id == $usuario_local){
+            PadronConsulta::create([
+                'padron_id' => $this->data->id,
+                'anio' => $this->general->anio,
+                'tipo_votacion' => $this->general->tipo_votacion,
+                'estado_id' => 1,
+                'user_id' => auth()->id()
+            ]);
+            Padron::where('id', $this->data->id)->update(['voto' => 1]);
 
-        // if($this->data){
-        //     PadronConsulta::create([
-        //         'padron_id' => $this->data->id,
-        //         'anio' => $this->general->anio,
-        //         'tipo_votacion' => $this->general->tipo_votacion,
-        //         'estado_id' => 1,
-        //         'user_id' => auth()->id()
-        //     ]);
-        // }
-        if ($this->data) {
-            $this->dispatchBrowserEvent('mostrar-mapa');
+            $conteo = PadronConsulta::where('padron_id', $this->data->id)
+            ->where('anio', $this->general->anio)
+            ->where('tipo_votacion', $this->general->tipo_votacion)
+            ->orderBy('created_at', 'ASC')
+            ->get();
+
+            if ($conteo->count() > 1){
+                $primeraConsulta = $conteo->first();
+                $mensaje = 'La persona ya fue consultada por primera vez a las: ' . $primeraConsulta->created_at->format('H:i:s');
+                $this->emit('mensaje_error', $mensaje);
+            }
         }
+
+        // if ($this->data && $this->data->local_id != $usuario_local){
+        //     $this->emit('mensaje_error', 'La persona no pertenece a su local de votación.');
+        // }
+
+        // if ($this->data) {
+        //     $this->dispatchBrowserEvent('mostrar-mapa');
+        // }
     }
 
     public function toggleVerMas()
