@@ -6,6 +6,7 @@ use App\Models\General;
 use App\Models\Padron;
 use App\Models\PadronConsulta;
 use App\Models\Referente;
+use App\Models\User;
 use App\Models\Vehiculo;
 use Livewire\Component;
 
@@ -58,18 +59,19 @@ class PadronIndex extends Component
                 'user_id' => auth()->id()
             ]);
             Padron::where('id', $this->data->id)->update(['voto' => 1]);
+        }
 
-            $conteo = PadronConsulta::where('padron_id', $this->data->id)
-            ->where('anio', $this->general->anio)
-            ->where('tipo_votacion', $this->general->tipo_votacion)
-            ->orderBy('created_at', 'ASC')
-            ->get();
+        $conteo = PadronConsulta::where('padron_id', $this->data->id)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->orderBy('created_at', 'ASC')
+        ->get();
 
-            if ($conteo->count() > 1){
-                $primeraConsulta = $conteo->first();
-                $mensaje = 'La persona ya fue consultada por primera vez a las: ' . $primeraConsulta->created_at->format('H:i:s');
-                $this->emit('mensaje_error', $mensaje);
-            }
+        if ($conteo->count() > 1){
+            $primeraConsulta = $conteo->first();
+            $usuario_consulta = User::find($primeraConsulta->user_id);
+            $mensaje = 'La persona ya fue consultada por primera vez a las: ' . $primeraConsulta->created_at->format('H:i:s') . ' por el usuario:' . $usuario_consulta->username;
+            $this->emit('mensaje_error', $mensaje);
         }
 
         // if ($this->data && $this->data->local_id != $usuario_local){

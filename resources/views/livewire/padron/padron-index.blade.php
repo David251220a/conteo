@@ -55,7 +55,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            Voto: <b>{{ $data->voto == 1 ? 'CONFIRMADO' : 'NO CONFIRMADO' }}</b>
+                                            Voto: <span class="{{ $data->voto == 1 ? 'text-success text-bold' : '' }}"><b>{{ $data->voto == 1 ? 'CONFIRMADO' : 'NO CONFIRMADO' }}</b></span>
                                         </td>
                                     </tr>
                                     <tr>

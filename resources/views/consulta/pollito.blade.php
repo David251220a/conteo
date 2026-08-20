@@ -186,14 +186,16 @@
                         Total de votos registrados
                     </div>
 
-                    <div class="total mt-1">
-                        {{ number_format($data->sum('total_votos'), 0, ',', '.') }}
+                    <div>
+                        <i class="fas fa-vote-yea fa-2x"></i>
                     </div>
+
                 </div>
 
-                <div>
-                    <i class="fas fa-vote-yea fa-2x"></i>
+                <div class="total mt-1">
+                    {{ number_format($data->sum('total_votos'), 0, ',', '.') }}
                 </div>
+
 
             </div>
         </div>
