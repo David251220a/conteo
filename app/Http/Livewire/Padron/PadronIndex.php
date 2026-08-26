@@ -50,6 +50,7 @@ class PadronIndex extends Component
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->first();
         $usuario_local = auth()->user()->local_id;
+        $id = 0;
         if ($this->data && $this->data->local_id == $usuario_local){
             PadronConsulta::create([
                 'padron_id' => $this->data->id,
@@ -59,9 +60,10 @@ class PadronIndex extends Component
                 'user_id' => auth()->id()
             ]);
             Padron::where('id', $this->data->id)->update(['voto' => 1]);
+            $id = $this->data->id;
         }
 
-        $conteo = PadronConsulta::where('padron_id', $this->data->id)
+        $conteo = PadronConsulta::where('padron_id', $id)
         ->where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->orderBy('created_at', 'ASC')
