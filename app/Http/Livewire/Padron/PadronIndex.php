@@ -18,6 +18,9 @@ class PadronIndex extends Component
     public $data;
     public $referentes;
     public $vehiculos;
+    public $mensaje;
+    public $estilo;
+    public $titulo;
 
     public function mount()
     {
@@ -32,6 +35,10 @@ class PadronIndex extends Component
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->where('estado_id', 1)
         ->get();
+
+        $local = auth()->user()->local;
+        $this->titulo = 'Padron - Local Vinculado: ' . $local->descripcion;
+
     }
 
     public function render()
@@ -61,6 +68,11 @@ class PadronIndex extends Component
             ]);
             Padron::where('id', $this->data->id)->update(['voto' => 1]);
             $id = $this->data->id;
+            $this->mensaje = 'Confirmado';
+            $this->estilo = 'text-success text-bold';
+        }else{
+            $this->mensaje = 'No corresponde a este local';
+            $this->estilo = 'text-danger text-bold';
         }
 
         $conteo = PadronConsulta::where('padron_id', $id)
@@ -73,6 +85,8 @@ class PadronIndex extends Component
             $primeraConsulta = $conteo->first();
             $usuario_consulta = User::find($primeraConsulta->user_id);
             $mensaje = 'La persona ya fue consultada por primera vez a las: ' . $primeraConsulta->created_at->format('H:i:s') . ' por el usuario:' . $usuario_consulta->username;
+            $this->mensaje = 'Confirmado';
+            $this->estilo = 'text-success text-bold';
             $this->emit('mensaje_error', $mensaje);
         }
 

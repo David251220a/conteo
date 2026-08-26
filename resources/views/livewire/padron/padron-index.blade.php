@@ -3,7 +3,7 @@
         <div class="widget-content widget-content-area">
             <div class="row align-items-center mb-3">
                 <div class="col-md-6">
-                    <h3 class="mb-0">Padron</h3>
+                    <h3 class="mb-0">{{$titulo}}</h3>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 col-xs-12">
@@ -55,7 +55,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            Voto: <span class="{{ $data->voto == 1 ? 'text-success text-bold' : '' }}"><b>{{ $data->voto == 1 ? 'CONFIRMADO' : 'NO CONFIRMADO' }}</b></span>
+                                            Voto: <span class="{{ $estilo }}"><b>{{ $mensaje }}</b></span>
                                         </td>
                                     </tr>
                                     <tr>
