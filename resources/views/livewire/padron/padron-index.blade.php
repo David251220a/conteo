@@ -39,19 +39,19 @@
                                         <td>Nombre y Apellido</td>
                                     </tr>
                                     <tr>
-                                        <td><b>{{$data->nombre}} {{$data->apellido}}</b></td>
+                                        <td><b class="{{$estilo}}">{{$data->nombre}} {{$data->apellido}}</b></td>
                                     </tr>
                                     <tr>
                                         <td>Local</td>
                                     </tr>
                                     <tr>
-                                        <td><b>{{$data->local->descripcion}}</b></td>
+                                        <td><b class="{{$estilo}}">{{$data->local->descripcion}}</b></td>
                                     </tr>
                                     <tr>
                                         <td>Mesa</td>
                                     </tr>
                                     <tr>
-                                        <td>Mesa: <b>{{$data->mesa}}</b> | Orden:<b>{{$data->orden}}</b></td>
+                                        <td>Mesa: <b class="{{$estilo}}">{{$data->mesa}}</b> | Orden:<b class="{{$estilo}}">{{$data->orden}}</b></td>
                                     </tr>
                                     <tr>
                                         <td>

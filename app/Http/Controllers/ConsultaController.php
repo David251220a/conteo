@@ -362,14 +362,34 @@ class ConsultaController extends Controller
 
     public function pollito(Request $request)
     {
+        $rol = auth()->user()->getRoleNames();
+        $local_desde = Local::where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->select('id')
+        ->min('id');
+
+        $local_hasta = Local::where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->select('id')
+        ->max('id');
+        if($rol[0] <> 'admin'){
+            $local_desde = auth()->user()->local_id;
+            $local_hasta = auth()->user()->local_id;
+        }
+        // dd($local_desde, $local_hasta);
         $data = Padron::with('local')
         ->where('anio', $this->general->anio)
         ->where('tipo_votacion', $this->general->tipo_votacion)
         ->where('estado_id', 1)
         ->where('voto', 1)
+        ->whereBetween('local_id', [$local_desde, $local_hasta])
         ->select('local_id', DB::raw('COUNT(*) as total_votos'))
         ->groupBy('local_id')
         ->get();
+
+
         return view('consulta.pollito', compact('data'));
     }
 
