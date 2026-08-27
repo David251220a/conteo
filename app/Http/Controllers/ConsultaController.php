@@ -393,4 +393,27 @@ class ConsultaController extends Controller
         return view('consulta.pollito', compact('data'));
     }
 
+    public function pollito_detalle(Local $local, Request $request)
+    {
+
+        $search = $request->search;
+        $data = Padron::where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->where('voto', 1)
+        ->where('local_id', $local->id)
+        ->when($search !== '', function ($query) use ($search) {
+            $query->where(function ($subquery) use ($search) {
+                $subquery->where('nombre', 'LIKE', "%{$search}%")
+                    ->orWhere('apellido', 'LIKE', "%{$search}%")
+                    ->orWhere('documento', 'LIKE', "%{$search}%");
+            });
+        })
+        ->paginate(20)
+        ->withQueryString();
+
+        return view('consulta.pollito_detalle', compact('data','local'));
+
+    }
+
 }
