@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-                <form action="{{ route('consulta.pollito_detalle') }}" method="GET">
+                <form action="{{ route('consulta.pollito_detalle', $local) }}" method="GET">
                     <div class="row align-items-end">
                         <!-- TIPO CANDIDATO -->
                         <div class="col-md-6">

@@ -142,7 +142,7 @@
 
                             <div>
                                 <div class="nombre-local">
-                                    {{ $item->local->descripcion }}
+                                    <a href="{{ route('consulta.pollito_detalle', $item->local_id) }}">{{ $item->local->descripcion }}</a>
                                 </div>
 
                                 <small class="text-muted">
