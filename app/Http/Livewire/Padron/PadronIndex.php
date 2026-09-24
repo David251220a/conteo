@@ -81,11 +81,20 @@ class PadronIndex extends Component
         ->orderBy('created_at', 'ASC')
         ->get();
 
+        if ($conteo->count() === 1){
+            $primeraConsulta = $conteo->first();
+            $usuario_consulta = User::find($primeraConsulta->user_id);
+            $mensaje = 'Primera vez consultado';
+            $this->mensaje = 'Consultado';
+            $this->estilo = 'text-success text-bold';
+            $this->emit('mensaje_error', $mensaje);
+        }
+
         if ($conteo->count() > 1){
             $primeraConsulta = $conteo->first();
             $usuario_consulta = User::find($primeraConsulta->user_id);
             $mensaje = 'La persona ya fue consultada por primera vez a las: ' . $primeraConsulta->created_at->format('H:i:s') . ' por el usuario:' . $usuario_consulta->username;
-            $this->mensaje = 'Confirmado';
+            $this->mensaje = 'Consultado';
             $this->estilo = 'text-success text-bold';
             $this->emit('mensaje_error', $mensaje);
         }
