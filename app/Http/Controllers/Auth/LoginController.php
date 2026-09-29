@@ -51,4 +51,9 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
     }
+
+    protected function loggedOut(Request $request)
+    {
+        return redirect()->route('login');
+    }
 }

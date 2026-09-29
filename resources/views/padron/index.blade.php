@@ -39,7 +39,7 @@
             width: 100%;
             max-width: 980px;
 
-            background: #f3f3f3;
+            background: #6e6e6b;
 
             border-radius: 28px;
 
@@ -109,9 +109,9 @@
         }
 
         .candidatos-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            display: contents;
+            /* grid-template-columns: 1fr 1fr; */
+            /* gap: 14px; */
             margin-top: 8px;
         }
 
@@ -427,8 +427,8 @@
             }
 
             .candidatos-wrapper {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
+                /* grid-template-columns: 1fr 1fr;
+                gap: 8px; */
             }
 
             .candidato-card {
@@ -545,14 +545,19 @@
 
     <div class="main-wrapper">
         <!-- BANNER -->
-        <h3 class="text-center" style="font-weight: bold">{{ $local->descripcion }}</h3>
+        <h3 class="text-center" style="font-weight: bold; color: white">{{ $local->descripcion }}</h3>
         <div class="candidatos-wrapper">
-            <div class="candidato-card">
+            {{-- <div class="candidato-card">
                 <img src="{{ Storage::url($inte->imagen) }}" class="candidato-img">
                 <div>
                     <div class="candidato-nombre">{{$inte->nombre}}</div>
                     <div class="candidato-cargo">Intendente</div>
                     <div class="candidato-opcion">{{$inte->lista->descripcion}}</div>
+                </div>
+            </div> --}}
+            <div class="">
+                <div>
+                    <div class="candidato-nombre" style="color: white; margin-botton: 5px">Padron para el día 04/10/2026!</div>
                 </div>
             </div>
         </div>
@@ -731,14 +736,17 @@
                     @if ($corresponde === 0)
                         // background: "#ffffff",              // Cuadro de la alerta
                         // color: "#8b0000",                   // Color del texto
+                        icon: "error",
                         backdrop: "rgba(90, 0, 0, 0.70)"
                     @endif
 
                     @if ($corresponde === 1 && $conteo->count() === 1)
+                        icon: "success",
                         backdrop: "rgb(22 165 112 / 70%)"
                     @endif
 
                     @if ($corresponde === 1 && $conteo->count() > 1)
+                        icon: "info",
                         backdrop: "rgb(249 182 80 / 70%)"
                     @endif
                 }).then((result) => {
