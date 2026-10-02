@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\General;
+use App\Models\Local;
+use App\Models\Padron;
 use App\Models\Referente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -13,11 +16,16 @@ class HomeController extends Controller
      *
      * @return void
      */
+
+    public $general ;
+
+
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('permission:rol.index')->only('general_config');
         $this->middleware('permission:rol.index')->only('general_config_post');
+        $this->general = General::find(1);
     }
 
     /**
@@ -27,7 +35,41 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $rol = auth()->user()->getRoleNames();
+
+        if($rol->isEmpty()){
+           return view('home');
+        }
+
+        if($rol[0] <> 'admin'){
+           return view('home');
+        }
+
+        $local_desde = Local::where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->select('id')
+        ->min('id');
+
+        $local_hasta = Local::where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->select('id')
+        ->max('id');
+
+
+        $data = Padron::with('local')
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->where('voto', 1)
+        ->whereBetween('local_id', [$local_desde, $local_hasta])
+        ->select('local_id', DB::raw('COUNT(*) as total_votos'))
+        ->groupBy('local_id')
+        ->get();
+
+        return view('consulta.pollito', compact('data'));
+
     }
 
     public function general_config()
