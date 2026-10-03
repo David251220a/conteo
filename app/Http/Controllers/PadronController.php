@@ -20,6 +20,7 @@ class PadronController extends Controller
         $this->general = General::find(1);
         $this->middleware('permission:padron.index')->only('index');
         $this->middleware('permission:padron.todos')->only('todos');
+        $this->middleware('permission:padron.admin')->only('admin');
     }
 
     public function index(Request $request)
@@ -126,5 +127,63 @@ class PadronController extends Controller
         $data->update();
 
         return redirect()->route('padron.todos',['search' => $request->search_aux_refe]);
+    }
+
+    public function admin(Request $request)
+    {
+        $documento = str_replace('.', '', $request->documento);
+
+        $data = Padron::where('documento', $documento)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->first();
+        $inte = Candidato::find(59);
+        $local = auth()->user()->local;
+        $id = 0;
+        $corresponde = 0;
+        $mensaje = '' ;
+            $mensaje_alerta = '';
+        if ($data){
+            PadronConsulta::create([
+                'padron_id' => $data->id,
+                'anio' => $this->general->anio,
+                'tipo_votacion' => $this->general->tipo_votacion,
+                'estado_id' => 1,
+                'user_id' => auth()->id()
+            ]);
+            Padron::where('id', $data->id)->update(['voto' => 1]);
+            $id = $data->id;
+            $estilo = 'text-success text-bold';
+            $corresponde = 1;
+        }else{
+            $estilo = 'text-danger text-bold';
+            $mensaje = 'No existe en el padrón electoral';
+            $mensaje_alerta = 'No existe en el padrón electoral';
+        }
+
+
+
+        $conteo = PadronConsulta::where('padron_id', $id)
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->orderBy('created_at', 'ASC')
+        ->get();
+
+        if ($conteo->count() === 1){
+            $primeraConsulta = $conteo->first();
+            $mensaje_alerta = 'Primera vez consultado. Mesa: ' . $data->mesa . ' y Orden: ' . $data->orden;
+            $mensaje = 'Consultado';
+            $estilo = 'text-success text-bold';
+        }
+
+        if ($conteo->count() > 1){
+            $primeraConsulta = $conteo->first();
+            $usuario_consulta = User::find($primeraConsulta->user_id);
+            $mensaje_alerta = 'La persona ya fue consultada a las: ' . $primeraConsulta->created_at->format('H:i:s') . ' por el usuario:' . $usuario_consulta->username;
+            $mensaje = 'Consultado';
+            $estilo = 'text-success text-bold';
+        }
+        $documento = '';
+        return view('padron.admin', compact('data', 'inte', 'local', 'mensaje', 'estilo', 'mensaje_alerta', 'corresponde', 'conteo', 'documento'));
     }
 }

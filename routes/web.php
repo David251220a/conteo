@@ -104,6 +104,7 @@ Route::group([
     Route::get('/padron/todos', [PadronController::class, 'todos'])->name('padron.todos');
     Route::post('/padron/todos/asignar-vehiculo', [PadronController::class, 'asignar'])->name('padron.asignar');
     Route::post('/padron/todos/asignar-referente', [PadronController::class, 'asignar_refe'])->name('padron.asignar_refe');
+    Route::get('/padron/admin', [PadronController::class, 'admin'])->name('padron.admin');
 
     Route::get('/consulta', [ConsultaController::class, 'referente'])->name('consulta.referente');
     Route::get('/consulta/referentes-por-local/{localId}', [ConsultaController::class, 'referentesPorLocal'])->name('consulta.referentes.local');

@@ -10,4 +10,9 @@ class PadronConsulta extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

@@ -49,6 +49,8 @@
                                         <th class="">Documento</th>
                                         <th class="">Votante</th>
                                         <th class="">Mesa y Orden</th>
+                                        <th>Usuario</th>
+                                        <th>Fecha y Hora</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,12 +59,16 @@
                                             <td class="text-right">{{number_format($item->documento, 0, ',', '.')}}</td>
                                             <td>{{$item->nombre .' ' . $item->apellido}}</td>
                                             <td>{{$item->mesa .' || ' . $item->orden}}</td>
+                                            <td>{{ $item->padronConsultaUltimo->first()?->usuario->name ?? 'N/A' }}</td>
+                                            <td>
+                                                {{ $item->padronConsultaUltimo->first()?->created_at?->format('d/m/Y H:i') ?? 'N/A' }}
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="3"></td>
+                                        <td colspan="5"></td>
                                     </tr>
                                 </tfoot>
                             </table>

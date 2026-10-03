@@ -405,10 +405,11 @@ class ConsultaController extends Controller
         ->when($search !== '', function ($query) use ($search) {
             $query->where(function ($subquery) use ($search) {
                 $subquery->where('nombre', 'LIKE', "%{$search}%")
-                    ->orWhere('apellido', 'LIKE', "%{$search}%")
-                    ->orWhere('documento', 'LIKE', "%{$search}%");
+                ->orWhere('apellido', 'LIKE', "%{$search}%")
+                ->orWhere('documento', 'LIKE', "%{$search}%");
             });
         })
+        ->orderby('documento')
         ->paginate(20)
         ->withQueryString();
 

@@ -21,6 +21,11 @@ class Padron extends Model
         return $this->hasMany(PadronConsulta::class);
     }
 
+    public function padronConsultaUltimo()
+    {
+        return $this->hasMany(PadronConsulta::class)->orderBy('created_at', 'desc')->limit(1);
+    }
+
     public function refe()
     {
         return $this->belongsTo(Referente::class, 'referente_id');
