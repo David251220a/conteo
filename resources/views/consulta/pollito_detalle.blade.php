@@ -109,6 +109,50 @@
                         </div>
                     </div>
                 </div>
+
+                <h5 class="mt-4 font-weight-bold">
+    Resumen del usuario por local
+</h5>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Local</th>
+            <th>Usuario</th>
+            <th class="text-center">Personas consultadas</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @forelse ($resumen_admin2 as $item)
+            <tr>
+                <td>{{ $item->local }}</td>
+                <td>
+                    {{ $item->username }}
+                    <small class="text-muted">(ID: {{ $item->user_id }})</small>
+                </td>
+                <td class="text-center">
+                    {{ number_format($item->cantidad, 0, ',', '.') }}
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="3" class="text-center">
+                    El usuario 14 no registra personas consultadas.
+                </td>
+            </tr>
+        @endforelse
+    </tbody>
+
+    <tfoot>
+        <tr class="font-weight-bold">
+            <td colspan="2">Total general</td>
+            <td class="text-center">
+                {{ number_format($resumen_admin2->sum('cantidad'), 0, ',', '.') }}
+            </td>
+        </tr>
+    </tfoot>
+</table>
             </div>
         </div>
     </div>

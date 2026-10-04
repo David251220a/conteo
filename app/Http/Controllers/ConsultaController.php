@@ -413,35 +413,91 @@ class ConsultaController extends Controller
         ->paginate(20)
         ->withQueryString();
 
-$nuevo = Padron::with('ultimaConsulta.usuario')
-    ->where('anio', $this->general->anio)
-    ->where('tipo_votacion', $this->general->tipo_votacion)
-    ->where('estado_id', 1)
-    ->where('voto', 1)
-    ->where('local_id', $local->id)
-    ->get()
-    ->filter(function ($padron) {
-        return $padron->ultimaConsulta !== null
-            && $padron->ultimaConsulta->usuario !== null;
-    })
-    ->groupBy(function ($padron) {
-        return $padron->ultimaConsulta->user_id;
-    })
-    ->map(function ($grupo) {
-        $padron = $grupo->first();
-        $consulta = $padron->ultimaConsulta;
+        $nuevo = Padron::with('ultimaConsulta.usuario')
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->where('voto', 1)
+        ->where('local_id', $local->id)
+        ->get()
+        ->filter(function ($padron) {
+            return $padron->ultimaConsulta !== null
+                && $padron->ultimaConsulta->usuario !== null;
+        })
+        ->groupBy(function ($padron) {
+            return $padron->ultimaConsulta->user_id;
+        })
+        ->map(function ($grupo) {
+            $padron = $grupo->first();
+            $consulta = $padron->ultimaConsulta;
 
-        return (object) [
-            'user_id'  => $consulta->user_id,
-            'username' => $consulta->usuario->username,
-            'cantidad' => $grupo->count(),
-        ];
-    })
-    ->sortByDesc('cantidad')
-    ->values();
+            return (object) [
+                'user_id'  => $consulta->user_id,
+                'username' => $consulta->usuario->username,
+                'cantidad' => $grupo->count(),
+            ];
+        })
+        ->sortByDesc('cantidad')
+        ->values();
+
+        $resumen_admin2 = Padron::with('ultimaConsulta.usuario')
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->where('voto', 1)
+        ->where('local_id', $local->id)
+        ->get()
+        ->filter(function ($padron) {
+            return $padron->ultimaConsulta !== null && $padron->ultimaConsulta->usuario !== null;
+        })
+        ->groupBy(function ($padron) {
+            return $padron->ultimaConsulta->user_id;
+        })
+        ->map(function ($grupo) {
+            $padron = $grupo->first();
+            $consulta = $padron->ultimaConsulta;
+
+            return (object) [
+                'user_id'  => $consulta->user_id,
+                'username' => $consulta->usuario->username,
+                'cantidad' => $grupo->count(),
+            ];
+        })
+        ->sortByDesc('cantidad')
+        ->values();
+
+        $resumen_admin2 = Padron::with([
+            'local',
+            'ultimaConsulta.usuario'
+        ])
+        ->where('anio', $this->general->anio)
+        ->where('tipo_votacion', $this->general->tipo_votacion)
+        ->where('estado_id', 1)
+        ->where('voto', 1)
+        ->get()
+        ->filter(function ($padron) {
+            return $padron->ultimaConsulta !== null
+                && $padron->ultimaConsulta->usuario !== null
+                && (int) $padron->ultimaConsulta->user_id === 14;
+        })
+        ->groupBy('local_id')
+        ->map(function ($grupo) {
+            $padron = $grupo->first();
+            $consulta = $padron->ultimaConsulta;
+
+            return (object) [
+                'local_id' => $padron->local_id,
+                'local'    => optional($padron->local)->descripcion,
+                'user_id'  => $consulta->user_id,
+                'username' => $consulta->usuario->username,
+                'cantidad' => $grupo->count(),
+            ];
+        })
+        ->sortByDesc('cantidad')
+        ->values();
 
 
-        return view('consulta.pollito_detalle', compact('data','local','nuevo'));
+        return view('consulta.pollito_detalle', compact('data','local','nuevo','resumen_admin2'));
 
     }
 
