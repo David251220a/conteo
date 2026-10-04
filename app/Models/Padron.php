@@ -36,4 +36,10 @@ class Padron extends Model
         return $this->belongsTo(Vehiculo::class, 'vehiculo_id');
     }
 
+    public function ultimaConsulta()
+    {
+        return $this->hasOne(PadronConsulta::class, 'padron_id')
+            ->latestOfMany();
+    }
+
 }

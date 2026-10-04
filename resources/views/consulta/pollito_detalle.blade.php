@@ -79,6 +79,36 @@
                 <div class="row">
                     {{ $data->appends(request()->query())->links() }}
                 </div>
+
+                <div class="row mt-1">
+                    <div  class="col-xl-12 col-md-12 col-sm-12 col-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-checkable table-highlight-head mb-4">
+                                <thead>
+                                    <tr>
+                                        <th class="">Usuario</th>
+                                        <th class="">Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($nuevo as $item)
+                                        <tr>
+                                            <td>{{ $item->username }}</td>
+                                            <td class="text-center">
+                                                {{ number_format($item->cantidad, 0, ',', '.') }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
